@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
           border: '1px solid var(--danger)',
           background: 'rgba(239, 68, 68, 0.05)'
         }}>
-          <div style={{ color: var('--danger'), fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+          <div style={{ color: 'var(--danger)', fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
           <h2 className="page-title" style={{ color: 'var(--text-primary)' }}>
             El módulo {this.props.moduleName ? `"${this.props.moduleName}"` : ''} no está disponible
           </h2>

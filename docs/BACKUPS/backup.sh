@@ -14,7 +14,7 @@
 
 # Configuración
 PROJECT_NAME="ventura-dental-facturacion"
-PROJECT_DIR="/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica"
+PROJECT_DIR="/Users/macbookpro/Library/CloudStorage/OneDrive-Personal/Desarrollo de Apps/Facturación Clínica/ventura-dental-facturacion"
 BACKUP_DIR="$PROJECT_DIR/docs/BACKUPS"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 BACKUP_TYPE="${1:-all}"
