@@ -1,0 +1,8 @@
+export { default as LoginPage } from './LoginPage';
+export { default as DashboardPage } from './DashboardPage';
+export { default as HistorialPagosPage } from './HistorialPagosPage';
+export { default as TratamientosPage } from './TratamientosPage';
+export { default as PacientesPage } from './PacientesPage';
+export { default as UsuariosPage } from './UsuariosPage';
+export { default as CobranzaPage } from './CobranzaPage';
+export { default as MacroTratamientosPage } from './MacroTratamientosPage';
