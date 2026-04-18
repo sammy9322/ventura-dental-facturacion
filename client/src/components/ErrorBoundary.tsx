@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </button>
           </div>
 
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {import.meta.env.DEV && this.state.error && (
             <details style={{ marginTop: '2rem', textAlign: 'left', background: 'var(--surface-2)', padding: '1rem', borderRadius: '8px' }}>
               <summary style={{ cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.8rem' }}>Detalles técnicos (Desarrollo)</summary>
               <pre style={{ fontSize: '0.75rem', color: 'var(--danger)', marginTop: '1rem', overflowX: 'auto' }}>
