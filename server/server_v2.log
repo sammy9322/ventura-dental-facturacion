@@ -1,0 +1,791 @@
+
+> ventura-dental-server@1.0.0 dev
+> tsx watch src/index.ts
+
+(node:35705) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✓ Conexión a PostgreSQL establecida
+✓ Restricción de roles antigua eliminada temporalmente
+✓ Nueva restricción de roles (admin, doctor, secretaria) aplicada
+Iniciando inicialización de base de datos...
+✓ Tabla usuarios lista
+✓ Tabla pacientes creada
+✓ Tabla tratamientos creada
+✓ Tabla pagos lista
+✓ Tabla detalle_pago creada
+✓ Tabla comprobantes creada
+✓ Tabla sequence_comprobantes creada
+✓ Tabla notificaciones creada
+✓ Base de datos inicializada correctamente
+Verificando datos iniciales...
+✓ Seed completado
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   🎉 Ventura Dental - Servidor iniciado                   ║
+║                                                           ║
+║   📍 http://localhost:3001                         ║
+║   🏥 Ventura Dental                                     ║
+║   📋 RUC: 20XXXXXXXXX                                    ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+      
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 0,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: 'INSERT INTO pacientes (nombre, dni, telefono, emai',
+  duration: 37,
+  rows: 1
+}
+Executed query {
+  text: 'INSERT INTO pacientes (nombre, dni, telefono, emai',
+  duration: 6,
+  rows: 1
+}
+Executed query {
+  text: 'INSERT INTO tratamientos (paciente_id, tipo, descr',
+  duration: 17,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 2,
+  rows: 1
+}
+Error: SyntaxError: Unexpected token ',', ..."iente_id":,"tratamie"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parse (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/body-parser/lib/types/json.js:92:19)
+    at /Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/body-parser/lib/read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:228:14)
+    at invokeCallback (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:238:16)
+    at done (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  expose: true,
+  statusCode: 400,
+  status: 400,
+  body: '{"paciente_id":,"tratamiento_id":,"concepto":"Cuota valida","detalles":[{"descripcion":"Cuota 1","monto":200,"es_cuota_principal":true}]}',
+  type: 'entity.parse.failed'
+}
+Error: SyntaxError: Unexpected token ',', ..."iente_id":,"tratamie"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parse (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/body-parser/lib/types/json.js:92:19)
+    at /Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/body-parser/lib/read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:228:14)
+    at invokeCallback (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:238:16)
+    at done (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/Users/macbookpro/Documents/Proyecto Laboratorio Daniel /Facturación Clínica/ventura-dental-facturacion/server/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  expose: true,
+  statusCode: 400,
+  status: 400,
+  body: '{"paciente_id":,"tratamiento_id":,"concepto":"Cuota excedida","detalles":[{"descripcion":"Cuota 2","monto":400,"es_cuota_principal":true}]}',
+  type: 'entity.parse.failed'
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT t.*, p.nombre as paciente_nombre, p.dn',
+  duration: 3,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 16,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 0,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 0,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM usuarios WHERE username = $1 AND act',
+  duration: 14,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT t.*, p.nombre as paciente_nombre, p.dni as ',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT t.*, p.nombre as paciente_nombre, p.dni as ',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 9,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 7,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 0,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT p.id, p.monto, p.concepto, p.estado, p',
+  duration: 35,
+  rows: 0
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 319,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT COUNT(*) as total_pagos, COALESCE(SUM(',
+  duration: 12,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT metodo_pago, COUNT(*) as cantidad, COA',
+  duration: 3,
+  rows: 3
+}
+Executed query {
+  text: '\n    SELECT\n      (SELECT COALESCE(SUM(monto_total',
+  duration: 69,
+  rows: 1
+}
+Executed query {
+  text: "\n    SELECT TO_CHAR(created_at, 'YYYY-MM') as mes,",
+  duration: 18,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 8,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 6,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 1,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 1,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 1,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT t.*, p.nombre as paciente_nombre, p.dn',
+  duration: 3,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM pacientes \n     WHERE activo = true ',
+  duration: 48,
+  rows: 0
+}
+Executed query {
+  text: 'SELECT * FROM pacientes \n     WHERE activo = true ',
+  duration: 2,
+  rows: 0
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 6,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 8,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT COUNT(*) as total_pagos, COALESCE(SUM(',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT metodo_pago, COUNT(*) as cantidad, COA',
+  duration: 3,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT\n      (SELECT COALESCE(SUM(monto_total',
+  duration: 100,
+  rows: 1
+}
+Executed query {
+  text: "\n    SELECT TO_CHAR(created_at, 'YYYY-MM') as mes,",
+  duration: 30,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT p.id, p.monto, p.concepto, p.estado, p',
+  duration: 20,
+  rows: 0
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 9,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT p.*,\n           pa.nombre as paciente_',
+  duration: 18,
+  rows: 6
+}
+Executed query {
+  text: '\n    SELECT p.*,\n           pa.nombre as paciente_',
+  duration: 4,
+  rows: 6
+}
+Executed query {
+  text: '\n    SELECT t.*, p.nombre as paciente_nombre, p.dn',
+  duration: 8,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 6,
+  rows: 1
+}
+Executed query {
+  text: '\n    SELECT t.*, p.nombre as paciente_nombre, p.dn',
+  duration: 5,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 3,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 2,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 2,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 5,
+  rows: 3
+}
+Executed query {
+  text: 'SELECT * FROM pacientes ORDER BY nombre ASC',
+  duration: 3,
+  rows: 3
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 4,
+  rows: 1
+}
+Executed query {
+  text: 'SELECT id, username, nombre_completo, rol, activo,',
+  duration: 3,
+  rows: 4
+}
+Executed query {
+  text: 'SELECT id, username, nombre_completo, rol, activo,',
+  duration: 1,
+  rows: 4
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 1,
+  rows: 1
+}
+Executed query {
+  text: '\n      SELECT COUNT(*) as total\n      FROM notific',
+  duration: 2,
+  rows: 1
+}

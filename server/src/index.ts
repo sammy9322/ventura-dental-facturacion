@@ -22,25 +22,11 @@ dotenv.config();
 
 const app = express();
 
-// Capturar errores no controlados fuera del flujo de Express
-process.on('uncaughtException', (err) => {
-  console.error('❌ EXCEPCIÓN NO CAPTURADA:', err);
-  // En producción, aquí se enviaría una alerta al administrador
-  process.exit(1); 
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ PROMESA NO CAPTURADA en:', promise, 'razón:', reason);
-  // No salimos del proceso para mantener la disponibilidad, pero registramos el error
-});
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 500, // Limitar cada IP a 500 peticiones por ventana
   message: { error: 'Demasiadas peticiones desde esta IP, por favor intente de nuevo más tarde.' }
 });
-
-// ... (configuración de middlewares igual)
 
 app.use(helmet());
 app.use(limiter);
@@ -72,11 +58,11 @@ async function startServer() {
     console.log('✓ Conexión a PostgreSQL establecida');
     client.release();
 
-    await migrateRoles();
+    await migrateRoles();   // Primero: migrar constraint de roles
     await initDatabase();
     await seedDatabase();
 
-    const server = app.listen(config.port, () => {
+    app.listen(config.port, () => {
       console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
@@ -89,21 +75,6 @@ async function startServer() {
 ╚═══════════════════════════════════════════════════════════╝
       `);
     });
-
-    // Graceful Shutdown
-    const shutdown = async () => {
-      console.log('Cerrando servidor de forma ordenada...');
-      server.close(async () => {
-        console.log('Servidor HTTP cerrado.');
-        await pool.end();
-        console.log('Conexión a base de datos cerrada.');
-        process.exit(0);
-      });
-    };
-
-    process.on('SIGTERM', shutdown);
-    process.on('SIGINT', shutdown);
-
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);
     process.exit(1);

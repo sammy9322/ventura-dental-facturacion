@@ -1,0 +1,15 @@
+
+> ventura-dental-client@1.0.0 dev
+> vite
+
+
+  VITE v5.4.21  ready in 363 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+3:19:07 PM [vite] hmr update /src/styles/index.css
+3:19:37 PM [vite] hmr update /src/styles/index.css
+3:19:40 PM [vite] hmr update /src/styles/index.css
+3:19:47 PM [vite] hmr update /src/styles/index.css
+3:20:03 PM [vite] hmr update /src/styles/index.css
+3:20:18 PM [vite] hmr update /src/styles/index.css

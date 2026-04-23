@@ -13,8 +13,11 @@ import {
 } from './pages';
 import RegistrarPagoPage from './pages/RegistrarPagoPage';
 import CobrosPage from './pages/CobrosPage';
-import { ErrorBoundary } from './components';
 import './styles/index.css';
+import './styles/mejoras.css';
+import { ThemeProvider } from './ThemeContext';
+import MainLayout from './components/MainLayout';
+import AuditoriaPage from './pages/AuditoriaPage';
 
 // ── Guards ──────────────────────────────────────────────────────────────────
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -44,84 +47,75 @@ function HomeRedirect() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <MainLayout>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-        {/* Admin only */}
-        <Route path="/dashboard" element={
-          <RoleRoute roles={['admin']}>
-            <ErrorBoundary moduleName="Dashboard">
-              <DashboardPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
-        <Route path="/usuarios" element={
-          <RoleRoute roles={['admin']}>
-            <ErrorBoundary moduleName="Usuarios">
-              <UsuariosPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
-        <Route path="/macro-tratamientos" element={
-          <RoleRoute roles={['admin']}>
-            <ErrorBoundary moduleName="Catálogo Clínico">
-              <MacroTratamientosPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
+            {/* Admin only */}
+            <Route path="/dashboard" element={
+              <RoleRoute roles={['admin']}>
+                <DashboardPage />
+              </RoleRoute>
+            } />
+            <Route path="/usuarios" element={
+              <RoleRoute roles={['admin']}>
+                <UsuariosPage />
+              </RoleRoute>
+            } />
+            <Route path="/macro-tratamientos" element={
+              <RoleRoute roles={['admin']}>
+                <MacroTratamientosPage />
+              </RoleRoute>
+            } />
+            <Route path="/auditoria" element={
+              <RoleRoute roles={['admin']}>
+                <AuditoriaPage />
+              </RoleRoute>
+            } />
 
-        {/* Doctor + Admin */}
-        <Route path="/pagos/registrar" element={
-          <RoleRoute roles={['doctor', 'admin']}>
-            <ErrorBoundary moduleName="Registro de Pagos">
-              <RegistrarPagoPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
-        <Route path="/tratamientos" element={
-          <RoleRoute roles={['doctor', 'admin']}>
-            <ErrorBoundary moduleName="Plan de Tratamientos">
-              <TratamientosPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
+            {/* Doctor + Admin */}
+            <Route path="/pagos/registrar" element={
+              <RoleRoute roles={['doctor', 'admin']}>
+                <RegistrarPagoPage />
+              </RoleRoute>
+            } />
+            <Route path="/tratamientos" element={
+              <RoleRoute roles={['doctor', 'admin']}>
+                <TratamientosPage />
+              </RoleRoute>
+            } />
 
-        {/* Secretaria + Admin */}
-        <Route path="/cobros/pendientes" element={
-          <RoleRoute roles={['secretaria', 'admin']}>
-            <ErrorBoundary moduleName="Cobros Pendientes">
-              <CobrosPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
-        <Route path="/pagos" element={
-          <RoleRoute roles={['secretaria', 'admin']}>
-            <ErrorBoundary moduleName="Historial de Pagos">
-              <HistorialPagosPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
-        <Route path="/cobranzas" element={
-          <RoleRoute roles={['secretaria', 'admin']}>
-            <ErrorBoundary moduleName="Cobranzas">
-              <CobranzaPage />
-            </ErrorBoundary>
-          </RoleRoute>
-        } />
+            {/* Secretaria + Admin */}
+            <Route path="/cobros/pendientes" element={
+              <RoleRoute roles={['secretaria', 'admin']}>
+                <CobrosPage />
+              </RoleRoute>
+            } />
+            <Route path="/pagos" element={
+              <RoleRoute roles={['secretaria', 'admin']}>
+                <HistorialPagosPage />
+              </RoleRoute>
+            } />
+            <Route path="/cobranzas" element={
+              <RoleRoute roles={['secretaria', 'admin']}>
+                <CobranzaPage />
+              </RoleRoute>
+            } />
 
-        {/* Todos los roles autenticados */}
-        <Route path="/pacientes" element={
-          <ProtectedRoute>
-            <ErrorBoundary moduleName="Pacientes">
-              <PacientesPage />
-            </ErrorBoundary>
-          </ProtectedRoute>
-        } />
+            {/* Todos los roles autenticados */}
+            <Route path="/pacientes" element={
+              <ProtectedRoute>
+                <PacientesPage />
+              </ProtectedRoute>
+            } />
 
-        <Route path="/" element={<HomeRedirect />} />
-        <Route path="*" element={<HomeRedirect />} />
-      </Routes>
-    </BrowserRouter>
+            <Route path="/" element={<HomeRedirect />} />
+            <Route path="*" element={<HomeRedirect />} />
+          </Routes>
+        </MainLayout>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
