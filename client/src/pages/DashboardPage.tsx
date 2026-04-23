@@ -10,7 +10,8 @@ import {
   ArrowUpRight,
   PlusCircle,
   FileText,
-  UserPlus
+  UserPlus,
+  Calculator
 } from 'lucide-react';
 import { pagoService, authService } from '../services';
 import { Layout } from '../components';
@@ -109,8 +110,8 @@ export default function DashboardPage() {
                 <Link to="/pacientes" className="btn btn-outline btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
                   <UserPlus size={24} /> Nuevo Paciente
                 </Link>
-                <Link to="/pagos" className="btn btn-outline btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
-                  <FileText size={24} /> Historial de Caja
+                <Link to="/cierre-caja" className="btn btn-outline btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
+                  <Calculator size={24} /> Cierre de Caja
                 </Link>
                 <Link to="/tratamientos" className="btn btn-outline btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
                   <Activity size={24} /> Ver Tratamientos

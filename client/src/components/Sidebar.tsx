@@ -50,7 +50,10 @@ export const Sidebar: React.FC = () => {
           <span className="nav-text">{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
         </div>
 
-        <div className="nav-item logout" onClick={() => alert('Cerrando Sesión...')}>
+        <div className="nav-item logout" onClick={() => {
+          authService.logout();
+          navigate('/login');
+        }}>
           <span className="nav-icon">🚪</span>
           <span className="nav-text">Cerrar Sesión</span>
         </div>
