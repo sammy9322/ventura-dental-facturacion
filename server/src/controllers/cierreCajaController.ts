@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as CierreCajaModel from '../models/cierreCaja.js';
 import * as PagoModel from '../models/pago.js';
+import { auditoriaService } from '../services/auditoria.js';
 
 export async function getPreview(req: Request, res: Response) {
   try {
@@ -41,6 +42,17 @@ export async function saveCierre(req: Request, res: Response) {
     });
 
     res.json(nuevoCierre);
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id,
+      accion: 'CIERRE_CAJA',
+      entidad: 'cierres_caja',
+      entidad_id: nuevoCierre.id,
+      valor_nuevo: { fecha: data.fecha, diferencia: data.diferencia },
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

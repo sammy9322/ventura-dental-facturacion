@@ -4,6 +4,7 @@ import * as pagoModel from '../models/pago.js';
 import { authenticateToken, requireDoctor, requireSecretaria, AuthRequest } from '../middleware/auth.js';
 import { sendComprobanteEmail } from '../services/email.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { auditoriaService } from '../services/auditoria.js';
 
 const router = Router();
 
@@ -123,6 +124,17 @@ router.put('/:id/finalizar', authenticateToken, requireSecretaria, asyncHandler(
     }
 
     res.json(result);
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'COBRAR_PAGO',
+      entidad: 'pagos',
+      entidad_id: id,
+      valor_nuevo: { estado: 'completado', metodo_pago: data.metodo_pago },
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
   } catch (error: any) {
     if (error instanceof z.ZodError) return res.status(400).json({ error: error.errors });
     if (error.message === 'Pago no encontrado o ya procesado') return res.status(400).json({ error: error.message });
@@ -136,6 +148,19 @@ router.put('/:id/anular', authenticateToken, asyncHandler(async (req: AuthReques
   const id = parseInt(req.params.id);
   const pago = await pagoModel.anular(id);
   if (!pago) return res.status(404).json({ error: 'Pago no encontrado' });
+
+  // Registrar en auditoría
+  await auditoriaService.registrar({
+    usuario_id: req.user.id,
+    accion: 'ANULAR_PAGO',
+    entidad: 'pagos',
+    entidad_id: id,
+    valor_anterior: { estado: 'completado' },
+    valor_nuevo: { estado: 'anulado' },
+    ip_address: req.ip,
+    user_agent: req.get('user-agent')
+  });
+
   res.json(pago);
 }));
 

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import * as pacienteModel from '../models/paciente.js';
 import { authenticateToken, requireDoctorOrSecretaria, AuthRequest } from '../middleware/auth.js';
+import { auditoriaService } from '../services/auditoria.js';
 
 const router = Router();
 
@@ -80,6 +81,18 @@ router.post('/', async (req: AuthRequest, res: Response) => {
   try {
     const data = createPacienteSchema.parse(req.body);
     const paciente = await pacienteModel.create(data);
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'CREAR_PACIENTE',
+      entidad: 'pacientes',
+      entidad_id: paciente.id,
+      valor_nuevo: data,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.status(201).json(paciente);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -102,6 +115,18 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
     if (!paciente) {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'EDITAR_PACIENTE',
+      entidad: 'pacientes',
+      entidad_id: id,
+      valor_nuevo: data,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.json(paciente);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -123,6 +148,17 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
     if (!result) {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'DESACTIVAR_PACIENTE',
+      entidad: 'pacientes',
+      entidad_id: id,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.json({ message: 'Paciente desactivado correctamente' });
   } catch (error) {
     console.error('Delete paciente error:', error);

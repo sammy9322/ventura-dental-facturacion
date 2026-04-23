@@ -19,6 +19,8 @@ import tratamientosRoutes from './routes/tratamientos.js';
 import tratamientosMacroRoutes from './routes/tratamientosMacro.js';
 import notificacionesRoutes from './routes/notificaciones.js';
 import cierreCajaRoutes from './routes/cierreCaja.js';
+import auditoriaRoutes from './routes/auditoria.js';
+import { migrateAuditoria } from './scripts/migrateAuditoria.js';
 
 dotenv.config();
 
@@ -52,6 +54,7 @@ app.use('/api/tratamientos', tratamientosRoutes);
 app.use('/api/tratamientos-macro', tratamientosMacroRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/cierre', cierreCajaRoutes);
+app.use('/api/auditoria', auditoriaRoutes);
 
 app.use(errorHandler);
 
@@ -63,6 +66,7 @@ async function startServer() {
 
     await migrateRoles();   // Primero: migrar constraint de roles
     await migrateCierreCaja(); // Segundo: migrar cierre de caja
+    await migrateAuditoria();  // Tercero: migrar auditoría
     await initDatabase();
     await seedDatabase();
 

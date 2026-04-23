@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import { z } from 'zod';
 import * as tratamientoModel from '../models/tratamiento.js';
 import { authenticateToken, requireDoctorOrSecretaria, AuthRequest } from '../middleware/auth.js';
+import { auditoriaService } from '../services/auditoria.js';
 
 const router = Router();
 
@@ -85,6 +86,18 @@ router.post('/', async (req: AuthRequest, res: Response) => {
   try {
     const data = createTratamientoSchema.parse(req.body);
     const tratamiento = await tratamientoModel.create(data);
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'CREAR_TRATAMIENTO',
+      entidad: 'tratamientos',
+      entidad_id: tratamiento.id,
+      valor_nuevo: data,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.status(201).json(tratamiento);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -103,6 +116,18 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
     if (!tratamiento) {
       return res.status(404).json({ error: 'Tratamiento no encontrado' });
     }
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'EDITAR_TRATAMIENTO',
+      entidad: 'tratamientos',
+      entidad_id: id,
+      valor_nuevo: data,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.json(tratamiento);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -120,6 +145,17 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
     if (!result) {
       return res.status(404).json({ error: 'Tratamiento no encontrado' });
     }
+
+    // Registrar en auditoría
+    await auditoriaService.registrar({
+      usuario_id: req.user!.id,
+      accion: 'CANCELAR_TRATAMIENTO',
+      entidad: 'tratamientos',
+      entidad_id: id,
+      ip_address: req.ip,
+      user_agent: req.get('user-agent')
+    });
+
     res.json({ message: 'Tratamiento cancelado correctamente' });
   } catch (error) {
     console.error('Delete tratamiento error:', error);
