@@ -6,7 +6,7 @@ export const MainLayout: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={`app-layout ${theme}`}>
+    <div className={`layout ${theme}`}>
       <Sidebar />
       <main className="main-content animate-fade-in">
         <Outlet />
