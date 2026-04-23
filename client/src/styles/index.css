@@ -116,26 +116,29 @@ body {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  padding: 0.8rem 1rem;
-  margin-bottom: 0.25rem;
-  border-radius: var(--radius);
+  padding: 0.875rem 1.25rem;
+  margin: 0.25rem 0.5rem;
+  border-radius: 12px;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  transform: translateX(4px);
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(37,99,235,0.15));
-  color: var(--primary-light);
-  border: 1px solid rgba(59,130,246,0.25);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+  color: #fff;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px -5px rgba(59, 130, 246, 0.3);
 }
 
 .badge-notif {
@@ -199,15 +202,44 @@ body {
 
 .page-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  margin-bottom: 0.25rem;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .page-subtitle {
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .grid-2col {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.grid-catalog {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 2.5fr;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .grid-catalog {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ================================================================
@@ -218,10 +250,26 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 1.25rem;
-  transition: border-color 0.2s;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  pointer-events: none;
 }
 
 .card:last-child { margin-bottom: 0; }
@@ -255,15 +303,29 @@ body {
 }
 
 .stat-card {
-  background: var(--surface);
+  background: radial-gradient(circle at top left, rgba(59,130,246,0.03), transparent 70%), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   position: relative;
-  transition: border-color 0.2s;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
-.stat-card:hover { border-color: var(--primary-light); }
+.stat-card:hover { 
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px -10px rgba(0, 0, 0, 0.5);
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.05), transparent 70%);
+  pointer-events: none;
+}
 
 .stat-label {
   font-size: 0.75rem;
@@ -318,8 +380,12 @@ body {
 .btn-success {
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   color: #fff;
+  box-shadow: 0 4px 12px rgba(16,185,129,0.25);
 }
-.btn-success:hover:not(:disabled) { filter: brightness(1.1); }
+.btn-success:hover:not(:disabled) { 
+  box-shadow: 0 6px 16px rgba(16,185,129,0.4);
+  transform: translateY(-1px);
+}
 
 .btn-danger {
   background: var(--danger);
@@ -419,15 +485,16 @@ body {
 }
 
 .table th {
-  background: var(--th-bg);
-  padding: 0.875rem 1.25rem;
+  background: var(--surface-2);
+  padding: 1rem 1.25rem;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 0.725rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   white-space: nowrap;
+  border-bottom: 2px solid var(--border);
 }
 
 .table td {
@@ -775,22 +842,55 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: var(--background);
+  background: 
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+    var(--background);
 }
 
 .login-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
-  padding: 2.5rem;
+  padding: 3rem 2.5rem;
   width: 100%;
-  max-width: 400px;
-  box-shadow: var(--shadow-lg);
+  max-width: 420px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
-.login-logo { text-align: center; margin-bottom: 2rem; }
-.login-logo h1 { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; color: var(--primary-light); }
-.login-logo p  { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem; }
+.login-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.login-logo { text-align: center; margin-bottom: 2.5rem; }
+.login-logo h1 { 
+  font-family: var(--font-heading); 
+  font-size: 2.25rem; 
+  font-weight: 800; 
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+.login-logo p { 
+  color: var(--text-muted); 
+  font-size: 0.95rem; 
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
 /* ================================================================
    COMPROBANTE — Print View

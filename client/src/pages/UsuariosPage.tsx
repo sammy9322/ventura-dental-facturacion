@@ -139,7 +139,7 @@ export default function UsuariosPage() {
       <div className="card">
         <div className="card-header">
           <h3 className="card-title">Lista de Usuarios</h3>
-          <button className="btn btn-primary" onClick={() => handleOpenModal()}>
+          <button className="btn btn-success" onClick={() => handleOpenModal()}>
             + Nuevo Usuario
           </button>
         </div>

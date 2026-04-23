@@ -130,7 +130,7 @@ export default function RegistrarPagoPage() {
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem' }}>¡Pago Registrado!</h2>
           <p style={{ color: 'var(--text-secondary)' }}>La secretaria recibirá la notificación para cobrar y emitir el comprobante.</p>
           <button 
-            className="btn btn-primary" 
+            className="btn btn-success" 
             style={{ marginTop: '1rem' }}
             onClick={() => {
               setSuccess(false);
@@ -168,7 +168,7 @@ export default function RegistrarPagoPage() {
             <PacienteSearch onSelect={(p) => { setPaciente(p); setTratamientoPrincipal(null); }} selectedPaciente={paciente} />
 
             {paciente && (
-              <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(59,130,246,0.07)', borderRadius: 'var(--radius)', border: '1px solid rgba(59,130,246,0.2)' }}>
+              <div style={{ marginTop: '1rem', padding: '1rem', background: 'var(--surface-2)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
                 <p style={{ fontWeight: 700, color: 'white', marginBottom: '4px' }}>{paciente.nombre}</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>DNI: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}</p>
               </div>
@@ -250,12 +250,12 @@ export default function RegistrarPagoPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
               {detalles.map((det, idx) => (
                 <div key={idx} style={{
-                  padding: '1rem', border: `1px solid ${det.es_cuota_principal ? 'rgba(59,130,246,0.4)' : 'var(--border)'}`,
-                  borderRadius: 'var(--radius)', background: det.es_cuota_principal ? 'rgba(59,130,246,0.05)' : 'rgba(15,23,42,0.3)',
+                  padding: '1rem', border: `1px solid ${det.es_cuota_principal ? 'rgba(16,185,129,0.4)' : 'var(--border)'}`,
+                  borderRadius: 'var(--radius)', background: det.es_cuota_principal ? 'rgba(16,185,129,0.05)' : 'rgba(15,23,42,0.3)',
                   position: 'relative'
                 }}>
                   {det.es_cuota_principal && (
-                    <span style={{ position: 'absolute', top: '-10px', left: '12px', fontSize: '0.65rem', fontWeight: 700, background: 'var(--primary)', color: 'white', padding: '2px 10px', borderRadius: '999px' }}>
+                    <span style={{ position: 'absolute', top: '-10px', left: '12px', fontSize: '0.65rem', fontWeight: 700, background: 'var(--accent)', color: 'white', padding: '2px 10px', borderRadius: '999px' }}>
                       CUOTA PRINCIPAL
                     </span>
                   )}
@@ -360,9 +360,9 @@ export default function RegistrarPagoPage() {
                       {tratamientoPrincipal && (
                         <button type="button" onClick={() => marcarComoCuotaPrincipal(idx)} title="Marcar como cuota principal"
                           style={{
-                            background: det.es_cuota_principal ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)',
-                            border: `1px solid ${det.es_cuota_principal ? 'rgba(59,130,246,0.5)' : 'var(--border)'}`,
-                            borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', color: det.es_cuota_principal ? 'var(--primary-light)' : 'var(--text-muted)',
+                            background: det.es_cuota_principal ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)',
+                            border: `1px solid ${det.es_cuota_principal ? 'rgba(16,185,129,0.5)' : 'var(--border)'}`,
+                            borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', color: det.es_cuota_principal ? 'var(--accent)' : 'var(--text-muted)',
                             fontSize: '0.65rem', fontWeight: 700, textAlign: 'center', lineHeight: 1.3
                           }}>
                           {det.es_cuota_principal ? '✓ Cuota' : 'Cuota?'}
@@ -402,7 +402,7 @@ export default function RegistrarPagoPage() {
               </span>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%', marginTop: '1.25rem', justifyContent: 'center' }} disabled={submitting || !paciente}>
+            <button type="submit" className="btn btn-success btn-lg" style={{ width: '100%', marginTop: '1.25rem', justifyContent: 'center' }} disabled={submitting || !paciente}>
               {submitting ? 'Registrando...' : '📋 Registrar Pago (Notificar a Secretaria)'}
             </button>
           </div>

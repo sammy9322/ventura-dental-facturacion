@@ -131,10 +131,7 @@ export default function MacroTratamientosPage() {
 
   return (
     <Layout>
-      <div className="catalog-container" style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'minmax(300px, 1fr) 2fr', 
-        gap: '2rem',
+      <div className="grid-catalog" style={{ 
         height: 'calc(100vh - 180px)',
         alignItems: 'stretch'
       }}>
@@ -162,12 +159,12 @@ export default function MacroTratamientosPage() {
                 className={`sidebar-item ${selectedMacroId === m.id ? 'active' : ''}`}
                 onClick={() => setSelectedMacroId(m.id)}
                 style={{
-                  padding: '1rem',
-                  borderRadius: 'var(--radius)',
+                  padding: '1.25rem',
+                  borderRadius: '12px',
                   cursor: 'pointer',
-                  marginBottom: '0.5rem',
-                  background: selectedMacroId === m.id ? 'var(--primary-light)' : 'transparent',
-                  border: `1px solid ${selectedMacroId === m.id ? 'var(--primary)' : 'transparent'}`,
+                  marginBottom: '0.75rem',
+                  background: selectedMacroId === m.id ? 'rgba(59,130,246,0.1)' : 'rgba(255,255,255,0.02)',
+                  border: `1px solid ${selectedMacroId === m.id ? 'rgba(59,130,246,0.4)' : 'transparent'}`,
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -175,10 +172,10 @@ export default function MacroTratamientosPage() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Layers size={18} style={{ color: selectedMacroId === m.id ? 'white' : 'var(--text-muted)' }} />
+                  <Layers size={18} style={{ color: selectedMacroId === m.id ? 'var(--primary-light)' : 'var(--text-muted)' }} />
                   <div>
-                    <div style={{ fontWeight: 600, color: selectedMacroId === m.id ? 'white' : 'var(--text-primary)' }}>{m.nombre}</div>
-                    <div style={{ fontSize: '0.75rem', color: selectedMacroId === m.id ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)' }}>
+                    <div style={{ fontWeight: 700, color: selectedMacroId === m.id ? 'white' : 'var(--text-secondary)' }}>{m.nombre}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                       {m.micros?.length || 0} procedimientos
                     </div>
                   </div>

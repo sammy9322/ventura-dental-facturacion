@@ -2,7 +2,9 @@
 
 ## Estado Actual
 *   **Fase Activa:** Fase 4 (Reportes y Exportación - Opcional) / Mantenimiento.
-*   **Fases Completadas:** Fase 1 (Diseño Premium UI), Fase 2 (Módulo de Auditoría) y Fase 3 (Cierre de Caja).
+*   **Fases Completadas:** Fase 1 (Diseño Premium UI), Fase 2 (Módulo de Auditoría Real - Backend/DB) y Fase 3 (Cierre de Caja).
+*   **Correcciones de UI:** Se implementó `cursor: pointer` en el sidebar y se unificó el diseño de Auditoría (Fase 2).
+
 
 ## Arquitectura y Tecnologías
 *   **Frontend:** React con Vite (client/).

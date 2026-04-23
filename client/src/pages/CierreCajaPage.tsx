@@ -133,7 +133,7 @@ export default function CierreCajaPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+      <div className="grid-2col">
         {/* Columna Izquierda: Lo que dice el sistema */}
         <div className="card">
           <div className="card-header">
@@ -246,8 +246,8 @@ export default function CierreCajaPage() {
               marginTop: '1rem', 
               padding: '1.5rem', 
               borderRadius: '12px',
-              background: diferencia === 0 ? 'rgba(76, 175, 80, 0.1)' : diferencia > 0 ? 'rgba(33, 150, 243, 0.1)' : 'rgba(244, 67, 54, 0.1)',
-              border: `1px solid ${diferencia === 0 ? 'var(--success)' : diferencia > 0 ? 'var(--primary)' : 'var(--danger)'}`
+              background: diferencia === 0 ? 'rgba(16, 185, 129, 0.1)' : diferencia > 0 ? 'rgba(59, 130, 246, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+              border: `1px solid ${diferencia === 0 ? 'var(--accent)' : diferencia > 0 ? 'var(--primary)' : 'var(--danger)'}`
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 500 }}>Diferencia:</span>
@@ -265,7 +265,7 @@ export default function CierreCajaPage() {
             </div>
 
             <button 
-              className="btn btn-primary" 
+              className="btn btn-success" 
               style={{ marginTop: '1rem', width: '100%', height: '50px' }}
               onClick={handleSave}
               disabled={saveMutation.isPending}

@@ -4,8 +4,10 @@ import {
   FileJson, 
   Activity,
   AlertCircle,
-  RefreshCw
+  RefreshCw,
+  RefreshCw as RefreshCwIcon
 } from 'lucide-react';
+import { Layout, Modal } from '../components';
 import api from '../services/api';
 
 interface AuditLog {
@@ -57,19 +59,10 @@ export const AuditoriaPage: React.FC = () => {
     return 'badge-info';
   };
 
+  const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
+
   const inspectDetails = (log: AuditLog) => {
-    const details = `
-      ENTIDAD: ${log.entidad} (ID: ${log.entidad_id || 'N/A'})
-      IP: ${log.ip_address || 'Desconocida'}
-      FECHA: ${formatDate(log.created_at)}
-      
-      ANTERIOR:
-      ${JSON.stringify(log.valor_anterior, null, 2)}
-      
-      NUEVO:
-      ${JSON.stringify(log.valor_nuevo, null, 2)}
-    `;
-    alert(details);
+    setSelectedLog(log);
   };
 
   return (
@@ -163,13 +156,57 @@ export const AuditoriaPage: React.FC = () => {
             </table>
           </div>
         )}
-      </div>
+      <Modal
+        isOpen={!!selectedLog}
+        onClose={() => setSelectedLog(null)}
+        title="Detalles de la Acción"
+        size="lg"
+      >
+        {selectedLog && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div className="grid-2col" style={{ gap: '1rem', marginBottom: 0 }}>
+              <div className="card" style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', marginBottom: 0 }}>
+                <div className="stat-label" style={{ marginBottom: '0.25rem' }}>Entidad</div>
+                <div style={{ fontWeight: 700, color: 'white' }}>{selectedLog.entidad} (ID: {selectedLog.entidad_id || 'N/A'})</div>
+              </div>
+              <div className="card" style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', marginBottom: 0 }}>
+                <div className="stat-label" style={{ marginBottom: '0.25rem' }}>Dirección IP</div>
+                <div style={{ fontWeight: 700, color: 'white' }}>{selectedLog.ip_address || 'Desconocida'}</div>
+              </div>
+            </div>
 
-      <style>{`
-        .badge-info { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
+            <div className="form-group">
+              <label className="form-label">Valor Anterior</label>
+              <pre style={{ 
+                background: '#0f172a', 
+                padding: '1rem', 
+                borderRadius: '8px', 
+                color: '#94a3b8', 
+                fontSize: '0.8rem', 
+                overflowX: 'auto',
+                border: '1px solid var(--border)'
+              }}>
+                {JSON.stringify(selectedLog.valor_anterior, null, 2)}
+              </pre>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Valor Nuevo</label>
+              <pre style={{ 
+                background: '#0f172a', 
+                padding: '1rem', 
+                borderRadius: '8px', 
+                color: '#fff', 
+                fontSize: '0.8rem', 
+                overflowX: 'auto',
+                border: '1px solid var(--accent)'
+              }}>
+                {JSON.stringify(selectedLog.valor_nuevo, null, 2)}
+              </pre>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

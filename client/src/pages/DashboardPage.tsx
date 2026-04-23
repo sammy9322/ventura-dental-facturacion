@@ -98,13 +98,13 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem' }}>
+          <div className="grid-2col">
             <div className="card">
               <div className="card-header">
                 <h3 className="card-title">Acciones Estratégicas</h3>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <Link to="/pagos/registrar" className="btn btn-primary btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+                <Link to="/pagos/registrar" className="btn btn-success btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>
                   <PlusCircle size={24} /> Registrar Pago
                 </Link>
                 <Link to="/pacientes" className="btn btn-outline btn-lg" style={{justifyContent: 'flex-start', padding: '1.5rem'}}>

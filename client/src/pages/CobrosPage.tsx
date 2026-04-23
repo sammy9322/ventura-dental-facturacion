@@ -136,7 +136,7 @@ export default function CobrosPage() {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-light)' }}>
+                      <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
                         {formatMoney(pago.monto, pago.moneda)}
                       </div>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>Por cobrar</div>
@@ -176,7 +176,7 @@ export default function CobrosPage() {
                 </div>
               ))}
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--border)', marginTop: '6px', paddingTop: '6px', fontWeight: 800, fontSize: '1rem', color: 'white' }}>
-                <span>TOTAL</span><span style={{ color: 'var(--primary-light)' }}>{formatMoney(selected.monto, selected.moneda)}</span>
+                <span>TOTAL</span><span style={{ color: 'var(--accent)' }}>{formatMoney(selected.monto, selected.moneda)}</span>
               </div>
             </div>
 
@@ -187,9 +187,9 @@ export default function CobrosPage() {
                 {METODOS_PAGO.map(m => (
                   <button key={m.value} type="button" onClick={() => setMetodo(m.value)}
                     style={{
-                      padding: '0.6rem 0.4rem', borderRadius: 'var(--radius)', border: `2px solid ${metodo === m.value ? 'var(--primary)' : 'var(--border)'}`,
-                      background: metodo === m.value ? 'rgba(59,130,246,0.15)' : 'rgba(15,23,42,0.3)',
-                      color: metodo === m.value ? 'var(--primary-light)' : 'var(--text-secondary)',
+                      padding: '0.6rem 0.4rem', borderRadius: 'var(--radius)', border: `2px solid ${metodo === m.value ? 'var(--accent)' : 'var(--border)'}`,
+                      background: metodo === m.value ? 'rgba(16,185,129,0.15)' : 'rgba(15,23,42,0.3)',
+                      color: metodo === m.value ? 'var(--accent)' : 'var(--text-secondary)',
                       cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600, textAlign: 'center',
                     }}>
                     <div style={{ fontSize: '1.1rem' }}>{m.emoji}</div>
