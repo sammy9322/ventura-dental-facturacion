@@ -1,4 +1,4 @@
-import api from './api.js';
+import api from './api';
 
 export const getCierrePreview = async (fecha: string) => {
   const response = await api.get(`/cierre/preview?fecha=${fecha}`);
