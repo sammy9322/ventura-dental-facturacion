@@ -66,9 +66,14 @@ export const Sidebar: React.FC = () => {
 
       <div className="sidebar-footer">
         {/* Selector de Tema */}
-        <div className="theme-toggle" onClick={toggleTheme}>
-          <span className="nav-icon">{theme === 'dark' ? '☀️' : '🌙'}</span>
-          <span className="nav-text">{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
+        <div className="nav-item theme-toggle-container" onClick={toggleTheme} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+            <span className="nav-icon">{theme === 'dark' ? '🌙' : '☀️'}</span>
+            <span className="nav-text">Apariencia</span>
+          </div>
+          <div className={`theme-switch ${theme === 'dark' ? 'active' : ''}`}>
+            <div className="theme-switch-knob" />
+          </div>
         </div>
 
         <div className="nav-item logout" onClick={() => {

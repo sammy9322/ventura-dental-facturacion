@@ -23,3 +23,8 @@
 3.  Optimizar la carga de historial de cierres con paginación si crece demasiado.
 
 > **Nota para IA:** Este proyecto fue migrado desde una carpeta problemática en OneDrive a un entorno seguro en el disco E:. La estructura actual es la única fuente de la verdad.
+
+## Lecciones Aprendidas (Troubleshooting & Eficiencia)
+*   **Vercel Build Errors ("File name too long"):** Este error en Vercel casi siempre se debe a archivos `.zip` anidados, enlaces simbólicos (`symlinks`) o archivos basura de macOS (`._*`) en el historial de Git. **Regla estricta:** NUNCA hacer commit de la carpeta `docs/BACKUPS/` ni archivos generados automáticamente.
+*   **Refactorización de UI:** Al unificar Layouts, es imperativo hacer un `grep_search` preventivo en los archivos CSS (`index.css`, `mejoras.css`) para asegurar que el nombre exacto de la clase (`.layout` vs `.app-layout`) coincida antes de hacer push. Un error de tipografía en CSS destruye la cuadrícula (grid/flex).
+*   **Eficiencia de Tokens y Ejecución:** Reducir la dependencia del método ensayo/error. Antes de aplicar cambios masivos, se debe verificar el estado real del repositorio y analizar el impacto cruzado, agrupando los comandos para ahorrar tokens y tiempo de procesamiento.

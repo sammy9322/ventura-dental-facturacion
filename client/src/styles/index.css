@@ -21,6 +21,8 @@
   --border:        #334155;
   --glass:         rgba(30, 41, 59, 0.8);
   --glass-border:  rgba(255, 255, 255, 0.08);
+  --input-bg:      rgba(15,23,42,0.5);
+  --th-bg:         rgba(15,23,42,0.6);
   --shadow:        0 4px 6px -1px rgba(0,0,0,0.2);
   --shadow-lg:     0 10px 25px -5px rgba(0,0,0,0.4);
   --radius:        10px;
@@ -29,6 +31,23 @@
   --font heading: 'Outfit', 'Inter', sans-serif;
   --sidebar-w:    240px;
   --header-h:     3.5rem;
+  --color-scheme: dark;
+}
+
+[data-theme="light"], .light {
+  --background:    #f8fafc;
+  --surface:       #ffffff;
+  --surface-2:     #f1f5f9;
+  --surface-hover: #e2e8f0;
+  --text-primary:  #0f172a;
+  --text-secondary:#334155;
+  --text-muted:    #64748b;
+  --border:        #e2e8f0;
+  --glass:         rgba(255, 255, 255, 0.8);
+  --glass-border:  rgba(0, 0, 0, 0.05);
+  --input-bg:      #ffffff;
+  --th-bg:         #f1f5f9;
+  --color-scheme:  light;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -135,6 +154,33 @@ body {
 .sidebar-footer {
   padding: 1.25rem;
   border-top: 1px solid var(--glass-border);
+}
+
+.theme-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--border);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+.theme-switch.active {
+  background-color: var(--primary);
+}
+.theme-switch-knob {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.theme-switch.active .theme-switch-knob {
+  transform: translateX(20px);
 }
 
 /* Page */
@@ -372,7 +418,7 @@ body {
 }
 
 .table th {
-  background: rgba(15,23,42,0.6);
+  background: var(--th-bg);
   padding: 0.875rem 1.25rem;
   text-align: left;
   font-size: 0.7rem;
@@ -444,7 +490,7 @@ body {
 .form-textarea {
   width: 100%;
   max-width: 100%;
-  background: rgba(15,23,42,0.5);
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0.65rem 0.875rem;
@@ -453,7 +499,7 @@ body {
   color: var(--text-primary);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  color-scheme: dark;
+  color-scheme: var(--color-scheme);
   box-sizing: border-box;
 }
 
