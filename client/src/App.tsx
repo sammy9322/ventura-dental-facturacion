@@ -50,11 +50,14 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
 
-            {/* Admin only */}
+          <Route element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }>
             <Route path="/dashboard" element={
               <RoleRoute roles={['admin']}>
                 <DashboardPage />
@@ -111,16 +114,12 @@ export default function App() {
             } />
 
             {/* Todos los roles autenticados */}
-            <Route path="/pacientes" element={
-              <ProtectedRoute>
-                <PacientesPage />
-              </ProtectedRoute>
-            } />
+            <Route path="/pacientes" element={<PacientesPage />} />
+          </Route>
 
-            <Route path="/" element={<HomeRedirect />} />
-            <Route path="*" element={<HomeRedirect />} />
-          </Routes>
-        </MainLayout>
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="*" element={<HomeRedirect />} />
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
   );

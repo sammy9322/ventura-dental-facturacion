@@ -1,15 +1,15 @@
-import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { useTheme } from '../ThemeContext';
 
-export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const MainLayout: React.FC = () => {
   const { theme } = useTheme();
 
   return (
     <div className={`app-layout ${theme}`}>
       <Sidebar />
       <main className="main-content animate-fade-in">
-        {children}
+        <Outlet />
       </main>
     </div>
   );

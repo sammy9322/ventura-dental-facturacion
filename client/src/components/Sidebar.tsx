@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../ThemeContext';
 import { authService } from '../services';
+import api from '../services/api';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const [notifCount, setNotifCount] = useState(0);
 
   const user = authService.getUser();
+
+  const fetchNotif = useCallback(async () => {
+    if (!user) return;
+    if (user.rol === 'secretaria' || user.rol === 'admin') {
+      try {
+        const res = await api.get('/notificaciones/pendientes');
+        setNotifCount(res.data.total ?? 0);
+      } catch { /* silencioso */ }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchNotif();
+    const interval = setInterval(fetchNotif, 15000);
+    return () => clearInterval(interval);
+  }, [fetchNotif]);
   
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '📊', roles: ['admin'] },
@@ -38,7 +56,10 @@ export const Sidebar: React.FC = () => {
             onClick={() => navigate(item.path)}
           >
             <span className="nav-icon">{item.icon}</span>
-            <span className="nav-text">{item.name}</span>
+            <span className="nav-text" style={{ flex: 1 }}>{item.name}</span>
+            {item.path === '/cobros/pendientes' && notifCount > 0 && (
+              <span className="badge-notif">{notifCount}</span>
+            )}
           </div>
         ))}
       </nav>
