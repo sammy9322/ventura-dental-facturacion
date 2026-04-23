@@ -120,7 +120,7 @@ export default function CierreCajaPage() {
               <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
               <input 
                 type="date" 
-                className="input" 
+                className="form-input" 
                 value={fecha} 
                 onChange={(e) => setFecha(e.target.value)}
                 style={{ paddingLeft: '40px', width: '200px' }}
@@ -191,40 +191,40 @@ export default function CierreCajaPage() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div className="form-group">
-              <label className="label">Efectivo contado:</label>
+              <label className="form-label">Efectivo contado:</label>
               <input 
                 type="number" 
-                className="input" 
+                className="form-input" 
                 value={realEfectivo} 
                 onChange={(e) => setRealEfectivo(Number(e.target.value))}
                 placeholder="0.00"
               />
             </div>
             <div className="form-group">
-              <label className="label">Tarjeta (Suma de vouchers):</label>
+              <label className="form-label">Tarjeta (Suma de vouchers):</label>
               <input 
                 type="number" 
-                className="input" 
+                className="form-input" 
                 value={realTarjeta} 
                 onChange={(e) => setRealTarjeta(Number(e.target.value))}
                 placeholder="0.00"
               />
             </div>
             <div className="form-group">
-              <label className="label">Transferencias verificadas:</label>
+              <label className="form-label">Transferencias verificadas:</label>
               <input 
                 type="number" 
-                className="input" 
+                className="form-input" 
                 value={realTransferencia} 
                 onChange={(e) => setRealTransferencia(Number(e.target.value))}
                 placeholder="0.00"
               />
             </div>
             <div className="form-group">
-              <label className="label">Otros (Sinpe/App):</label>
+              <label className="form-label">Otros (Sinpe/App):</label>
               <input 
                 type="number" 
-                className="input" 
+                className="form-input" 
                 value={realOtros} 
                 onChange={(e) => setRealOtros(Number(e.target.value))}
                 placeholder="0.00"
@@ -232,9 +232,9 @@ export default function CierreCajaPage() {
             </div>
 
             <div className="form-group">
-              <label className="label">Observaciones:</label>
+              <label className="form-label">Observaciones:</label>
               <textarea 
-                className="input" 
+                className="form-textarea" 
                 value={observaciones} 
                 onChange={(e) => setObservaciones(e.target.value)}
                 placeholder="Notas sobre diferencias, faltantes o sobrantes..."
