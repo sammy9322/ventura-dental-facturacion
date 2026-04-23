@@ -1,20 +1,28 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useTheme } from './ThemeContext'; // Ajustar ruta segun sea necesario
-import './Sidebar.css';
+import { useTheme } from '../ThemeContext';
+import { authService } from '../services';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
 
+  const user = authService.getUser();
+  
   const menuItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: '📊' },
-    { name: 'Pacientes', path: '/pacientes', icon: '👥' },
-    { name: 'Tratamientos', path: '/tratamientos', icon: '🦷' },
-    { name: 'Historial', path: '/pagos', icon: '📜' },
-    { name: 'Auditoría', path: '/auditoria', icon: '🛡️', adminOnly: true },
+    { name: 'Dashboard', path: '/dashboard', icon: '📊', roles: ['admin'] },
+    { name: 'Cobros', path: '/cobros/pendientes', icon: '💰', roles: ['secretaria', 'admin'] },
+    { name: 'Pacientes', path: '/pacientes', icon: '👥', roles: ['admin', 'doctor', 'secretaria'] },
+    { name: 'Tratamientos', path: '/tratamientos', icon: '🦷', roles: ['admin', 'doctor'] },
+    { name: 'Historial', path: '/pagos', icon: '📜', roles: ['admin', 'secretaria'] },
+    { name: 'Cierre de Caja', path: '/cierre-caja', icon: '🏦', roles: ['admin', 'secretaria'] },
+    { name: 'Auditoría', path: '/auditoria', icon: '🛡️', roles: ['admin'] },
   ];
+
+  const filteredItems = menuItems.filter(item => 
+    !item.roles || (user && item.roles.includes(user.rol))
+  );
 
   return (
     <aside className="sidebar panel-cristal">
@@ -23,7 +31,7 @@ export const Sidebar: React.FC = () => {
       </div>
 
       <nav className="sidebar-nav">
-        {menuItems.map((item) => (
+        {filteredItems.map((item) => (
           <div
             key={item.path}
             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}

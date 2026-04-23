@@ -297,19 +297,31 @@ export async function initDatabase() {
     `);
     console.log('✓ Tabla notificaciones creada');
 
-    // ── Tabla logs_errores ──────────────────────────────────────────
+    // ── Tabla cierres_caja ──────────────────────────────────────────
     await client.query(`
-      CREATE TABLE IF NOT EXISTS logs_errores (
+      CREATE TABLE IF NOT EXISTS cierres_caja (
         id SERIAL PRIMARY KEY,
         usuario_id INTEGER REFERENCES usuarios(id),
-        modulo VARCHAR(100),
-        error_mensaje TEXT NOT NULL,
-        stack_trace TEXT,
-        metadata JSONB,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        fecha DATE NOT NULL,
+        esperado_efectivo DECIMAL(10,2) DEFAULT 0,
+        esperado_tarjeta DECIMAL(10,2) DEFAULT 0,
+        esperado_transferencia DECIMAL(10,2) DEFAULT 0,
+        esperado_otros DECIMAL(10,2) DEFAULT 0,
+        real_efectivo DECIMAL(10,2) DEFAULT 0,
+        real_tarjeta DECIMAL(10,2) DEFAULT 0,
+        real_transferencia DECIMAL(10,2) DEFAULT 0,
+        real_otros DECIMAL(10,2) DEFAULT 0,
+        diferencia DECIMAL(10,2) DEFAULT 0,
+        observaciones TEXT,
+        estado VARCHAR(20) DEFAULT 'cerrado' CHECK (estado IN ('abierto', 'cerrado')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(fecha)
       )
     `);
-    console.log('✓ Tabla logs_errores creada');
+    console.log('✓ Tabla cierres_caja lista');
+
+    // ── Tabla logs_errores ──────────────────────────────────────────
 
     await client.query('COMMIT');
     console.log('✓ Base de datos inicializada correctamente');

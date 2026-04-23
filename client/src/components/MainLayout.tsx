@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from './07_Sidebar'; // Usando el Sidebar que cree en la raiz (temporalmente)
-import { useTheme } from '../06_ThemeContext';
+import Sidebar from './Sidebar';
+import { useTheme } from '../ThemeContext';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme } = useTheme();

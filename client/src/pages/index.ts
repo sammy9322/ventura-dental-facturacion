@@ -6,3 +6,7 @@ export { default as PacientesPage } from './PacientesPage';
 export { default as UsuariosPage } from './UsuariosPage';
 export { default as CobranzaPage } from './CobranzaPage';
 export { default as MacroTratamientosPage } from './MacroTratamientosPage';
+export { default as RegistrarPagoPage } from './RegistrarPagoPage';
+export { default as AuditoriaPage } from './AuditoriaPage';
+export { default as CierreCajaPage } from './CierreCajaPage';
+export { default as CobrosPage } from './CobrosPage';

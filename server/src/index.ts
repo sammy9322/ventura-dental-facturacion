@@ -9,6 +9,7 @@ import { pool } from './config/database.js';
 import { initDatabase } from './scripts/initDb.js';
 import { seedDatabase } from './scripts/seedDb.js';
 import { migrateRoles } from './scripts/migrateRoles.js';
+import { migrateCierreCaja } from './scripts/migrateCierreCaja.js';
 
 import authRoutes from './routes/auth.js';
 import pacientesRoutes from './routes/pacientes.js';
@@ -17,6 +18,7 @@ import comprobantesRoutes from './routes/comprobantes.js';
 import tratamientosRoutes from './routes/tratamientos.js';
 import tratamientosMacroRoutes from './routes/tratamientosMacro.js';
 import notificacionesRoutes from './routes/notificaciones.js';
+import cierreCajaRoutes from './routes/cierreCaja.js';
 
 dotenv.config();
 
@@ -49,6 +51,7 @@ app.use('/api/comprobantes', comprobantesRoutes);
 app.use('/api/tratamientos', tratamientosRoutes);
 app.use('/api/tratamientos-macro', tratamientosMacroRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
+app.use('/api/cierre', cierreCajaRoutes);
 
 app.use(errorHandler);
 
@@ -59,6 +62,7 @@ async function startServer() {
     client.release();
 
     await migrateRoles();   // Primero: migrar constraint de roles
+    await migrateCierreCaja(); // Segundo: migrar cierre de caja
     await initDatabase();
     await seedDatabase();
 

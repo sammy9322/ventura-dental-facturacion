@@ -10,14 +10,15 @@ import {
   UsuariosPage,
   CobranzaPage,
   MacroTratamientosPage,
+  RegistrarPagoPage,
+  CobrosPage,
+  AuditoriaPage,
+  CierreCajaPage
 } from './pages';
-import RegistrarPagoPage from './pages/RegistrarPagoPage';
-import CobrosPage from './pages/CobrosPage';
 import './styles/index.css';
 import './styles/mejoras.css';
 import { ThemeProvider } from './ThemeContext';
 import MainLayout from './components/MainLayout';
-import AuditoriaPage from './pages/AuditoriaPage';
 
 // ── Guards ──────────────────────────────────────────────────────────────────
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -101,6 +102,11 @@ export default function App() {
             <Route path="/cobranzas" element={
               <RoleRoute roles={['secretaria', 'admin']}>
                 <CobranzaPage />
+              </RoleRoute>
+            } />
+            <Route path="/cierre-caja" element={
+              <RoleRoute roles={['secretaria', 'admin']}>
+                <CierreCajaPage />
               </RoleRoute>
             } />
 
