@@ -66,7 +66,8 @@ export const AuditoriaPage: React.FC = () => {
   };
 
   return (
-    <div className="animate-fade-in">
+    <Layout>
+      <div className="animate-fade-in">
       <div className="page-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <div>
@@ -156,6 +157,7 @@ export const AuditoriaPage: React.FC = () => {
             </table>
           </div>
         )}
+      </div>
       <Modal
         isOpen={!!selectedLog}
         onClose={() => setSelectedLog(null)}
@@ -207,7 +209,8 @@ export const AuditoriaPage: React.FC = () => {
           </div>
         )}
       </Modal>
-    </div>
+      </div>
+    </Layout>
   );
 };
 
