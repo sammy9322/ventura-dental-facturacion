@@ -54,18 +54,25 @@ export const Sidebar: React.FC = () => {
             key={item.path}
             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
             onClick={() => navigate(item.path)}
+            style={{ position: 'relative' }}
           >
             <span className="nav-icon">{item.icon}</span>
-            <span className="nav-text" style={{ flex: 1 }}>{item.name}</span>
+            <span className="nav-text">{item.name}</span>
             {item.path === '/cobros/pendientes' && notifCount > 0 && (
               <span className="badge-notif">{notifCount}</span>
             )}
           </div>
         ))}
+
+        {/* Botón de tema — solo visible en móvil (≤640px via CSS) */}
+        <div className="mobile-theme-btn" onClick={toggleTheme} style={{ display: 'none' }}>
+          <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+          <span>Tema</span>
+        </div>
       </nav>
 
       <div className="sidebar-footer">
-        {/* Selector de Tema */}
+        {/* Selector de Tema — visible en desktop/tablet */}
         <div className="nav-item theme-toggle-container" onClick={toggleTheme} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
             <span className="nav-icon">{theme === 'dark' ? '🌙' : '☀️'}</span>
