@@ -1,47 +1,88 @@
 # MEMORIA DE PROYECTO (Ventura Dental)
 
-## Estado Actual (25 de Abril, 2026)
-*   **Fase:** Pulir Funcionalidad
-*   **Versión:** 2.0.0 (Marca Ventura + Minimalismo)
-*   **Hito completado:** Identidad de marca + diseño minimalista en producción
-
-## Logros del Día (25 Abril 2026)
-
-### ✅ Identidad de Marca
-- **Logo oficial SVG** integrado en Sidebar y Login con colores púrpura/turquesa
-- **Paleta corporativa** sincronizada: `#613192` (púrpura), `#00BCD4` (turquesa)
-- **Build verificado:** 0 errores, 18.57 kB CSS
-
-### ✅ Minimalismo Intencional
-- Sistema de tokens CSS moderno (superficies, elevación)
-- Nav activo con fondo púrpura suave
-- Tablas sin bordes horizontales
-- Botones sin glow neón
-- Tema claro sincronizado
-
-### ✅ Backups disponibles
-- `backup-bento/` — Pre-rediseño marca
-- `backup-neon-dark/` — Estilo neon original
-
-## Arquitectura y Tecnologías
-*   **Frontend:** React 18 + Vite + TypeScript (Vercel)
-*   **Backend:** Node + Express + TypeScript (Render)
-*   **DB:** PostgreSQL en Neon (Serverless)
-*   **Diseño:** CSS puro — Minimalismo + Marca Ventura
-
-## 🚀 Próximos Pasos (Funcionalidad)
-1.  **Cobros:** Verificar flujo completo
-2.  **Dashboard:** Aplicar stat-cards con variantes de color
-3.  **Cierre de Caja:** Verificar cálculos
-4.  **Responsive:** Testing móvil
-
-## Lecciones Aprendidas (Troubleshooting)
-*   **Build lento:** Timeout 180s para builds completos
-*   **Git push fallido:** Usar GitHub PAT
-*   **Logo en React:** Importar desde `../assets/logo.svg`
-*   **Ctrl+Shift+R:** Forzar cache refresh en navegador
+**Última actualización:** 25 de Abril 2026
+**Checkpoint:** `CHECKPOINT_20260425.md`
 
 ---
 
-> **Checkpoint:** `CHECKPOINT_v2.md`
-> **Último commit estable:** `e6bfe2a`
+## Estado Actual (25 de Abril, 2026)
+
+| Aspecto | Estado |
+|---------|--------|
+| **Versión** | 2.0.0 |
+| **Fase** | Pulir Funcionalidad |
+| **Estética** | ✅ Completa (Marca Ventura + Minimalismo) |
+| **Funcionalidad** | ⏳ Por revisar |
+
+---
+
+## Hitos Completados
+
+### 2026-04-25 — Identidad de Marca + Minimalismo
+
+1. **Logo oficial SVG** integrado en Sidebar y Login
+2. **Paleta corporativa** sincronizada: `#613192` (púrpura), `#53b8c9` (turquesa)
+3. **Minimalismo intencional** aplicado (sin glow, sin glassmorphism)
+4. **Build verificado:** 0 errores, 18.57 kB CSS
+5. **Checkpoint detallado** guardado en `CHECKPOINT_20260425.md`
+
+---
+
+## Arquitectura y Tecnologías
+
+| Capa | Tecnología | Puerto |
+|------|------------|--------|
+| **Frontend** | React 18 + Vite + TypeScript | 5173 |
+| **Backend** | Node + Express + TypeScript | 3000 |
+| **DB** | PostgreSQL (Neon Serverless) | — |
+| **Deploy Front** | Vercel | — |
+| **Deploy Back** | Render | — |
+
+**Diseño:** CSS Puro — Minimalismo + Marca Ventura (SIN TailwindCSS)
+
+---
+
+## Lecciones Aprendidas (Troubleshooting Completo)
+
+### Despliegue
+- **Cambios no se ven** → Redeploy en Vercel o Ctrl+Shift+R
+- **Build aborta silenciosamente** → `npm run build` local primero
+- **Git push falla** → Usar GitHub Personal Access Token (PAT)
+
+### Código
+- **Build lento** → Timeout 180s para builds completos
+- **CSS "Unexpected }"** → Llave duplicada, revisar líneas cercanas
+- **Import SVG** → `import Logo from '../assets/logo.svg'`
+
+### Negocio
+- **Saldo no disminuye** → Verificar `es_cuota_principal: true`
+- **Race condition** → Usar `BEGIN` + `SELECT FOR UPDATE` + `COMMIT`
+
+---
+
+## Rollback Rápido
+
+```powershell
+# Restaurar CSS
+Copy-Item "client\src\styles\backup-bento\index.css" "client\src\styles\index.css" -Force
+
+# Reset hard
+git reset --hard e6bfe2a
+```
+
+---
+
+## Próximos Pasos (Funcionalidad)
+
+1. **Alta prioridad:** Cobros, Dashboard, Cierre de Caja, Pacientes
+2. **Media prioridad:** Auditoría, Macro Tratamientos, Mobile
+3. **Largo plazo:** Notificaciones, Reportes PDF, Integraciones
+
+---
+
+## Recursos
+
+- **Checkpoint:** `CHECKPOINT_20260425.md` (documento maestro)
+- **Plan rediseño:** `PLAN_VENTURA_MINIMALISMO.md`
+- **Contexto IA:** `AI_CONTEXT.md`
+- **Docs técnicas:** `docs/MANUAL.md`, `docs/API.md`
