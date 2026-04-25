@@ -13,16 +13,16 @@
   --accent-dark:   #059669;
   --warning:       #f59e0b;
   --danger:        #ef4444;
-  --background:    #ff00ff; /* TEST COLOR - DELETE AFTER VERIFICATION */
+  --background:    #0f1117;
   --surface:       #161b27;
   --surface-2:     #1e2535;
   --surface-hover: #253045;
   --text-primary:  #f1f5f9;
   --text-secondary:#94a3b8;
   --text-muted:    #64748b;
-  --border:        rgba(255,255,255,0.08);
-  --glass:         rgba(22, 27, 39, 0.95);
-  --glass-border:  rgba(255, 255, 255, 0.08);
+  --border:        rgba(255,255,255,0.1); /* Bordes un poco más visibles para el estilo Bento */
+  --glass:         rgba(22, 27, 39, 0.98);
+  --glass-border:  rgba(255, 255, 255, 0.12);
   --input-bg:      rgba(15,23,42,0.6);
   --th-bg:         rgba(15,23,42,0.5);
   --shadow:        0 2px 8px rgba(0,0,0,0.25);
