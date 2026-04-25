@@ -117,7 +117,7 @@ export default function CierreCajaPage() {
           </div>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--primary)' }} />
+              <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--brand-purple)' }} />
               <input 
                 type="date" 
                 className="form-input" 
@@ -138,7 +138,7 @@ export default function CierreCajaPage() {
         <div className="card">
           <div className="card-header">
             <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Calculator size={20} color="var(--primary)" />
+              <Calculator size={20} color: 'var(--brand-purple)' }}
               Montos Esperados (Sistema)
             </h3>
           </div>
@@ -163,7 +163,7 @@ export default function CierreCajaPage() {
             
             <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
             
-            <div className="stat-row" style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary)' }}>
+            <div className="stat-row" style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--brand-purple)' }}>
               <span>Total Esperado:</span>
               <span>{formatMoney(totalEsperado)}</span>
             </div>
@@ -178,10 +178,10 @@ export default function CierreCajaPage() {
         </div>
 
         {/* Columna Derecha: Arqueo Real */}
-        <div className="card" style={{ border: preview?.cierreExistente ? '1px solid var(--accent)' : 'none' }}>
+        <div className="card" style={{ border: preview?.cierreExistente ? '1px solid var(--brand-turquoise)' : 'none' }}>
           <div className="card-header">
             <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <DollarSign size={20} color="var(--accent)" />
+              <DollarSign size={20} style={{ color: 'var(--brand-turquoise)' }} />
               Arqueo Real (Conteo Físico)
             </h3>
             {preview?.cierreExistente && (
@@ -246,15 +246,15 @@ export default function CierreCajaPage() {
               marginTop: '1rem', 
               padding: '1.5rem', 
               borderRadius: '12px',
-              background: diferencia === 0 ? 'rgba(16, 185, 129, 0.1)' : diferencia > 0 ? 'rgba(59, 130, 246, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-              border: `1px solid ${diferencia === 0 ? 'var(--accent)' : diferencia > 0 ? 'var(--primary)' : 'var(--danger)'}`
+              background: diferencia === 0 ? 'rgba(0,188,212,0.1)' : diferencia > 0 ? 'rgba(97,49,146,0.1)' : 'rgba(239,68,68,0.1)',
+              border: `1px solid ${diferencia === 0 ? 'var(--brand-turquoise)' : diferencia > 0 ? 'var(--brand-purple)' : 'var(--danger)'}`
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 500 }}>Diferencia:</span>
                 <span style={{ 
                   fontSize: '1.5rem', 
                   fontWeight: 'bold',
-                  color: diferencia === 0 ? 'var(--success)' : diferencia > 0 ? 'var(--primary)' : 'var(--danger)'
+                  color: diferencia === 0 ? 'var(--brand-turquoise)' : diferencia > 0 ? 'var(--brand-purple)' : 'var(--danger)'
                 }}>
                   {formatMoney(diferencia)}
                 </span>
@@ -307,7 +307,7 @@ export default function CierreCajaPage() {
                   <td style={{ 
                     textAlign: 'right', 
                     fontWeight: 600,
-                    color: Number(c.diferencia) === 0 ? 'var(--success)' : Number(c.diferencia) > 0 ? 'var(--primary)' : 'var(--danger)'
+                    color: Number(c.diferencia) === 0 ? 'var(--brand-turquoise)' : Number(c.diferencia) > 0 ? 'var(--brand-purple)' : 'var(--danger)'
                   }}>
                     {formatMoney(c.diferencia)}
                   </td>
