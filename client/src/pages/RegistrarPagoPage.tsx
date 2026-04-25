@@ -126,7 +126,7 @@ export default function RegistrarPagoPage() {
     return (
       <Layout>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1rem', textAlign: 'center' }}>
-          <CheckCircle size={72} style={{ color: 'var(--accent)' }} />
+          <CheckCircle size={72} style={{ color: 'var(--brand-turquoise)' }} />
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem' }}>¡Pago Registrado!</h2>
           <p style={{ color: 'var(--text-secondary)' }}>La secretaria recibirá la notificación para cobrar y emitir el comprobante.</p>
           <button 
@@ -200,7 +200,7 @@ export default function RegistrarPagoPage() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                       <span style={{ color: 'var(--text-muted)' }}>Total abonado:</span>
-                      <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{formatearMoneda(tratamientoPrincipal.monto_pagado)}</span>
+                      <span style={{ fontWeight: 700, color: 'var(--brand-turquoise)', fontWeight: 600 }}>{formatearMoneda(tratamientoPrincipal.monto_pagado)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px solid var(--border)' }}>
                       <span style={{ fontWeight: 700 }}>Saldo actual:</span>
@@ -250,12 +250,12 @@ export default function RegistrarPagoPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
               {detalles.map((det, idx) => (
                 <div key={idx} style={{
-                  padding: '1rem', border: `1px solid ${det.es_cuota_principal ? 'rgba(16,185,129,0.4)' : 'var(--border)'}`,
-                  borderRadius: 'var(--radius)', background: det.es_cuota_principal ? 'rgba(16,185,129,0.05)' : 'rgba(15,23,42,0.3)',
+                  padding: '1rem', border: `1px solid ${det.es_cuota_principal ? 'rgba(97,49,146,0.4)' : 'var(--border)'}`,
+                  borderRadius: 'var(--radius)', background: det.es_cuota_principal ? 'rgba(97,49,146,0.05)' : 'rgba(15,23,42,0.3)',
                   position: 'relative'
                 }}>
                   {det.es_cuota_principal && (
-                    <span style={{ position: 'absolute', top: '-10px', left: '12px', fontSize: '0.65rem', fontWeight: 700, background: 'var(--accent)', color: 'white', padding: '2px 10px', borderRadius: '999px' }}>
+                    <span style={{ position: 'absolute', top: '-10px', left: '12px', fontSize: '0.65rem', fontWeight: 700, background: 'var(--brand-purple)', color: 'white', padding: '2px 10px', borderRadius: '999px' }}>
                       CUOTA PRINCIPAL
                     </span>
                   )}
@@ -360,9 +360,9 @@ export default function RegistrarPagoPage() {
                       {tratamientoPrincipal && (
                         <button type="button" onClick={() => marcarComoCuotaPrincipal(idx)} title="Marcar como cuota principal"
                           style={{
-                            background: det.es_cuota_principal ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)',
-                            border: `1px solid ${det.es_cuota_principal ? 'rgba(16,185,129,0.5)' : 'var(--border)'}`,
-                            borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', color: det.es_cuota_principal ? 'var(--accent)' : 'var(--text-muted)',
+                            background: det.es_cuota_principal ? 'rgba(97,49,146,0.2)' : 'rgba(255,255,255,0.05)',
+                            border: `1px solid ${det.es_cuota_principal ? 'rgba(97,49,146,0.5)' : 'var(--border)'}`,
+                            borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', color: det.es_cuota_principal ? 'var(--brand-purple-light)' : 'var(--text-muted)',
                             fontSize: '0.65rem', fontWeight: 700, textAlign: 'center', lineHeight: 1.3
                           }}>
                           {det.es_cuota_principal ? '✓ Cuota' : 'Cuota?'}
@@ -397,7 +397,7 @@ export default function RegistrarPagoPage() {
 
             <div style={{ borderTop: '2px solid var(--border)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: 700, color: 'var(--text-secondary)' }}>TOTAL A REGISTRAR</span>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary-light)' }}>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 800, color: 'var(--brand-purple-light)' }}>
                 {getSimbolo()} {Number(totalPago).toFixed(2)}
               </span>
             </div>
