@@ -88,7 +88,7 @@ export default function CobrosPage() {
             <div className="loading"><div className="spinner"></div></div>
           ) : pendientes.length === 0 ? (
             <div className="empty-state">
-              <CheckCircle size={56} style={{ margin: '0 auto 1rem', color: 'var(--accent)', opacity: 0.5 }} />
+              <CheckCircle size={56} style={{ margin: '0 auto 1rem', color: 'var(--brand-turquoise)', opacity: 0.5 }} />
               <h3>No hay cobros pendientes</h3>
               <p>Cuando el doctor registre un pago aparecerá aquí.</p>
             </div>
@@ -101,7 +101,7 @@ export default function CobrosPage() {
                   style={{
                     padding: '1.25rem 1.5rem',
                     cursor: 'pointer',
-                    border: selected?.id === pago.id ? '2px solid var(--primary)' : '1px solid var(--border)',
+                    border: selected?.id === pago.id ? '2px solid var(--brand-purple)' : '1px solid var(--border)',
                     transform: selected?.id === pago.id ? 'translateX(4px)' : 'none',
                     transition: 'all 0.2s ease',
                     margin: 0,
@@ -111,7 +111,7 @@ export default function CobrosPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                        <User size={16} style={{ color: 'var(--primary-light)' }} />
+                        <User size={16} style={{ color: 'var(--brand-purple-light)' }} />
                         <span style={{ fontWeight: 700, fontSize: '1rem', color: 'white' }}>{pago.paciente_nombre}</span>
                         {pago.paciente_dni && <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>DNI: {pago.paciente_dni}</span>}
                       </div>
@@ -126,9 +126,9 @@ export default function CobrosPage() {
                         {pago.detalles?.map((d, i) => (
                           <span key={i} style={{
                             fontSize: '0.75rem', padding: '2px 10px', borderRadius: '999px',
-                            background: d.es_cuota_principal ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.06)',
-                            color: d.es_cuota_principal ? '#93c5fd' : 'var(--text-secondary)',
-                            border: `1px solid ${d.es_cuota_principal ? 'rgba(59,130,246,0.3)' : 'transparent'}`,
+                            background: d.es_cuota_principal ? 'rgba(97,49,146,0.15)' : 'rgba(255,255,255,0.06)',
+                            color: d.es_cuota_principal ? '#c4b5fd' : 'var(--text-secondary)',
+                            border: `1px solid ${d.es_cuota_principal ? 'rgba(97,49,146,0.3)' : 'transparent'}`,
                           }}>
                             {d.es_cuota_principal ? '🦷 ' : '➕ '}{d.descripcion} — {formatMoney(d.monto, pago.moneda)}
                           </span>
@@ -136,7 +136,7 @@ export default function CobrosPage() {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
+                      <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: 'var(--brand-turquoise)' }}>
                         {formatMoney(pago.monto, pago.moneda)}
                       </div>
                       <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>Por cobrar</div>
@@ -165,18 +165,18 @@ export default function CobrosPage() {
                     <span>Total tratamiento:</span><span style={{ fontWeight: 600 }}>{formatMoney(selected.tratamiento_monto_total, selected.moneda)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '2px' }}>
-                    <span>Total abonado:</span><span style={{ fontWeight: 600, color: 'var(--accent)' }}>{formatMoney(selected.tratamiento_monto_pagado ?? 0, selected.moneda)}</span>
+                    <span>Total abonado:</span><span style={{ fontWeight: 600, color: 'var(--brand-turquoise)' }}>{formatMoney(selected.tratamiento_monto_pagado ?? 0, selected.moneda)}</span>
                   </div>
                 </>
               )}
               {selected.detalles?.map((d, i) => (
                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderTop: i === 0 ? '1px solid var(--border)' : 'none', marginTop: i === 0 ? '4px' : 0 }}>
-                  <span style={{ color: d.es_cuota_principal ? '#93c5fd' : 'var(--text-secondary)' }}>{d.descripcion}</span>
+                  <span style={{ color: d.es_cuota_principal ? '#c4b5fd' : 'var(--text-secondary)' }}>{d.descripcion}</span>
                   <span style={{ fontWeight: 600 }}>{formatMoney(d.monto, selected.moneda)}</span>
                 </div>
               ))}
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--border)', marginTop: '6px', paddingTop: '6px', fontWeight: 800, fontSize: '1rem', color: 'white' }}>
-                <span>TOTAL</span><span style={{ color: 'var(--accent)' }}>{formatMoney(selected.monto, selected.moneda)}</span>
+                <span>TOTAL</span><span style={{ color: 'var(--brand-turquoise)' }}>{formatMoney(selected.monto, selected.moneda)}</span>
               </div>
             </div>
 
@@ -187,9 +187,9 @@ export default function CobrosPage() {
                 {METODOS_PAGO.map(m => (
                   <button key={m.value} type="button" onClick={() => setMetodo(m.value)}
                     style={{
-                      padding: '0.6rem 0.4rem', borderRadius: 'var(--radius)', border: `2px solid ${metodo === m.value ? 'var(--accent)' : 'var(--border)'}`,
-                      background: metodo === m.value ? 'rgba(16,185,129,0.15)' : 'rgba(15,23,42,0.3)',
-                      color: metodo === m.value ? 'var(--accent)' : 'var(--text-secondary)',
+                      padding: '0.6rem 0.4rem', borderRadius: 'var(--radius)', border: `2px solid ${metodo === m.value ? 'var(--brand-turquoise)' : 'var(--border)'}`,
+                      background: metodo === m.value ? 'rgba(0,188,212,0.15)' : 'rgba(15,23,42,0.3)',
+                      color: metodo === m.value ? 'var(--brand-turquoise)' : 'var(--text-secondary)',
                       cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600, textAlign: 'center',
                     }}>
                     <div style={{ fontSize: '1.1rem' }}>{m.emoji}</div>
@@ -209,7 +209,7 @@ export default function CobrosPage() {
             {selected.paciente_email && (
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', cursor: 'pointer', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
                 <input type="checkbox" checked={enviarEmail} onChange={e => setEnviarEmail(e.target.checked)}
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }} />
+                  style={{ width: '16px', height: '16px', accentColor: 'var(--brand-purple)' }} />
                 Enviar comprobante por email a {selected.paciente_email}
               </label>
             )}
