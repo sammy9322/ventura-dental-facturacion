@@ -16,7 +16,6 @@ import {
   CierreCajaPage
 } from './pages';
 import './styles/index.css';
-import './styles/mejoras.css';
 import { ThemeProvider } from './ThemeContext';
 import MainLayout from './components/MainLayout';
 

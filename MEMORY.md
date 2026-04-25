@@ -1,32 +1,32 @@
 # MEMORIA DE PROYECTO (Ventura Dental)
 
-## Estado Actual
-*   **Fase Activa:** Fase 4 (Reportes y Exportación - Opcional) / Mantenimiento.
-*   **Fases Completadas:** Fase 1 (Diseño Premium UI), Fase 2 (Módulo de Auditoría Real - Backend/DB) y Fase 3 (Cierre de Caja).
-*   **Correcciones de UI:** Se implementó `cursor: pointer` en el sidebar y se unificó el diseño de Auditoría (Fase 2).
+## Estado Actual (25 de Abril, 2026)
+*   **Fase Activa:** Implementación de Rediseño Bento Minimal.
+*   **Hito del día:** Se aplicó con éxito el rediseño Bento Minimal, eliminando el glassmorphism y el neón agresivo por una interfaz más limpia, profesional y rápida.
+*   **Fases Completadas:** Rediseño Bento, Consolidación de CSS, Backup de seguridad.
 
+## Logros de la Sesión (Hoy)
+1.  **Rediseño Bento Minimal:** Implementación de tarjetas modulares con bordes redondeados y jerarquía visual clara.
+2.  **Optimización de Rendimiento:** Eliminación de `backdrop-filter: blur` en Sidebar y tarjetas, mejorando la fluidez en dispositivos móviles.
+3.  **Consolidación de Estilos:** Se absorbió `mejoras.css` dentro de `index.css` y se desactivó el import redundante.
+4.  **Respaldo de Seguridad:** Creación de carpeta `backup-neon-dark/` con la versión anterior por si se requiere rollback inmediato.
+5.  **Build Verificado:** Compilación local exitosa garantizando 0 errores en producción.
 
 ## Arquitectura y Tecnologías
-*   **Frontend:** React con Vite (client/).
-*   **Backend:** Express (server/).
-*   **Base de Datos:** PostgreSQL (Neon).
-*   **Seguridad:** Se migró de `bcrypt` a `bcryptjs` para compatibilidad universal entre entornos.
-*   **Estilos:** Basados en variables CSS nativas (:root) inyectadas globalmente en mejoras.css e index.css. Sistema de cambio de temas (ThemeContext).
+*   **Frontend:** React 18 + Vite (client/). Desplegado en Vercel.
+*   **Backend:** Node + Express (server/). Desplegado en Render.
+*   **Base de Datos:** PostgreSQL en Neon (Serverless).
+*   **Diseño:** Bento Minimal (CSS Puro, Geist/Inter Typography).
 
-## Ubicación Clave de Archivos
-*   App.tsx: Define el enrutamiento y las reglas de seguridad basadas en roles (RoleRoute).
-*   MainLayout.tsx: Contenedor principal que inyecta el Sidebar en todas las pantallas.
-*   AuditoriaPage.tsx: Interfaz para ver transacciones seguras (solo Admin).
-*   CierreCajaPage.tsx: Módulo de conciliación diaria de caja.
+## 🚀 Próximos Pasos
+1.  **Revisión Visual en Producción:** Confirmar que los cambios se reflejan correctamente en Vercel.
+2.  **Ajustes de UX:** Solicitar feedback sobre el nuevo contraste y legibilidad.
+3.  **Optimización de Backend:** Continuar monitoreando logs de Render para asegurar estabilidad total.
 
-## Tareas Pendientes (Next Steps)
-1.  Verificar el flujo de cierre con transacciones reales en el consultorio.
-2.  Considerar la exportación de comprobantes a PDF si el cliente lo requiere.
-3.  Optimizar la carga de historial de cierres con paginación si crece demasiado.
+## Lecciones Aprendidas (Troubleshooting)
+*   **Falla de Despliegue Silenciosa:** Si un cambio no se ve en Vercel, ejecutar `npm run build` localmente en la carpeta `client`. Los errores de TypeScript (como divs sin cerrar) abortan el despliegue sin previo aviso en la terminal del asistente.
+*   **Git Commit -am:** Recordar que este comando solo añade archivos *ya rastreados*. Los archivos nuevos requieren `git add .` explícito.
+*   **Conectividad:** Ante fallos de `git push`, reintentar o verificar la conexión, ya que los servidores de GitHub pueden tener micro-caídas.
 
-> **Nota para IA:** Este proyecto fue migrado desde una carpeta problemática en OneDrive a un entorno seguro en el disco E:. La estructura actual es la única fuente de la verdad.
-
-## Lecciones Aprendidas (Troubleshooting & Eficiencia)
-*   **Vercel Build Errors ("File name too long"):** Este error en Vercel casi siempre se debe a archivos `.zip` anidados, enlaces simbólicos (`symlinks`) o archivos basura de macOS (`._*`) en el historial de Git. **Regla estricta:** NUNCA hacer commit de la carpeta `docs/BACKUPS/` ni archivos generados automáticamente.
-*   **Refactorización de UI:** Al unificar Layouts, es imperativo hacer un `grep_search` preventivo en los archivos CSS (`index.css`, `mejoras.css`) para asegurar que el nombre exacto de la clase (`.layout` vs `.app-layout`) coincida antes de hacer push. Un error de tipografía en CSS destruye la cuadrícula (grid/flex).
-*   **Eficiencia de Tokens y Ejecución:** Reducir la dependencia del método ensayo/error. Antes de aplicar cambios masivos, se debe verificar el estado real del repositorio y analizar el impacto cruzado, agrupando los comandos para ahorrar tokens y tiempo de procesamiento.
+---
+> **Nota para la IA:** El proyecto se ha movido de OneDrive a `E:\Facturación Clínica\ventura-dental-facturacion`. No usar rutas de OneDrive. La versión de la web es el espejo exacto de esta carpeta local.
