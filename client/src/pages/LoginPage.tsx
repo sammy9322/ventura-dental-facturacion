@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services';
-import Logo from '../assets/logo.svg';
+import LogoOficial from '../assets/logo_oficial.png';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function LoginPage() {
     <div className="login-container">
       <div className="login-card">
         <div className="login-logo">
-          <img src={Logo} alt="Ventura Dental" className="login-logo-img" />
+          <img src={LogoOficial} alt="Ventura Dental" className="login-logo-img" />
           <p>Sistema de Pagos y Comprobantes</p>
         </div>
 
