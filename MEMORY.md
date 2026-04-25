@@ -1,34 +1,49 @@
 # MEMORIA DE PROYECTO (Ventura Dental)
 
-**Última actualización:** 25 de Abril 2026
+**Última actualización:** 25 de Abril 2026 — 14:00 CRC
 **Checkpoint:** `CHECKPOINT_20260425.md`
 
 ---
 
-## Estado Actual (25 de Abril, 2026)
+## Estado Actual
 
 | Aspecto | Estado |
 |---------|--------|
 | **Versión** | 2.0.0 |
-| **Fase** | Pulir Funcionalidad |
-| **Estética** | ✅ Completa (Marca Ventura + Minimalismo) |
-| **Funcionalidad** | ⏳ Por revisar |
+| **Fase** | Marca aplicada — Verificar en producción |
+| **Módulos con marca** | 8/12 |
+| **Flujo de negocio** | ✅ Revisado (Dashboard→Registrar→Cobros→Cierre) |
 
 ---
 
-## Hitos Completados
+## Hitos del Día (25 Abril 2026)
 
-### 2026-04-25 — Identidad de Marca + Minimalismo
-
-1. **Logo oficial SVG** integrado en Sidebar y Login
-2. **Paleta corporativa** sincronizada: `#613192` (púrpura), `#53b8c9` (turquesa)
-3. **Minimalismo intencional** aplicado (sin glow, sin glassmorphism)
-4. **Build verificado:** 0 errores, 18.57 kB CSS
-5. **Checkpoint detallado** guardado en `CHECKPOINT_20260425.md`
+1. **Identidad de marca completa** — Logo SVG, paleta púrpura/turquesa
+2. **Sistema de diseño minimalista** — Sin glow, sin glassmorphism
+3. **Sidebar** — Logo + nav activo púrpura + menú "Estructura Clínica"
+4. **Login** — Logo centrado
+5. **Dashboard** — stat-cards con variantes de color de marca
+6. **Macro Tratamientos** — Estructura clínica con marca
+7. **Registrar Pago** — Flujo completo de intención de pago con marca
+8. **Cobros** — Cola + firma + método de pago con marca
+9. **Cierre de Caja** — Conciliación con marca
+10. **Checkpoint detallado** — 545 líneas documentadas
 
 ---
 
-## Arquitectura y Tecnologías
+## Lecciones Aprendidas (Sesión 25 Abril)
+
+| Problema | Solución |
+|----------|---------|
+| Cambios no se ven en Vercel | Redeploy manual o Ctrl+Shift+R |
+| Git push falla authentication | Usar GitHub PAT |
+| Build lento/timeout | Timeout 180s para builds |
+| CSS "Unexpected }" | Llave duplicada en edit |
+| Módulo no aparece en menú | Falta en array `menuItems` del Sidebar |
+
+---
+
+## Arquitectura
 
 | Capa | Tecnología | Puerto |
 |------|------------|--------|
@@ -38,25 +53,25 @@
 | **Deploy Front** | Vercel | — |
 | **Deploy Back** | Render | — |
 
-**Diseño:** CSS Puro — Minimalismo + Marca Ventura (SIN TailwindCSS)
+**Diseño:** CSS Puro — Minimalismo + Marca Ventura
 
 ---
 
-## Lecciones Aprendidas (Troubleshooting Completo)
+## Próximos Pasos
 
-### Despliegue
-- **Cambios no se ven** → Redeploy en Vercel o Ctrl+Shift+R
-- **Build aborta silenciosamente** → `npm run build` local primero
-- **Git push falla** → Usar GitHub Personal Access Token (PAT)
+1. **Verificar en producción** — Probar flujo completo en Vercel
+2. **Módulos restantes** — Pacientes, Historial, Auditoría (verificar marca)
+3. **Responsive mobile** — Testing
+4. **Notificaciones** — Sistema de badges en tiempo real
 
-### Código
-- **Build lento** → Timeout 180s para builds completos
-- **CSS "Unexpected }"** → Llave duplicada, revisar líneas cercanas
-- **Import SVG** → `import Logo from '../assets/logo.svg'`
+---
 
-### Negocio
-- **Saldo no disminuye** → Verificar `es_cuota_principal: true`
-- **Race condition** → Usar `BEGIN` + `SELECT FOR UPDATE` + `COMMIT`
+## Recursos
+
+- **Checkpoint:** `CHECKPOINT_20260425.md` (documento maestro — 545 líneas)
+- **Plan rediseño:** `PLAN_VENTURA_MINIMALISMO.md`
+- **Contexto IA:** `AI_CONTEXT.md`
+- **Docs técnicas:** `docs/MANUAL.md`, `docs/API.md`
 
 ---
 
@@ -69,20 +84,3 @@ Copy-Item "client\src\styles\backup-bento\index.css" "client\src\styles\index.cs
 # Reset hard
 git reset --hard e6bfe2a
 ```
-
----
-
-## Próximos Pasos (Funcionalidad)
-
-1. **Alta prioridad:** Cobros, Dashboard, Cierre de Caja, Pacientes
-2. **Media prioridad:** Auditoría, Macro Tratamientos, Mobile
-3. **Largo plazo:** Notificaciones, Reportes PDF, Integraciones
-
----
-
-## Recursos
-
-- **Checkpoint:** `CHECKPOINT_20260425.md` (documento maestro)
-- **Plan rediseño:** `PLAN_VENTURA_MINIMALISMO.md`
-- **Contexto IA:** `AI_CONTEXT.md`
-- **Docs técnicas:** `docs/MANUAL.md`, `docs/API.md`

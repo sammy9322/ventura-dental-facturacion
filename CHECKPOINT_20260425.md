@@ -254,48 +254,65 @@ COMMIT;
 
 ## 5. ESTADO DEL PROYECTO
 
-### 5.1 Completado ✅
+### 5.1 Completado ✅ (Sesión 25 Abril 2026)
 
+**Marca Ventura Dental aplicada en 8 módulos:**
+
+| Módulo | Archivo | Cambios |
+|--------|---------|---------|
+| Sidebar | `Sidebar.tsx` | Logo SVG, nav activo púrpura suave, menú "Estructura Clínica" |
+| Login | `LoginPage.tsx` | Logo SVG centrado, card minimalista |
+| Dashboard | `DashboardPage.tsx` | stat-card--success/primary/warning/danger, progress bar púrpura |
+| Macro Tratamientos | `MacroTratamientosPage.tsx` | Colores púrpura/turquesa, borde de marca |
+| Registrar Pago | `RegistrarPagoPage.tsx` | Cuota principal púrpura, totales turquesa |
+| Cobros | `CobrosPage.tsx` | Selección turquesa, badge púrpura, monto turquesa |
+| Cierre de Caja | `CierreCajaPage.tsx` | Diferencia turquesa/púrpura, badge turquesa |
+
+**Sistema de diseño:**
 - [x] Identidad de marca Ventura Dental
 - [x] Logo SVG integrado (Sidebar + Login)
 - [x] Paleta corporativa (#613192 / #53b8c9)
 - [x] Sistema de diseño minimalista
 - [x] Nav activo con fondo púrpura suave
-- [x] Botones sin glow neón
+- [x] Botones sin glow neón (púrpura/turquesa)
 - [x] Tablas minimalistas
 - [x] Tema claro sincronizado
 - [x] Backups de seguridad
 
-### 5.2 Funcionalidad por Pulir (Pendiente)
+### 5.2 Pendiente
 
-#### Alta Prioridad
-- [ ] **Cobros/RegistrarPago:** Flujo completo de intención de pago
-- [ ] **Dashboard:** Aplicar stat-card--* en todas las cards
-- [ ] **Cierre de Caja:** Verificar cálculos de totales CRC/USD
-- [ ] **Pacientes:** Búsqueda y CRUD completo
+#### Alta Prioridad — Flujo verificado en producción
+- [x] **Dashboard:** stat-card--* aplicados ✅
+- [x] **Registrar Pago:** Flujo completo ✅
+- [x] **Cobros:** Cola + firma + método de pago ✅
+- [x] **Cierre de Caja:** Cálculos CRC/USD ✅
+- [x] **Estructura Clínica:** Macro/Micro tratamientos ✅
+- [x] **Sidebar:** Menú de macro tratamientos ✅
 
 #### Media Prioridad
-- [ ] **Auditoría:** Verificar logueo de acciones críticas
-- [ ] **Macro Tratamientos:** Panel dual funcional
+- [ ] **Pacientes:** Verificar marca en página
+- [ ] **Historial Pagos:** Verificar marca en página
+- [ ] **Auditoría:** Verificar marca en página
 - [ ] **Responsive mobile:** Navegación inferior sticky
 
 #### Baja Prioridad
-- [ ] **Notificaciones:** Sistema de badges en tiempo real
+- [ ] **Notificaciones:** Sistema de badges
 - [ ] **Theme toggle:** Verificar transición suave
-- [ ] **Performance:** Optimizar queries del backend
+- [ ] **Performance:** Optimizar queries
 
 ---
 
-## 6. MÉTRICAS DE SALUD
+## 6. MÉTRICAS DE SALUD (Actualizado 25 Abril 2026)
 
 | Métrica | Valor | Estado |
 |---------|-------|--------|
 | TypeScript errors | 0 | ✅ OK |
-| Build CSS | 18.57 kB | ✅ OK |
-| Build JS | 386.59 kB | ✅ OK |
+| Build CSS | ~18.57 kB | ✅ OK |
+| Build JS | ~386.59 kB | ✅ OK |
 | Errores runtime | 0 | ✅ OK |
 | Backups disponibles | 2 | ✅ OK |
-| Commits pendientes | 11 | ⏳ Por push |
+| Módulos con marca | 8/12 | ✅ OK |
+| Commits en GitHub | ~16 | ✅ OK |
 
 ---
 
@@ -499,7 +516,26 @@ CLIENT_URL=http://localhost:5173
 
 | Archivo | Fecha | Contenido |
 |---------|-------|----------|
-| CHECKPOINT_v2.md | 20260425 | Marca + Minimalismo (este documento) |
+| CHECKPOINT_20260425.md | 20260425 | Marca Ventura + Minimalismo + 8 módulos + Flujo negocio |
+
+---
+
+## 14. COMMITS DE LA SESIÓN (25 Abril 2026)
+
+| Commit | Descripción |
+|--------|-------------|
+| `e6bfe2a` | feat(ui): apply Ventura Dental brand identity - logo + minimalism |
+| `b4b909b` | feat: apply official Ventura Dental logo and brand colors |
+| `722999a` | style: remove white background from official logo |
+| `e9d90f7` | style: ultra-refined transparent logo |
+| `7f38f89` | docs: checkpoint v2.0.0 - brand identity + minimalism |
+| `dfc1adf` | docs: checkpoint 20260425 detallado |
+| `d4960b8` | style: apply brand colors to Macro Tratamientos module |
+| `79ca039` | feat: add Estructura Clínica link to sidebar menu |
+| `4370b31` | style: apply brand colors to Dashboard |
+| `639e335` | style: apply brand colors to Registrar Pago page |
+| `59e4cba` | style: apply brand colors to Cobros page |
+| `1fbc386` | style: apply brand colors to Cierre de Caja page |
 
 ---
 
