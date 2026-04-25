@@ -6,8 +6,13 @@ Este archivo condensa la arquitectura, reglas de negocio y estado del proyecto *
 - **Arquitectura:** Cliente-Servidor (Monorepositorio).
 - **Frontend:** React 18 + Vite + TypeScript.
 - **Backend:** Node.js + Express + TypeScript.
-- **DB:** PostgreSQL (Manejado directamente con el driver `pg`, **NO usamos ORM** como Prisma o TypeORM para las transacciones financieras).
-- **Diseño (UI):** Vanilla HTML/CSS (`client/src/styles/index.css`). **Regla estricta:** No introducir TailwindCSS ni librerías de componentes externas sin aprobación. Diseño "Neon Dark Premium" (Fidalgomorphism) y "Twin Panels" para catálogos.
+- **DB:** PostgreSQL (driver `pg` nativo, **NO ORM**).
+- **Diseño (UI):** Vanilla CSS (`client/src/styles/index.css`). **Regla:** Sin TailwindCSS. Diseño "Minimalismo de Marca Ventura" con colores corporativos púrpura/turquesa.
+
+### Paleta de Marca (Ventura Dental)
+- `--brand-purple: #613192` — VENTURA (principal)
+- `--brand-turquoise: #00BCD4` — DENTAL (acento)
+- `--brand-white: #FFFFFF` — Textos
 
 ## 2. Lógica de Dominio y Negocio
 - **Estructura Clínica:**

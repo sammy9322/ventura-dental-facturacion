@@ -1,32 +1,47 @@
 # MEMORIA DE PROYECTO (Ventura Dental)
 
 ## Estado Actual (25 de Abril, 2026)
-*   **Fase Activa:** Implementación de Rediseño Bento Minimal.
-*   **Hito del día:** Se aplicó con éxito el rediseño Bento Minimal, eliminando el glassmorphism y el neón agresivo por una interfaz más limpia, profesional y rápida.
-*   **Fases Completadas:** Rediseño Bento, Consolidación de CSS, Backup de seguridad.
+*   **Fase:** Pulir Funcionalidad
+*   **Versión:** 2.0.0 (Marca Ventura + Minimalismo)
+*   **Hito completado:** Identidad de marca + diseño minimalista en producción
 
-## Logros de la Sesión (Hoy)
-1.  **Rediseño Bento Minimal:** Implementación de tarjetas modulares con bordes redondeados y jerarquía visual clara.
-2.  **Optimización de Rendimiento:** Eliminación de `backdrop-filter: blur` en Sidebar y tarjetas, mejorando la fluidez en dispositivos móviles.
-3.  **Consolidación de Estilos:** Se absorbió `mejoras.css` dentro de `index.css` y se desactivó el import redundante.
-4.  **Respaldo de Seguridad:** Creación de carpeta `backup-neon-dark/` con la versión anterior por si se requiere rollback inmediato.
-5.  **Build Verificado:** Compilación local exitosa garantizando 0 errores en producción.
+## Logros del Día (25 Abril 2026)
+
+### ✅ Identidad de Marca
+- **Logo oficial SVG** integrado en Sidebar y Login con colores púrpura/turquesa
+- **Paleta corporativa** sincronizada: `#613192` (púrpura), `#00BCD4` (turquesa)
+- **Build verificado:** 0 errores, 18.57 kB CSS
+
+### ✅ Minimalismo Intencional
+- Sistema de tokens CSS moderno (superficies, elevación)
+- Nav activo con fondo púrpura suave
+- Tablas sin bordes horizontales
+- Botones sin glow neón
+- Tema claro sincronizado
+
+### ✅ Backups disponibles
+- `backup-bento/` — Pre-rediseño marca
+- `backup-neon-dark/` — Estilo neon original
 
 ## Arquitectura y Tecnologías
-*   **Frontend:** React 18 + Vite (client/). Desplegado en Vercel.
-*   **Backend:** Node + Express (server/). Desplegado en Render.
-*   **Base de Datos:** PostgreSQL en Neon (Serverless).
-*   **Diseño:** Bento Minimal (CSS Puro, Geist/Inter Typography).
+*   **Frontend:** React 18 + Vite + TypeScript (Vercel)
+*   **Backend:** Node + Express + TypeScript (Render)
+*   **DB:** PostgreSQL en Neon (Serverless)
+*   **Diseño:** CSS puro — Minimalismo + Marca Ventura
 
-## 🚀 Próximos Pasos
-1.  **Revisión Visual en Producción:** Confirmar que los cambios se reflejan correctamente en Vercel.
-2.  **Ajustes de UX:** Solicitar feedback sobre el nuevo contraste y legibilidad.
-3.  **Optimización de Backend:** Continuar monitoreando logs de Render para asegurar estabilidad total.
+## 🚀 Próximos Pasos (Funcionalidad)
+1.  **Cobros:** Verificar flujo completo
+2.  **Dashboard:** Aplicar stat-cards con variantes de color
+3.  **Cierre de Caja:** Verificar cálculos
+4.  **Responsive:** Testing móvil
 
 ## Lecciones Aprendidas (Troubleshooting)
-*   **Falla de Despliegue Silenciosa:** Si un cambio no se ve en Vercel, ejecutar `npm run build` localmente en la carpeta `client`. Los errores de TypeScript (como divs sin cerrar) abortan el despliegue sin previo aviso en la terminal del asistente.
-*   **Git Commit -am:** Recordar que este comando solo añade archivos *ya rastreados*. Los archivos nuevos requieren `git add .` explícito.
-*   **Conectividad:** Ante fallos de `git push`, reintentar o verificar la conexión, ya que los servidores de GitHub pueden tener micro-caídas.
+*   **Build lento:** Timeout 180s para builds completos
+*   **Git push fallido:** Usar GitHub PAT
+*   **Logo en React:** Importar desde `../assets/logo.svg`
+*   **Ctrl+Shift+R:** Forzar cache refresh en navegador
 
 ---
-> **Nota para la IA:** El proyecto se ha movido de OneDrive a `E:\Facturación Clínica\ventura-dental-facturacion`. No usar rutas de OneDrive. La versión de la web es el espejo exacto de esta carpeta local.
+
+> **Checkpoint:** `CHECKPOINT_v2.md`
+> **Último commit estable:** `e6bfe2a`
