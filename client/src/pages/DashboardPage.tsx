@@ -49,7 +49,7 @@ export default function DashboardPage() {
     <Layout>
       <div className="page-header">
         <h1 className="page-title">Panel de Control Operativo</h1>
-        <p className="page-subtitle">Bienvenido de nuevo, <span style={{color: 'var(--primary)', fontWeight: 600}}>{user?.nombre_completo}</span></p>
+        <p className="page-subtitle">Bienvenido de nuevo, <span style={{color: 'var(--brand-purple)', fontWeight: 600}}>{user?.nombre_completo}</span></p>
       </div>
 
       {isLoading ? (
@@ -59,7 +59,7 @@ export default function DashboardPage() {
       ) : (
         <>
           <div className="stats-grid">
-            <div className="stat-card">
+            <div className="stat-card stat-card--success">
               <div className="stat-label">Ingresos Totales</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                 {stats?.resumen && stats.resumen.length > 0 ? stats.resumen.map((s: any) => (
@@ -73,7 +73,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="stat-card" style={{borderLeft: '4px solid var(--danger)'}}>
+            <div className="stat-card stat-card--danger">
               <div className="stat-label">Deuda Activa (IE)</div>
               <div className="stat-value" style={{color: 'var(--danger)'}}>{formatWithSym(advancedStats?.deuda_activa || 0, 'CRC')}</div>
               <div style={{marginTop: '0.5rem', color: 'var(--text-muted)', fontSize: '0.875rem'}}>
@@ -81,15 +81,15 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="stat-card">
+            <div className="stat-card stat-card--primary">
               <div className="stat-label">Eficiencia de Cobro</div>
               <div className="stat-value">{Number(advancedStats?.eficiencia_cobranza || 0).toFixed(1)}%</div>
               <div style={{marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', height: '6px', borderRadius: '3px', overflow: 'hidden'}}>
-                <div style={{width: `${advancedStats?.eficiencia_cobranza || 0}%`, height: '100%', background: 'var(--primary)'}}></div>
+                <div style={{width: `${advancedStats?.eficiencia_cobranza || 0}%`, height: '100%', background: 'var(--brand-purple)'}}></div>
               </div>
             </div>
 
-            <div className="stat-card">
+            <div className="stat-card stat-card--warning">
               <div className="stat-label">Pacientes Activos</div>
               <div className="stat-value">{advancedStats?.total_pacientes_activos || 0}</div>
               <div style={{marginTop: '0.5rem', color: 'var(--accent)', fontSize: '0.875rem'}}>
