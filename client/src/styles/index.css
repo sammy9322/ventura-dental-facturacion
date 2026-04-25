@@ -1,61 +1,52 @@
 /* ================================================================
-   VENTURA DENTAL — Global Design System
-   Estilo: Bento Minimal (v1.0.1)
+   VENTURA DENTAL — Intentional Minimalism Design System
+   Estilo: Pro / Technical / High-Contrast
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
 
 :root {
+  /* Core Palette */
+  --background:    #0a0a0a; /* Negro profundo */
+  --surface:       #111111; /* Elevación sutil */
+  --surface-2:     #161616;
+  --surface-hover: #1c1c1c;
+  
+  /* Brand Colors (Technical) */
   --primary:       #3b82f6;
-  --primary-dark:  #2563eb;
+  --primary-dark:  #1d4ed8;
   --primary-light: #60a5fa;
   --accent:        #10b981;
-  --accent-dark:   #059669;
   --warning:       #f59e0b;
   --danger:        #ef4444;
-  --background:    #0f1117;
-  --surface:       #161b27;
-  --surface-2:     #1e2535;
-  --surface-hover: #253045;
-  --text-primary:  #f1f5f9;
-  --text-secondary:#94a3b8;
-  --text-muted:    #64748b;
-  --border:        rgba(255,255,255,0.1); /* Bordes un poco más visibles para el estilo Bento */
-  --glass:         rgba(22, 27, 39, 0.98);
-  --glass-border:  rgba(255, 255, 255, 0.12);
-  --input-bg:      rgba(15,23,42,0.6);
-  --th-bg:         rgba(15,23,42,0.5);
-  --shadow:        0 2px 8px rgba(0,0,0,0.25);
-  --shadow-lg:     0 8px 32px rgba(0,0,0,0.35);
-  --shadow-card:   0 1px 3px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.15);
-  --radius:        10px;
-  --radius-lg:     14px;
-  --radius-xl:     20px;
+
+  /* Typography */
+  --text-primary:  #ffffff;
+  --text-secondary:#a1a1aa;
+  --text-muted:    #52525b;
+  
+  /* Borders & Dividers (Ultra-fine) */
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  
+  /* Shadows (Minimal or None) */
+  --shadow:        none;
+  --shadow-lg:     0 20px 40px rgba(0, 0, 0, 0.4);
+  
+  /* Layout */
+  --radius:        6px;  /* Radios más técnicos y menos "burbuja" */
+  --radius-lg:     8px;
+  --radius-xl:     12px;
   --font-sans:     'Inter', system-ui, sans-serif;
-  --font-heading:  'Outfit', 'Inter', sans-serif;
+  --font-heading:  'Outfit', sans-serif;
   --sidebar-w:     240px;
   --header-h:      3.5rem;
   --color-scheme:  dark;
-
-  /* Scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.12) transparent;
 }
 
 [data-theme="light"], .light {
-  --background:    #f4f6fb;
+  --background:    #fafafa;
   --surface:       #ffffff;
-  --surface-2:     #f1f5f9;
-  --surface-hover: #e8edf5;
-  --text-primary:  #0f172a;
-  --text-secondary:#334155;
-  --text-muted:    #64748b;
-  --border:        rgba(0,0,0,0.08);
-  --glass:         rgba(255, 255, 255, 0.95);
-  --glass-border:  rgba(0, 0, 0, 0.06);
-  --input-bg:      #ffffff;
-  --th-bg:         #f1f5f9;
-  --shadow:        0 2px 8px rgba(0,0,0,0.08);
   --shadow-lg:     0 8px 32px rgba(0,0,0,0.12);
   --shadow-card:   0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08);
   --color-scheme:  light;
@@ -86,7 +77,7 @@ body {
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
-  background: var(--surface);
+  background: var(--background);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -94,12 +85,10 @@ body {
   top: 0;
   height: 100vh;
   z-index: 50;
-  transition: background 0.3s ease;
 }
 
 .sidebar-header {
-  padding: 2rem 1.5rem 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  padding: 2.5rem 1.5rem 1.5rem;
 }
 
 .sidebar-logo {
@@ -124,28 +113,26 @@ body {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  padding: 0.875rem 1.25rem;
-  margin: 0.25rem 0.5rem;
-  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin: 0.15rem 0.5rem;
+  border-radius: var(--radius);
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.1s ease;
   cursor: pointer;
-  border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-hover);
   color: var(--text-primary);
-  transform: translateX(4px);
 }
 
 .nav-item.active {
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--primary-light);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
 }
 
 .badge-notif {
@@ -218,14 +205,11 @@ body {
 
 .page-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 0.35rem;
-  background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
 }
 
 .page-subtitle {
@@ -267,15 +251,13 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  box-shadow: var(--shadow-card);
   margin-bottom: 1.5rem;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   position: relative;
   overflow: hidden;
 }
 
 .card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: var(--border-strong);
 }
 
 /* Bento utility cards */
@@ -329,24 +311,22 @@ body {
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-top: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   position: relative;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease;
   overflow: hidden;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
 }
 
-/* Variantes de color para stat-card */
-.stat-card--primary { border-top-color: var(--primary); }
-.stat-card--success { border-top-color: var(--accent); }
-.stat-card--warning { border-top-color: var(--warning); }
-.stat-card--danger  { border-top-color: var(--danger); }
+/* Variantes minimalistas para stat-card */
+.stat-card--primary { border-top: 2px solid var(--primary); }
+.stat-card--success { border-top: 2px solid var(--accent); }
+.stat-card--warning { border-top: 2px solid var(--warning); }
+.stat-card--danger  { border-top: 2px solid var(--danger); }
 
 .stat-label {
   font-size: 0.75rem;
@@ -389,23 +369,19 @@ body {
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: var(--primary);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(59,130,246,0.25);
 }
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 16px rgba(59,130,246,0.4);
-  transform: translateY(-1px);
+  background: var(--primary-dark);
 }
 
 .btn-success {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  background: var(--accent);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(16,185,129,0.25);
 }
 .btn-success:hover:not(:disabled) { 
-  box-shadow: 0 6px 16px rgba(16,185,129,0.4);
-  transform: translateY(-1px);
+  background: #059669;
 }
 
 .btn-danger {
@@ -506,28 +482,27 @@ body {
 }
 
 .table th {
-  background: var(--surface-2);
-  padding: 0.875rem 1.25rem;
+  background: var(--surface);
+  padding: 1rem 1.25rem;
   text-align: left;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-strong);
 }
 
 .table td {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(51,65,85,0.5);
+  padding: 1.125rem 1.25rem;
+  border-bottom: 1px solid var(--border);
   vertical-align: middle;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .table tbody tr:hover td {
-  background: rgba(59,130,246,0.04);
+  background: var(--surface-hover);
   color: var(--text-primary);
 }
 
@@ -579,16 +554,15 @@ body {
 .form-textarea {
   width: 100%;
   max-width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--border);
+  background: var(--background);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  padding: 0.65rem 0.875rem;
+  padding: 0.75rem 1rem;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  color-scheme: var(--color-scheme);
+  transition: border-color 0.15s ease;
   box-sizing: border-box;
 }
 
@@ -596,8 +570,6 @@ body {
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
-  background: rgba(15,23,42,0.7);
 }
 
 .form-input.error,
@@ -654,13 +626,13 @@ body {
 
 .modal {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-lg { max-width: 700px; }
@@ -862,39 +834,33 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: 
-    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
-    var(--background);
+  background: var(--background);
 }
 
 .login-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: 3rem 2.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 3.5rem 2.5rem;
   width: 100%;
-  max-width: 420px;
-  box-shadow: var(--shadow-lg);
+  max-width: 400px;
 }
 
 .login-logo { text-align: center; margin-bottom: 2.5rem; }
 .login-logo h1 { 
   font-family: var(--font-heading); 
-  font-size: 2.25rem; 
-  font-weight: 800; 
+  font-size: 2.5rem; 
+  font-weight: 700; 
   letter-spacing: -0.04em;
-  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 .login-logo p { 
-  color: var(--text-muted); 
-  font-size: 0.95rem; 
-  letter-spacing: 0.05em;
+  color: var(--text-secondary); 
+  font-size: 0.8rem; 
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* ================================================================
@@ -991,7 +957,8 @@ body {
     width: 100% !important;
     flex-direction: row;
     border-right: none;
-    border-top: 1px solid var(--glass-border);
+    border-top: 1px solid var(--border);
+    background: var(--background);
     padding: 0;
     z-index: 100;
     border-radius: 0;

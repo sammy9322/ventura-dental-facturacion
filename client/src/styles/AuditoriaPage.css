@@ -9,32 +9,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border);
 }
 
 .audit-title {
   font-family: var(--font-heading);
-  font-size: 1.875rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
 }
 
 .audit-subtitle {
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
   margin: 0;
 }
 
-/* Redefiniendo stat-card local para auditoría si es necesario, 
-   o usando la global del sistema */
 .audit-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .glass-panel {
@@ -42,28 +41,27 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  box-shadow: var(--shadow-card);
 }
 
 .neon-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   text-align: left;
 }
 
 .neon-table th {
   padding: 1rem;
   color: var(--text-muted);
-  font-size: 0.725rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border-strong);
 }
 
 .neon-table td {
   padding: 1rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border);
 }
@@ -75,10 +73,12 @@
 
 .status-tag {
   display: inline-flex;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.72rem;
-  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .tag-primary { background: rgba(59, 130, 246, 0.1); color: var(--primary-light); border: 1px solid rgba(59, 130, 246, 0.2); }
@@ -86,21 +86,22 @@
 .tag-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
 
 .btn-ver-detalle {
-  background: transparent;
-  color: var(--primary-light);
-  border: 1px solid var(--border);
-  padding: 0.4rem 0.8rem;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .btn-ver-detalle:hover {
   background: var(--surface-hover);
-  border-color: var(--primary-light);
+  border-color: var(--text-secondary);
 }
+
 
 .animate-fade-in {
   animation: softFadeIn 0.4s ease-out forwards;
