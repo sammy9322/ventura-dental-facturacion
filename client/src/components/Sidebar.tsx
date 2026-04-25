@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../ThemeContext';
 import { authService } from '../services';
 import api from '../services/api';
+import LogoSidebar from '../assets/logo-sidebar.svg';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -44,8 +45,8 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside className="sidebar panel-cristal">
-      <div className="sidebar-logo">
-        <h2 className="neon-text">Ventura Dental</h2>
+      <div className="sidebar-header">
+        <img src={LogoSidebar} alt="Ventura Dental" className="sidebar-logo-img" />
       </div>
 
       <nav className="sidebar-nav">
