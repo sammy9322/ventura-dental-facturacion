@@ -163,8 +163,8 @@ export default function MacroTratamientosPage() {
                   borderRadius: '12px',
                   cursor: 'pointer',
                   marginBottom: '0.75rem',
-                  background: selectedMacroId === m.id ? 'rgba(59,130,246,0.1)' : 'rgba(255,255,255,0.02)',
-                  border: `1px solid ${selectedMacroId === m.id ? 'rgba(59,130,246,0.4)' : 'transparent'}`,
+                  background: selectedMacroId === m.id ? 'rgba(97,49,146,0.12)' : 'rgba(255,255,255,0.02)',
+                  border: `1px solid ${selectedMacroId === m.id ? 'var(--brand-purple)' : 'transparent'}`,
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -172,7 +172,7 @@ export default function MacroTratamientosPage() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <Layers size={18} style={{ color: selectedMacroId === m.id ? 'var(--primary-light)' : 'var(--text-muted)' }} />
+                  <Layers size={18} style={{ color: selectedMacroId === m.id ? 'var(--brand-purple-light)' : 'var(--text-muted)' }} />
                   <div>
                     <div style={{ fontWeight: 700, color: selectedMacroId === m.id ? 'white' : 'var(--text-secondary)' }}>{m.nombre}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -209,7 +209,7 @@ export default function MacroTratamientosPage() {
               }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <Settings2 size={16} style={{ color: 'var(--primary-light)' }} />
+                    <Settings2 size={16} style={{ color: 'var(--brand-purple-light)' }} />
                     <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                       Configuración de Proceso
                     </span>
@@ -252,8 +252,8 @@ export default function MacroTratamientosPage() {
                 {/* Formulario Inline para Procedimiento */}
                 {showMicroInline && (
                   <div className="card" style={{ 
-                    background: 'rgba(59,130,246,0.05)', 
-                    border: '1px dashed var(--primary)',
+                    background: 'rgba(97,49,146,0.05)',
+                    border: '1px dashed var(--brand-purple)',
                     marginBottom: '1.5rem',
                     padding: '1.25rem'
                   }}>
@@ -319,11 +319,11 @@ export default function MacroTratamientosPage() {
                           width: '40px', 
                           height: '40px', 
                           borderRadius: '10px', 
-                          background: 'rgba(59,130,246,0.1)', 
-                          display: 'flex', 
-                          alignItems: 'center', 
+                          background: 'rgba(97,49,146,0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
                           justifyContent: 'center',
-                          color: 'var(--primary-light)'
+                          color: 'var(--brand-purple-light)'
                         }}>
                           <Stethoscope size={20} />
                         </div>
