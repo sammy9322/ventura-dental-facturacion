@@ -140,7 +140,7 @@ export default function MacroTratamientosPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflow: 'hidden' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <h1 className="page-title" style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Estructura Clínica</h1>
+              <h1 className="page-title" style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Procesos Clínicos</h1>
               <p className="page-subtitle">Principales Procesos</p>
             </div>
             <button className="btn btn-primary btn-sm" onClick={() => {
