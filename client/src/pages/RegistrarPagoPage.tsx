@@ -200,7 +200,7 @@ export default function RegistrarPagoPage() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                       <span style={{ color: 'var(--text-muted)' }}>Total abonado:</span>
-                      <span style={{ fontWeight: 700, color: 'var(--brand-turquoise)', fontWeight: 600 }}>{formatearMoneda(tratamientoPrincipal.monto_pagado)}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--brand-turquoise)' }}>{formatearMoneda(tratamientoPrincipal.monto_pagado)}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px solid var(--border)' }}>
                       <span style={{ fontWeight: 700 }}>Saldo actual:</span>
