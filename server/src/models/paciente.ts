@@ -84,19 +84,19 @@ export async function update(id: number, data: {
   }
   if (data.dni !== undefined) {
     fields.push(`dni = $${idx++}`);
-    values.push(data.dni);
+    values.push(data.dni === '' ? null : data.dni);
   }
   if (data.telefono !== undefined) {
     fields.push(`telefono = $${idx++}`);
-    values.push(data.telefono);
+    values.push(data.telefono === '' ? null : data.telefono);
   }
   if (data.email !== undefined) {
     fields.push(`email = $${idx++}`);
-    values.push(data.email);
+    values.push(data.email === '' ? null : data.email);
   }
   if (data.direccion !== undefined) {
     fields.push(`direccion = $${idx++}`);
-    values.push(data.direccion);
+    values.push(data.direccion === '' ? null : data.direccion);
   }
   if (data.activo !== undefined) {
     fields.push(`activo = $${idx++}`);

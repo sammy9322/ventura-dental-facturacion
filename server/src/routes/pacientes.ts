@@ -80,21 +80,27 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
 router.post('/', async (req: AuthRequest, res: Response) => {
   try {
     const data = createPacienteSchema.parse(req.body);
+    console.log('Create paciente data:', data);
     const paciente = await pacienteModel.create(data);
 
     // Registrar en auditoría
-    await auditoriaService.registrar({
-      usuario_id: req.user!.id,
-      accion: 'CREAR_PACIENTE',
-      entidad: 'pacientes',
-      entidad_id: paciente.id,
-      valor_nuevo: data,
-      ip_address: req.ip,
-      user_agent: req.get('user-agent')
-    });
+    try {
+      await auditoriaService.registrar({
+        usuario_id: req.user!.id,
+        accion: 'CREAR_PACIENTE',
+        entidad: 'pacientes',
+        entidad_id: paciente.id,
+        valor_nuevo: data,
+        ip_address: req.ip,
+        user_agent: req.get('user-agent')
+      });
+    } catch (auditError) {
+      console.error('Error de auditoría (no bloquante):', auditError);
+    }
 
     res.status(201).json(paciente);
   } catch (error) {
+    console.error('Error en create paciente:', error);
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors });
     }
@@ -102,8 +108,7 @@ router.post('/', async (req: AuthRequest, res: Response) => {
     if (dbError.code === '23505') {
       return res.status(400).json({ error: 'Ya existe un paciente con este DNI' });
     }
-    console.error('Create paciente error:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: 'Error en el servidor: ' + (error as Error).message });
   }
 });
 
@@ -111,24 +116,30 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const data = updatePacienteSchema.parse(req.body);
+    console.log('Update paciente data:', data);
     const paciente = await pacienteModel.update(id, data);
     if (!paciente) {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
 
     // Registrar en auditoría
-    await auditoriaService.registrar({
-      usuario_id: req.user!.id,
-      accion: 'EDITAR_PACIENTE',
-      entidad: 'pacientes',
-      entidad_id: id,
-      valor_nuevo: data,
-      ip_address: req.ip,
-      user_agent: req.get('user-agent')
-    });
+    try {
+      await auditoriaService.registrar({
+        usuario_id: req.user!.id,
+        accion: 'EDITAR_PACIENTE',
+        entidad: 'pacientes',
+        entidad_id: id,
+        valor_nuevo: data,
+        ip_address: req.ip,
+        user_agent: req.get('user-agent')
+      });
+    } catch (auditError) {
+      console.error('Error de auditoría (no bloquante):', auditError);
+    }
 
     res.json(paciente);
   } catch (error) {
+    console.error('Error en update paciente:', error);
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors });
     }
@@ -136,8 +147,7 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
     if (dbError.code === '23505') {
       return res.status(400).json({ error: 'Ya existe un paciente con este DNI' });
     }
-    console.error('Update paciente error:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: 'Error en el servidor: ' + (error as Error).message });
   }
 });
 
