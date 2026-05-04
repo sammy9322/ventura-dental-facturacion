@@ -215,7 +215,7 @@ export default function RegistrarPagoPage() {
               </div>
             )}
 
-            {tratamientosPaciente.length > 0 && (
+            {paciente && tratamientosPaciente.length > 0 && (
               <div className="form-group" style={{ marginTop: '1.25rem' }}>
                 <label className="form-label">Tratamiento Principal (Cuota)</label>
                 <select
