@@ -8,18 +8,18 @@ const router = Router();
 
 const createPacienteSchema = z.object({
   nombre: z.string().min(1, 'Nombre requerido').max(150),
-  dni: z.string().max(20).optional().or(z.literal('')),
-  telefono: z.string().max(20).optional(),
-  email: z.string().email().optional().or(z.literal('')),
-  direccion: z.string().optional(),
+  dni: z.string().max(20).nullable(),
+  telefono: z.string().max(20).nullable(),
+  email: z.string().email().nullable(),
+  direccion: z.string().nullable(),
 });
 
 const updatePacienteSchema = z.object({
   nombre: z.string().min(1).max(150).optional(),
-  dni: z.string().max(20).optional().or(z.literal('')),
-  telefono: z.string().max(20).optional(),
-  email: z.string().email().optional().or(z.literal('')),
-  direccion: z.string().optional(),
+  dni: z.string().max(20).nullable().optional(),
+  telefono: z.string().max(20).nullable().optional(),
+  email: z.string().email().nullable().optional(),
+  direccion: z.string().nullable().optional(),
   activo: z.boolean().optional(),
 });
 
