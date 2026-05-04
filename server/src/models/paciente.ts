@@ -52,10 +52,10 @@ export async function search(searchTerm: string) {
 
 export async function create(data: {
   nombre: string;
-  dni?: string;
-  telefono?: string;
-  email?: string;
-  direccion?: string;
+  dni?: string | null;
+  telefono?: string | null;
+  email?: string | null;
+  direccion?: string | null;
 }) {
   const result = await query(
     `INSERT INTO pacientes (nombre, dni, telefono, email, direccion) 
