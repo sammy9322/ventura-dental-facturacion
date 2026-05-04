@@ -80,7 +80,7 @@ export default function HistorialPagosPage() {
       <div className="page-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h1 className="page-title">Historial de Pagos</h1>
+            <h1 className="page-title">Registro e Historial de pagos</h1>
             <p className="page-subtitle">{pagos.length} pago{pagos.length !== 1 ? 's' : ''} encontrado{pagos.length !== 1 ? 's' : ''}</p>
           </div>
           <Link to="/pagos/registrar" className="btn btn-primary">
