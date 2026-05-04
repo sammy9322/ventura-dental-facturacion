@@ -1,0 +1,36 @@
+{
+    "project": "<PROJECT_NAME>",
+    "workItemType": "User Story",
+    "fields": [
+        {
+            "op": "Add",
+            "path": "/fields/System.Title",
+            "value": "Como usuario, quiero iniciar sesión con email y pass."
+        },
+        {
+            "op": "Add",
+            "path": "/fields/System.Description",
+            "value": "<h1>Historia de Usuario</h1><p><b>Como</b> Usuario Administrador<br><b>Quiero</b> Iniciar Sesión<br><b>Para</b> Acceder a mi cuenta de manera segura</p>"
+        },
+        {
+            "op": "Add",
+            "path": "/fields/Microsoft.VSTS.Common.AcceptanceCriteria",
+            "value": "<h3>Escenario 1: Login Exitoso</h3><p><b>Dado</b> que el usuario existe...<br><b>Cuando</b> intenta iniciar sesion...<br><b>Entonces</b> el sistema lo redirige</p>"
+        },
+        {
+            "op": "Add",
+            "path": "/fields/System.AreaPath",
+            "value": "<PROJECT_NAME>\\App\\Frontend"
+        },
+        {
+            "op": "Add",
+            "path": "/fields/System.IterationPath",
+            "value": "<PROJECT_NAME>\\Release 1\\Sprint 1"
+        },
+        {
+            "op": "Add",
+            "path": "/fields/Microsoft.VSTS.Scheduling.StoryPoints",
+            "value": "5"
+        }
+    ]
+}

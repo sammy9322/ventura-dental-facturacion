@@ -1,0 +1,14 @@
+{
+    "theme": "neutral",
+    "themeVariables": {
+        "fontFamily": "\"Merriweather\", serif",
+        "primaryColor": "#f4f4f5",
+        "primaryTextColor": "#18181b",
+        "primaryBorderColor": "#71717a",
+        "lineColor": "#52525b"
+    },
+    "flowchart": {
+        "curve": "linear",
+        "htmlLabels": true
+    }
+}

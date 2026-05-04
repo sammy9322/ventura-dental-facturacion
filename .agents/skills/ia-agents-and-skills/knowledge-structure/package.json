@@ -1,0 +1,15 @@
+{
+    "name": "knowledge-structure",
+    "version": "1.0.0",
+    "description": "Linting and structural validation for docs-as-code",
+    "main": "src/lint.js",
+    "scripts": {
+        "lint": "node src/lint.js",
+        "scaffold": "node src/scaffold.js"
+    },
+    "dependencies": {
+        "glob": "^10.0.0",
+        "markdown-link-check": "^3.11.0",
+        "minimist": "^1.2.8"
+    }
+}

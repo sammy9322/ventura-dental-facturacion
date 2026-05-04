@@ -1,0 +1,13 @@
+{
+    "name": "web-screenshot",
+    "version": "1.0.0",
+    "description": "Puppeteer based screenshot tool",
+    "main": "src/snap.js",
+    "scripts": {
+        "start": "node src/snap.js"
+    },
+    "dependencies": {
+        "puppeteer": "^23.0.0",
+        "minimist": "^1.2.8"
+    }
+}
