@@ -19,8 +19,17 @@ export default function PacienteSearch({ onSelect, selectedPaciente }: Props) {
   useEffect(() => {
     if (selectedPaciente) {
       setQuery(selectedPaciente.nombre);
+    } else {
+      setQuery('');
     }
   }, [selectedPaciente]);
+
+  // Asegurar que el query siempre refleje el paciente seleccionado
+  useEffect(() => {
+    if (selectedPaciente && !query) {
+      setQuery(selectedPaciente.nombre);
+    }
+  }, [selectedPaciente, query]);
 
   // Cerrar al hacer click fuera
   useEffect(() => {
@@ -103,6 +112,7 @@ export default function PacienteSearch({ onSelect, selectedPaciente }: Props) {
           onKeyDown={handleKeyDown}
           onFocus={() => query.length >= 1 && results.length > 0 && setIsOpen(true)}
           autoComplete="off"
+          title={selectedPaciente ? selectedPaciente.nombre : ''}
         />
         {query && (
           <button

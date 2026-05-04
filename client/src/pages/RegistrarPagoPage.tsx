@@ -168,9 +168,19 @@ export default function RegistrarPagoPage() {
             <PacienteSearch onSelect={(p) => { setPaciente(p); setTratamientoPrincipal(null); }} selectedPaciente={paciente} />
 
             {paciente && (
-              <div style={{ marginTop: '1rem', padding: '1rem', background: 'var(--surface-2)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-                <p style={{ fontWeight: 700, color: 'white', marginBottom: '4px' }}>{paciente.nombre}</p>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>DNI: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}</p>
+              <div style={{ 
+                marginTop: '1rem', 
+                padding: '1rem', 
+                background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)', 
+                borderRadius: 'var(--radius)', 
+                border: '2px solid var(--primary-light)',
+                minHeight: '60px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}>
+                <p style={{ fontWeight: 700, color: 'white', marginBottom: '4px', fontSize: '1.1rem' }}>{paciente.nombre}</p>
+                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>DNI: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}</p>
               </div>
             )}
 
