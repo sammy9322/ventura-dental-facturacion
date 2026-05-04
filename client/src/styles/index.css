@@ -215,6 +215,7 @@ body {
   padding: clamp(0.75rem, 2.5vw, 1.5rem);
   max-width: 100%;
   overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .page-header {
