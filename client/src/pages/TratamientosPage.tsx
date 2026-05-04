@@ -249,7 +249,7 @@ export default function TratamientosPage() {
                     <tr key={t.id}>
                       <td>
                         <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>{t.paciente_nombre}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>DNI: {t.paciente_dni || 'N/A'}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Cédula: {t.paciente_dni || 'N/A'}</div>
                       </td>
                       <td>
                         <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{getTipoLabel(t.tipo)}</span>

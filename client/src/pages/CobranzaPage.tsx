@@ -70,7 +70,7 @@ export default function CobranzaPage() {
                     <tr key={t.id}>
                       <td>
                         <div style={{fontWeight: 600, color: 'var(--text-primary)'}}>{t.paciente_nombre}</div>
-                        <div style={{fontSize: '0.75rem', color: 'var(--text-muted)'}}>DNI: {t.paciente_dni}</div>
+                        <div style={{fontSize: '0.75rem', color: 'var(--text-muted)'}}>Cédula: {t.paciente_dni}</div>
                       </td>
                       <td>
                         <div className="badge badge-info">{getTipoLabel(t.tipo)}</div>

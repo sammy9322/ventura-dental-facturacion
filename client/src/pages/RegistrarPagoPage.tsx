@@ -211,7 +211,7 @@ export default function RegistrarPagoPage() {
                 justifyContent: 'center'
               }}>
                 <p style={{ fontWeight: 700, color: 'white', marginBottom: '4px', fontSize: '1.1rem' }}>{paciente.nombre}</p>
-                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>DNI: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}</p>
+                <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>Cédula: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}</p>
               </div>
             )}
 

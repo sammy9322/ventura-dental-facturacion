@@ -106,7 +106,7 @@ export default function PacienteSearch({ onSelect, selectedPaciente }: Props) {
           type="text"
           className="form-input"
           style={{ paddingLeft: '2.5rem', paddingRight: query ? '2.5rem' : '1rem' }}
-          placeholder="Buscar por nombre, DNI o teléfono..."
+          placeholder="Buscar por nombre, cédula o teléfono..."
           value={query}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -144,7 +144,7 @@ export default function PacienteSearch({ onSelect, selectedPaciente }: Props) {
             >
               <div className="search-result-name">{paciente.nombre}</div>
               <div className="search-result-detail">
-                DNI: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}
+                Cédula: {paciente.dni || 'N/A'} | Tel: {paciente.telefono || 'N/A'}
               </div>
             </div>
           ))}

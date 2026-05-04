@@ -113,7 +113,7 @@ export default function CobrosPage() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <User size={16} style={{ color: 'var(--brand-purple-light)' }} />
                         <span style={{ fontWeight: 700, fontSize: '1rem', color: 'white' }}>{pago.paciente_nombre}</span>
-                        {pago.paciente_dni && <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>DNI: {pago.paciente_dni}</span>}
+                        {pago.paciente_dni && <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Cédula: {pago.paciente_dni}</span>}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
                         <Stethoscope size={14} />

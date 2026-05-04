@@ -188,7 +188,7 @@ export default function HistorialPagosPage() {
                           {pago.paciente_nombre}
                         </div>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                          DNI: {pago.paciente_dni || 'N/A'}
+                          Cédula: {pago.paciente_dni || 'N/A'}
                         </div>
                       </td>
                       <td style={{ maxWidth: '200px', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
@@ -252,7 +252,7 @@ export default function HistorialPagosPage() {
                   <div className="detail-item">
                     <span className="detail-label">Paciente</span>
                     <span className="detail-value">{selectedPago.paciente_nombre}</span>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>DNI: {selectedPago.paciente_dni || 'No registrado'}</span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Cédula: {selectedPago.paciente_dni || 'No registrado'}</span>
                   </div>
                   <div className="detail-item">
                     <span className="detail-label">Registrado por</span>

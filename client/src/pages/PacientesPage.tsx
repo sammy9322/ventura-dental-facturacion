@@ -112,7 +112,7 @@ export default function PacientesPage() {
               type="text"
               className="filtro-date"
               style={{ paddingLeft: '2.5rem', width: '100%' }}
-              placeholder="Buscar por nombre, DNI o teléfono..."
+              placeholder="Buscar por nombre, cédula o teléfono..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
@@ -137,7 +137,7 @@ export default function PacientesPage() {
               <thead>
                 <tr>
                   <th>Nombre</th>
-                  <th>DNI</th>
+                  <th>Cédula</th>
                   <th>Teléfono</th>
                   <th>Email</th>
                   <th>Dirección</th>
@@ -190,8 +190,8 @@ export default function PacientesPage() {
           </div>
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">DNI</label>
-              <input type="text" className="form-input" {...form.register('dni')} maxLength={8} placeholder="00000000" />
+              <label className="form-label">Cédula</label>
+              <input type="text" className="form-input" {...form.register('dni')} maxLength={20} placeholder="Número de identificación" />
             </div>
             <div className="form-group">
               <label className="form-label">Teléfono</label>
