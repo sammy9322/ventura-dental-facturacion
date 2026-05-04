@@ -37,6 +37,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Procesos Clínicos', path: '/macro-tratamientos', icon: '⚙️', roles: ['admin'] },
     { name: 'Registro e Historial de pagos', path: '/pagos', icon: '📜', roles: ['admin', 'secretaria'] },
     { name: 'Cierre de Caja', path: '/cierre-caja', icon: '🏦', roles: ['admin', 'secretaria'] },
+    { name: 'Usuarios', path: '/usuarios', icon: '👤', roles: ['admin'] },
     { name: 'Auditoría', path: '/auditoria', icon: '🛡️', roles: ['admin'] },
   ];
 

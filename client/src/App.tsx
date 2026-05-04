@@ -72,6 +72,11 @@ export default function App() {
                 <MacroTratamientosPage />
               </RoleRoute>
             } />
+            <Route path="/usuarios" element={
+              <RoleRoute roles={['admin']}>
+                <UsuariosPage />
+              </RoleRoute>
+            } />
             <Route path="/auditoria" element={
               <RoleRoute roles={['admin']}>
                 <AuditoriaPage />
