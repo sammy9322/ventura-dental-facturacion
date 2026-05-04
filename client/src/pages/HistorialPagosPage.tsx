@@ -56,8 +56,7 @@ export default function HistorialPagosPage() {
     efectivo: '💵',
     tarjeta: '💳',
     transferencia: '🏦',
-    yape: '📱',
-    plin: '📲',
+    sinpe: '📱',
   };
 
   const metodoLabels: Record<MetodoPago, string> = {
