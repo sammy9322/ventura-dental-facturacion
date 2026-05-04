@@ -176,14 +176,14 @@ export default function PacientesPage() {
         title={editingPaciente ? 'Editar Paciente' : 'Nuevo Paciente'}
         footer={
           <>
-            <button className="btn btn-outline" onClick={() => setShowModal(false)}>Cancelar</button>
-            <button className="btn btn-primary" onClick={form.handleSubmit(handleSubmit as any)}>
+            <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>Cancelar</button>
+            <button type="submit" className="btn btn-primary" form="paciente-form">
               {editingPaciente ? 'Guardar Cambios' : 'Crear Paciente'}
             </button>
           </>
         }
       >
-        <form onSubmit={form.handleSubmit(handleSubmit as any)}>
+        <form id="paciente-form" onSubmit={form.handleSubmit(handleSubmit as any)}>
           <div className="form-group">
             <label className="form-label">Nombre Completo *</label>
             <input type="text" className="form-input" {...form.register('nombre')} required placeholder="Nombre completo del paciente" />
