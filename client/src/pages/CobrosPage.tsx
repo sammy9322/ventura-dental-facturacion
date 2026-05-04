@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CheckCircle, Clock, User, Stethoscope, DollarSign, Send, MessageCircle } from 'lucide-react';
-import { Layout, SignaturePad } from '../components';
+import { Layout, SignaturePad, ComprobanteViewer } from '../components';
 import { METODOS_PAGO } from '../types';
-import type { Pago, MetodoPago } from '../types';
+import type { Pago, MetodoPago, Comprobante } from '../types';
 import api from '../services/api';
 
 export default function CobrosPage() {
@@ -14,6 +14,7 @@ export default function CobrosPage() {
   const [enviarEmail, setEnviarEmail] = useState(false);
   const [finalizing, setFinalizing] = useState(false);
   const [doneId, setDoneId] = useState<number | null>(null);
+  const [comprobanteMostrado, setComprobanteMostrado] = useState<Comprobante | null>(null);
 
   const { data: pendientes = [], isLoading } = useQuery<Pago[]>({
     queryKey: ['cobros-pendientes'],
@@ -39,6 +40,11 @@ export default function CobrosPage() {
         enviar_email: enviarEmail,
       });
       setDoneId(selected.id);
+      
+      // Obtener el comprobante generado
+      const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
+      setComprobanteMostrado(comprobanteData.data);
+      
       setSelected(null);
       setFirma('');
       qc.invalidateQueries({ queryKey: ['cobros-pendientes'] });
@@ -234,6 +240,14 @@ export default function CobrosPage() {
           </div>
         )}
       </div>
+
+      {/* Visualizador de Comprobante */}
+      {comprobanteMostrado && (
+        <ComprobanteViewer 
+          comprobante={comprobanteMostrado} 
+          onClose={() => setComprobanteMostrado(null)} 
+        />
+      )}
     </Layout>
   );
 }

@@ -9,15 +9,18 @@ export interface Comprobante {
 
 export async function findByPagoId(pagoId: number) {
   const result = await query(
-    `SELECT c.*, p.monto, p.metodo_pago, p.concepto, p.created_at as pago_fecha,
+    `SELECT c.*, p.monto, p.metodo_pago, p.moneda, p.concepto, p.created_at as pago_fecha,
+            p.firma_dataurl,
             pa.nombre as paciente_nombre, pa.dni as paciente_dni,
             pa.telefono as paciente_telefono, pa.email as paciente_email,
             pa.direccion as paciente_direccion,
-            u.nombre_completo as usuario_nombre
+            d.nombre_completo as doctor_nombre,
+            s.nombre_completo as cajero_nombre
      FROM comprobantes c
      JOIN pagos p ON c.pago_id = p.id
      LEFT JOIN pacientes pa ON p.paciente_id = pa.id
-     LEFT JOIN usuarios u ON p.usuario_id = u.id
+     LEFT JOIN usuarios d ON p.doctor_id = d.id
+     LEFT JOIN usuarios s ON p.secretaria_id = s.id
      WHERE c.pago_id = $1`,
     [pagoId]
   );
@@ -26,15 +29,18 @@ export async function findByPagoId(pagoId: number) {
 
 export async function findByNumero(numero: string) {
   const result = await query(
-    `SELECT c.*, p.monto, p.metodo_pago, p.concepto, p.created_at as pago_fecha,
+    `SELECT c.*, p.monto, p.metodo_pago, p.moneda, p.concepto, p.created_at as pago_fecha,
+            p.firma_dataurl,
             pa.nombre as paciente_nombre, pa.dni as paciente_dni,
             pa.telefono as paciente_telefono, pa.email as paciente_email,
             pa.direccion as paciente_direccion,
-            u.nombre_completo as usuario_nombre
+            d.nombre_completo as doctor_nombre,
+            s.nombre_completo as cajero_nombre
      FROM comprobantes c
      JOIN pagos p ON c.pago_id = p.id
      LEFT JOIN pacientes pa ON p.paciente_id = pa.id
-     LEFT JOIN usuarios u ON p.usuario_id = u.id
+     LEFT JOIN usuarios d ON p.doctor_id = d.id
+     LEFT JOIN usuarios s ON p.secretaria_id = s.id
      WHERE c.numero = $1`,
     [numero]
   );

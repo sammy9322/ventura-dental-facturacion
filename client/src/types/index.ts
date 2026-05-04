@@ -113,6 +113,30 @@ export interface Comprobante {
   pago_id: number;
   numero: string;
   created_at: string;
+  // Datos del pago
+  monto: number;
+  metodo_pago: string;
+  moneda: string;
+  concepto: string;
+  pago_fecha: string;
+  firma_dataurl?: string | null;
+  // Datos del paciente
+  paciente_nombre?: string;
+  paciente_dni?: string;
+  paciente_telefono?: string;
+  paciente_email?: string;
+  paciente_direccion?: string;
+  // Datos del doctor
+  doctor_nombre?: string;
+  // Datos del cajero
+  cajero_nombre?: string;
+  // Datos del negocio
+  negocio?: {
+    nombre: string;
+    ruc: string;
+    direccion: string;
+    telefono: string;
+  };
 }
 
 export interface LoginResponse {
