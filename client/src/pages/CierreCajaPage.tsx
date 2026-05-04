@@ -138,7 +138,7 @@ export default function CierreCajaPage() {
         <div className="card">
           <div className="card-header">
             <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Calculator size={20} color: 'var(--brand-purple)' }}
+              <Calculator size={20} color={'var(--brand-purple)'} />
               Montos Esperados (Sistema)
             </h3>
           </div>
