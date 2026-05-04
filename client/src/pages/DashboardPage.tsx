@@ -41,8 +41,7 @@ export default function DashboardPage() {
     efectivo: 'Efectivo',
     tarjeta: 'Tarjeta',
     transferencia: 'Transf.',
-    yape: 'Yape',
-    plin: 'Plin',
+    sinpe: 'Sinpe Móvil',
   };
 
   return (

@@ -17,7 +17,7 @@ export interface Pago {
   tratamiento_id: number | null;
   monto: number;
   moneda: 'PEN' | 'USD' | 'CRC';
-  metodo_pago: 'efectivo' | 'tarjeta' | 'transferencia' | 'yape' | 'plin' | null;
+  metodo_pago: 'efectivo' | 'tarjeta' | 'transferencia' | 'sinpe' | null;
   concepto: string;
   observaciones: string | null;
   firma_dataurl: string | null;

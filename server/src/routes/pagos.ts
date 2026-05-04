@@ -24,7 +24,7 @@ const createPagoSchema = z.object({
 });
 
 const finalizarSchema = z.object({
-  metodo_pago: z.enum(['efectivo', 'tarjeta', 'transferencia', 'yape', 'plin']),
+  metodo_pago: z.enum(['efectivo', 'tarjeta', 'transferencia', 'sinpe']),
   firma_dataurl: z.string().optional(),
   enviar_email: z.boolean().optional(),
 });

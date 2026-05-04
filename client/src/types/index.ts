@@ -131,14 +131,13 @@ export interface Stats {
   por_metodo: { moneda: TipoMoneda; metodo_pago: string; cantidad: string; total: string }[];
 }
 
-export type MetodoPago = 'efectivo' | 'tarjeta' | 'transferencia' | 'yape' | 'plin';
+export type MetodoPago = 'efectivo' | 'tarjeta' | 'transferencia' | 'sinpe';
 
 export const METODOS_PAGO: { value: MetodoPago; label: string; emoji: string }[] = [
   { value: 'efectivo',      label: 'Efectivo',      emoji: '💵' },
   { value: 'tarjeta',       label: 'Tarjeta',       emoji: '💳' },
   { value: 'transferencia', label: 'Transferencia', emoji: '🏦' },
-  { value: 'yape',          label: 'Yape',          emoji: '📱' },
-  { value: 'plin',          label: 'Plin',          emoji: '📲' },
+  { value: 'sinpe',         label: 'Sinpe Móvil',   emoji: '📱' },
 ];
 
 export const TIPOS_TRATAMIENTO: { value: string; label: string }[] = [

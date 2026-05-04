@@ -64,8 +64,7 @@ export default function HistorialPagosPage() {
     efectivo: 'Efectivo',
     tarjeta: 'Tarjeta',
     transferencia: 'Transferencia',
-    yape: 'Yape',
-    plin: 'Plin',
+    sinpe: 'Sinpe Móvil',
   };
 
   const estadoConfig: Record<string, { label: string; color: string; bg: string }> = {

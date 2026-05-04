@@ -157,7 +157,7 @@ export default function CierreCajaPage() {
               <span className="font-mono">{formatMoney(espTransferencia)}</span>
             </div>
             <div className="stat-row">
-              <span>Otros (Sinpe/Yape/Plin):</span>
+              <span>Otros (Sinpe Móvil):</span>
               <span className="font-mono">{formatMoney(espOtros)}</span>
             </div>
             
