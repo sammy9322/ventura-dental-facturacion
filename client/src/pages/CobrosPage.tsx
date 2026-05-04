@@ -34,21 +34,31 @@ export default function CobrosPage() {
     if (!selected) return;
     setFinalizing(true);
     try {
+      console.log('Finalizando pago...', selected.id);
+      
       await api.put(`/pagos/${selected.id}/finalizar`, {
         metodo_pago: metodo,
         firma_dataurl: firma || undefined,
         enviar_email: enviarEmail,
       });
+      
+      console.log('Pago finalizado, obteniendo comprobante...');
       setDoneId(selected.id);
       
       // Obtener el comprobante generado
-      const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
-      setComprobanteMostrado(comprobanteData.data);
+      try {
+        const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
+        console.log('Comprobante obtenido:', comprobanteData.data);
+        setComprobanteMostrado(comprobanteData.data);
+      } catch (compError) {
+        console.error('Error al obtener comprobante:', compError);
+      }
       
       setSelected(null);
       setFirma('');
       qc.invalidateQueries({ queryKey: ['cobros-pendientes'] });
     } catch (err: any) {
+      console.error('Error al finalizar pago:', err);
       alert(err.response?.data?.error || 'Error al finalizar pago');
     } finally {
       setFinalizing(false);
