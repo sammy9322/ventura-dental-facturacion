@@ -62,28 +62,45 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
       <div 
         className="modal-content" 
-        style={{ maxWidth: '600px', maxHeight: '90vh', overflow: 'auto' }}
+        style={{ background: 'white', borderRadius: '12px', padding: '1.5rem', maxWidth: '600px', maxHeight: '90vh', overflow: 'auto', position: 'relative' }}
         onClick={e => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h2 style={{ margin: 0 }}>Comprobante de Pago</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem' }}>
+          <h2 style={{ margin: 0, color: '#1e293b' }}>Comprobante de Pago</h2>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <button 
-              className="btn btn-outline" 
               onClick={handleDownload}
+              style={{ 
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+              }}
               title="Descargar"
             >
-              <Download size={18} />
+              <Download size={18} /> Descargar
             </button>
             <button 
-              className="btn btn-primary" 
               onClick={handlePrint}
+              style={{ 
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.5rem 1rem', background: '#10b981', color: 'white', 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+              }}
               title="Imprimir"
             >
-              <Printer size={18} />
+              <Printer size={18} /> Imprimir
+            </button>
+            <button 
+              onClick={onClose}
+              style={{ 
+                padding: '0.5rem 1rem', background: '#64748b', color: 'white', 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+              }}
+            >
+              Cerrar
             </button>
           </div>
         </div>
