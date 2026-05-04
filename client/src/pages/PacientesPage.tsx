@@ -61,6 +61,7 @@ export default function PacientesPage() {
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
+    console.log('Submitting data:', data);
     try {
       if (editingPaciente) {
         await pacienteService.update(editingPaciente.id, data as any);
@@ -69,9 +70,9 @@ export default function PacientesPage() {
       }
       setShowModal(false);
       loadPacientes();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error guardando paciente:', error);
-      alert('Error al guardar el paciente');
+      alert('Error al guardar el paciente: ' + (error?.response?.data?.error || error.message));
     }
   };
 
@@ -177,7 +178,7 @@ export default function PacientesPage() {
         footer={
           <>
             <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>Cancelar</button>
-            <button type="submit" className="btn btn-primary" form="paciente-form">
+            <button type="button" className="btn btn-primary" onClick={() => form.handleSubmit(handleSubmit as any)()}>
               {editingPaciente ? 'Guardar Cambios' : 'Crear Paciente'}
             </button>
           </>
