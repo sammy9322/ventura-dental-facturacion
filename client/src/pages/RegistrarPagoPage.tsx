@@ -165,6 +165,37 @@ export default function RegistrarPagoPage() {
               <h3 className="card-title">Datos del Paciente</h3>
             </div>
 
+            {/* Badge persistente del paciente seleccionado - siempre visible */}
+            {paciente && (
+              <div style={{ 
+                marginBottom: '0.75rem',
+                padding: '0.75rem 1rem', 
+                background: 'var(--success)', 
+                borderRadius: 'var(--radius)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontWeight: 600
+              }}>
+                <span style={{ color: 'white' }}>✓ Paciente: {paciente.nombre}</span>
+                <button 
+                  type="button"
+                  onClick={() => { setPaciente(null); setTratamientoPrincipal(null); }}
+                  style={{ 
+                    background: 'rgba(255,255,255,0.2)', 
+                    border: 'none', 
+                    borderRadius: '4px',
+                    color: 'white',
+                    cursor: 'pointer',
+                    padding: '4px 8px',
+                    fontSize: '0.8rem'
+                  }}
+                >
+                  Cambiar
+                </button>
+              </div>
+            )}
+
             <PacienteSearch onSelect={(p) => { setPaciente(p); setTratamientoPrincipal(null); }} selectedPaciente={paciente} />
 
             {paciente && (
