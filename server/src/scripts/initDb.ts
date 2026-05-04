@@ -27,7 +27,7 @@ export async function initDatabase() {
       CREATE TABLE IF NOT EXISTS pacientes (
         id SERIAL PRIMARY KEY,
         nombre VARCHAR(150) NOT NULL,
-        dni VARCHAR(8) UNIQUE,
+        dni VARCHAR(20) UNIQUE,
         telefono VARCHAR(20),
         email VARCHAR(100),
         direccion TEXT,
@@ -37,6 +37,15 @@ export async function initDatabase() {
       )
     `);
     console.log('✓ Tabla pacientes creada');
+    
+    // Actualizar columna dni si existe con longitud menor a 20
+    try {
+      await client.query(`ALTER TABLE pacientes ALTER COLUMN dni TYPE VARCHAR(20)`);
+      console.log('✓ Columna dni actualizada a VARCHAR(20)');
+    } catch (e) {
+      // La columna ya tiene el tamaño correcto o no existe la tabla
+    }
+
     console.log('✓ Tabla pacientes creada');
 
     // ── Tabla tratamientos_macro ─────────────────────────────────────
