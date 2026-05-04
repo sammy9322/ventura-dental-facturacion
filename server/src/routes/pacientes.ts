@@ -115,9 +115,19 @@ router.post('/', async (req: AuthRequest, res: Response) => {
 router.put('/:id', async (req: AuthRequest, res: Response) => {
   try {
     const id = parseInt(req.params.id);
-    const data = updatePacienteSchema.parse(req.body);
+    const rawData = updatePacienteSchema.parse(req.body);
+    
+    // Filtrar solo campos definidos (no undefined) para el modelo
+    const data: Record<string, unknown> = {};
+    if (rawData.nombre !== undefined) data.nombre = rawData.nombre;
+    if (rawData.dni !== undefined) data.dni = rawData.dni === '' ? null : rawData.dni;
+    if (rawData.telefono !== undefined) data.telefono = rawData.telefono === '' ? null : rawData.telefono;
+    if (rawData.email !== undefined) data.email = rawData.email === '' ? null : rawData.email;
+    if (rawData.direccion !== undefined) data.direccion = rawData.direccion === '' ? null : rawData.direccion;
+    if (rawData.activo !== undefined) data.activo = rawData.activo;
+    
     console.log('Update paciente data:', data);
-    const paciente = await pacienteModel.update(id, data);
+    const paciente = await pacienteModel.update(id, data as any);
     if (!paciente) {
       return res.status(404).json({ error: 'Paciente no encontrado' });
     }
