@@ -68,10 +68,10 @@ export async function create(data: {
 
 export async function update(id: number, data: {
   nombre?: string;
-  dni?: string;
-  telefono?: string;
-  email?: string;
-  direccion?: string;
+  dni?: string | null;
+  telefono?: string | null;
+  email?: string | null;
+  direccion?: string | null;
   activo?: boolean;
 }) {
   const fields: string[] = [];
