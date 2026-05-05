@@ -36,6 +36,7 @@ export interface DetallePagoItem {
   observaciones?: string;
   monto: number;
   es_cuota_principal: boolean;
+  macro_nombre?: string;
 }
 
 export interface Pago {
