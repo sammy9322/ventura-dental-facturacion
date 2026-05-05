@@ -30,7 +30,7 @@ export default function CobrosPage() {
   const formatDate = (d: string) =>
     new Date(d).toLocaleString('es-PE', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 
-  const handleFinalizar = async () => {
+const handleFinalizar = async () => {
     if (!selected) return;
     setFinalizing(true);
     try {
@@ -49,13 +49,21 @@ export default function CobrosPage() {
       try {
         const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
         console.log('Comprobante obtenido:', comprobanteData.data);
+        
+        // Primero mostrar el comprobante, luego limpiar el seleccionado
         setComprobanteMostrado(comprobanteData.data);
+        
+        // Limpiar después de un pequeño delay para que se muestre el modal
+        setTimeout(() => {
+          setSelected(null);
+          setFirma('');
+        }, 100);
       } catch (compError) {
         console.error('Error al obtener comprobante:', compError);
+        setSelected(null);
+        setFirma('');
       }
       
-      setSelected(null);
-      setFirma('');
       qc.invalidateQueries({ queryKey: ['cobros-pendientes'] });
     } catch (err: any) {
       console.error('Error al finalizar pago:', err);
