@@ -108,6 +108,17 @@ export interface Tratamiento {
   macro_nombre?: string;
 }
 
+export interface DetallePagoItem {
+  id: number;
+  tratamiento_macro_id?: number;
+  tratamiento_micro_id?: number;
+  descripcion: string;
+  observaciones?: string;
+  monto: number;
+  es_cuota_principal: boolean;
+  macro_nombre?: string;
+}
+
 export interface Comprobante {
   id: number;
   pago_id: number;
@@ -130,6 +141,12 @@ export interface Comprobante {
   doctor_nombre?: string;
   // Datos del cajero
   cajero_nombre?: string;
+  // Datos del tratamiento
+  tratamiento_monto_total?: number;
+  tratamiento_monto_pagado?: number;
+  tratamiento_tipo?: string;
+  // Detalles del pago
+  detalles?: DetallePagoItem[];
   // Datos del negocio
   negocio?: {
     nombre: string;
