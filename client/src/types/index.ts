@@ -108,17 +108,6 @@ export interface Tratamiento {
   macro_nombre?: string;
 }
 
-export interface DetallePagoItem {
-  id: number;
-  tratamiento_macro_id?: number;
-  tratamiento_micro_id?: number;
-  descripcion: string;
-  observaciones?: string;
-  monto: number;
-  es_cuota_principal: boolean;
-  macro_nombre?: string;
-}
-
 export interface Comprobante {
   id: number;
   pago_id: number;
