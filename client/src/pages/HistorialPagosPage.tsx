@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PlusCircle, Eye, Calendar, Filter, X } from 'lucide-react';
+import { PlusCircle, Eye, Calendar, Filter, X, Printer } from 'lucide-react';
 import { pagoService } from '../services';
-import { Layout } from '../components';
-import type { Pago, MetodoPago } from '../types';
+import { Layout, ComprobanteViewer } from '../components';
+import type { Pago, MetodoPago, Comprobante } from '../types';
+import api from '../services/api';
 
 export default function HistorialPagosPage() {
   const [pagos, setPagos] = useState<Pago[]>([]);
@@ -14,6 +15,21 @@ export default function HistorialPagosPage() {
     estado: '',
   });
   const [selectedPago, setSelectedPago] = useState<Pago | null>(null);
+  const [comprobanteMostrado, setComprobanteMostrado] = useState<Comprobante | null>(null);
+  const [imprimiendoId, setImprimiendoId] = useState<number | null>(null);
+
+  const handleReimprimir = async (pagoId: number) => {
+    setImprimiendoId(pagoId);
+    try {
+      const comprobanteData = await api.get<Comprobante>(`/comprobantes/${pagoId}`);
+      setComprobanteMostrado(comprobanteData.data);
+    } catch (error) {
+      console.error('Error al obtener comprobante:', error);
+      alert('Error al obtener el comprobante');
+    } finally {
+      setImprimiendoId(null);
+    }
+  };
 
   useEffect(() => {
     loadPagos();
@@ -218,6 +234,17 @@ export default function HistorialPagosPage() {
                         </span>
                       </td>
                       <td style={{ textAlign: 'right' }}>
+                        {pago.estado === 'completado' && (
+                          <button
+                            className="btn btn-outline btn-sm"
+                            style={{ marginRight: '0.5rem', borderColor: '#3b82f6', color: '#3b82f6' }}
+                            onClick={() => handleReimprimir(pago.id)}
+                            disabled={imprimiendoId === pago.id}
+                            title="Reimprimir comprobante"
+                          >
+                            <Printer size={14} />
+                          </button>
+                        )}
                         <button
                           className="btn btn-outline btn-sm"
                           onClick={() => setSelectedPago(pago)}
@@ -308,12 +335,31 @@ export default function HistorialPagosPage() {
               )}
             </div>
             <div className="modal-footer">
+              {selectedPago?.estado === 'completado' && (
+                <button 
+                  className="btn btn-primary" 
+                  style={{ marginRight: 'auto' }}
+                  onClick={() => handleReimprimir(selectedPago.id)}
+                  disabled={imprimiendoId === selectedPago.id}
+                >
+                  <Printer size={16} /> Reimprimir Comprobante
+                </button>
+              )}
               <button className="btn btn-outline" onClick={() => setSelectedPago(null)}>
                 Cerrar
               </button>
             </div>
           </div>
         </div>
+      )}
+      </div>
+
+      {/* Visualizador de Comprobante */}
+      {comprobanteMostrado && (
+        <ComprobanteViewer 
+          comprobante={comprobanteMostrado} 
+          onClose={() => setComprobanteMostrado(null)} 
+        />
       )}
     </Layout>
   );
