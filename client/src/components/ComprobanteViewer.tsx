@@ -34,70 +34,109 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
     return labels[metodo] || metodo;
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handlePrint = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      window.print();
+    } catch (err) {
+      console.error('Error al imprimir:', err);
+    }
   };
 
-  const handleDownload = () => {
-    const printContent = document.getElementById('comprobante-content');
-    if (!printContent) return;
-    
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
-    
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Comprobante de Pago #${comprobante.numero}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            @media print { body { padding: 0; } }
-          </style>
-        </head>
-        <body>${printContent.innerHTML}</body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.print();
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const printContent = document.getElementById('comprobante-content');
+      if (!printContent) {
+        alert('No se encontró el contenido para imprimir');
+        return;
+      }
+      
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+      if (!printWindow) {
+        alert('Por favor permite las ventanas emergentes para descargar el comprobante');
+        return;
+      }
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Comprobante de Pago #${comprobante.numero}</title>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+              @media print { body { padding: 0; } }
+            </style>
+          </head>
+          <body>${printContent.innerHTML}</body>
+        </html>
+      `);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+      }, 500);
+    } catch (err) {
+      console.error('Error al descargar:', err);
+      alert('Error al generar el comprobante');
+    }
+  };
+
+  const handleClose = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    onClose();
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9998 }}>
       <div 
         className="modal-content" 
-        style={{ background: 'white', borderRadius: '12px', padding: '1.5rem', maxWidth: '600px', maxHeight: '90vh', overflow: 'auto', position: 'relative' }}
+        style={{ background: 'white', borderRadius: '12px', padding: '1.5rem', maxWidth: '600px', maxHeight: '90vh', overflow: 'auto', position: 'relative', zIndex: 9999 }}
         onClick={e => e.stopPropagation()}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem' }}>
           <h2 style={{ margin: 0, color: '#1e293b' }}>Comprobante de Pago</h2>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', zIndex: 10000 }}>
             <button 
+              type="button"
               onClick={handleDownload}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', 
-                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
               title="Descargar"
             >
               <Download size={18} /> Descargar
             </button>
             <button 
+              type="button"
               onClick={handlePrint}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.5rem 1rem', background: '#10b981', color: 'white', 
-                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
               title="Imprimir"
             >
               <Printer size={18} /> Imprimir
             </button>
             <button 
-              onClick={onClose}
+              type="button"
+              onClick={handleClose}
               style={{ 
                 padding: '0.5rem 1rem', background: '#64748b', color: 'white', 
-                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 
+                border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
             >
               Cerrar
