@@ -46,25 +46,17 @@ const handleFinalizar = async () => {
       setDoneId(selected.id);
       
       // Obtener el comprobante generado
-      try {
-        const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
-        console.log('Comprobante obtenido:', comprobanteData.data);
-        
-        // Primero mostrar el comprobante, luego limpiar el seleccionado
-        setComprobanteMostrado(comprobanteData.data);
-        
-        // Limpiar después de un pequeño delay para que se muestre el modal
-        setTimeout(() => {
-          setSelected(null);
-          setFirma('');
-        }, 100);
-      } catch (compError) {
-        console.error('Error al obtener comprobante:', compError);
-        setSelected(null);
-        setFirma('');
-      }
+      const comprobanteData = await api.get<Comprobante>(`/comprobantes/${selected.id}`);
+      console.log('Comprobante obtenido:', comprobanteData.data);
       
+      // IMPORTANTE: Primero setSelected(null), luego mostrar el modal
+      setSelected(null);
+      setFirma('');
       qc.invalidateQueries({ queryKey: ['cobros-pendientes'] });
+      
+      // Mostrar el comprobante DESPUÉS de limpiar el seleccionado
+      setComprobanteMostrado(comprobanteData.data);
+      
     } catch (err: any) {
       console.error('Error al finalizar pago:', err);
       alert(err.response?.data?.error || 'Error al finalizar pago');
