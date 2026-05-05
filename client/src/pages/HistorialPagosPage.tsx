@@ -352,8 +352,6 @@ export default function HistorialPagosPage() {
           </div>
         </div>
       )}
-      </div>
-
       {/* Visualizador de Comprobante */}
       {comprobanteMostrado && (
         <ComprobanteViewer 
