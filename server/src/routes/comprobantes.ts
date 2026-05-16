@@ -33,7 +33,7 @@ router.get('/numero/:numero', async (req: AuthRequest, res: Response) => {
 router.get('/:pagoId', async (req: AuthRequest, res: Response) => {
   try {
     const pagoId = parseInt(req.params.pagoId);
-    const comprobante = await comprobanteModel.findByPagoId(pagoId);
+    const comprobante = await comprobanteModel.ensureComprobanteExists(pagoId);
     
     if (!comprobante) {
       return res.status(404).json({ error: 'Comprobante no encontrado' });
