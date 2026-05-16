@@ -12,6 +12,7 @@ import { useToast } from '../hooks/useToast';
 export default function TratamientosPage() {
   const [tratamientos, setTratamientos] = useState<Tratamiento[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
   const [showModal, setShowModal] = useState(false);
   const [editingTratamiento, setEditingTratamiento] = useState<Tratamiento | null>(null);
   const [macroTratamientos, setMacroTratamientos] = useState<TratamientoMacro[]>([]);

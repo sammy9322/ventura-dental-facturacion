@@ -10,6 +10,7 @@ import { useToast } from '../hooks/useToast';
 export default function HistorialPagosPage() {
   const [pagos, setPagos] = useState<Pago[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
   const [filters, setFilters] = useState({
     fechaDesde: '',
     fechaHasta: '',

@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
+  const { toast } = useToast();
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
     return `${simbolo} ${monto.toLocaleString('es-CR', { minimumFractionDigits: 2 })}`;

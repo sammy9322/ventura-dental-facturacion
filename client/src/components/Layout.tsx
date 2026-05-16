@@ -1,5 +1,5 @@
 import React from 'react';
-import ToastContainer from './Toast';
+import { ToastContainer } from './Toast';
 
 interface Props { children: React.ReactNode }
 

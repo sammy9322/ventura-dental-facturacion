@@ -9,6 +9,7 @@ import { useToast } from '../hooks/useToast';
 
 export default function CobrosPage() {
   const qc = useQueryClient();
+  const { toast } = useToast();
   const [selected, setSelected] = useState<Pago | null>(null);
   const [metodo, setMetodo] = useState<MetodoPago>('efectivo');
   const [firma, setFirma] = useState('');
