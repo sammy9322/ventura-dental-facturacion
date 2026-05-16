@@ -98,50 +98,25 @@ export async function ensureComprobanteExists(pagoId: number) {
   try {
     await client.query('BEGIN');
     
-    const existing = await client.query('SELECT id FROM comprobantes WHERE pago_id = $1', [pagoId]);
+    const existing = await client.query(
+      `SELECT c.id, c.pago_id, c.numero, c.created_at
+       FROM comprobantes c WHERE c.pago_id = $1`,
+      [pagoId]
+    );
+    
     if (existing.rows.length > 0) {
       await client.query('COMMIT');
-      
-      const result = await client.query(
-        `SELECT c.*, p.monto, p.metodo_pago, p.moneda, p.concepto, p.created_at as pago_fecha,
-                p.firma_dataurl,
-                pa.nombre as paciente_nombre, pa.dni as paciente_dni,
-                pa.telefono as paciente_telefono, pa.email as paciente_email,
-                pa.direccion as paciente_direccion,
-                d.nombre_completo as doctor_nombre,
-                s.nombre_completo as cajero_nombre,
-                t.monto_total as tratamiento_monto_total,
-                t.monto_pagado as tratamiento_monto_pagado,
-                t.tipo as tratamiento_tipo
-         FROM comprobantes c
-         JOIN pagos p ON c.pago_id = p.id
-         LEFT JOIN pacientes pa ON p.paciente_id = pa.id
-         LEFT JOIN usuarios d ON p.doctor_id = d.id
-         LEFT JOIN usuarios s ON p.secretaria_id = s.id
-         LEFT JOIN tratamientos t ON p.tratamiento_id = t.id
-         WHERE c.pago_id = $1`,
-        [pagoId]
-      );
-      
-      const comprobante = result.rows[0];
-      if (!comprobante) return null;
-      
-      const detallesResult = await client.query(
-        `SELECT dp.*, tm.nombre as macro_nombre
-         FROM detalle_pago dp
-         LEFT JOIN tratamiento_macro tm ON dp.tratamiento_macro_id = tm.id
-         WHERE dp.pago_id = $1
-         ORDER BY dp.es_cuota_principal DESC, dp.id ASC`,
-        [pagoId]
-      );
-      
-      comprobante.detalles = detallesResult.rows;
-      return comprobante;
+      client.release();
+      return await findByPagoId(pagoId);
     }
     
-    const pagoResult = await client.query("SELECT id, estado FROM pagos WHERE id = $1 AND estado = 'completado'", [pagoId]);
+    const pagoResult = await client.query(
+      "SELECT id FROM pagos WHERE id = $1 AND estado = 'completado'",
+      [pagoId]
+    );
     if (pagoResult.rows.length === 0) {
       await client.query('ROLLBACK');
+      client.release();
       return null;
     }
     
@@ -159,14 +134,14 @@ export async function ensureComprobanteExists(pagoId: number) {
     const numero = `${anio}-${String(ultimo_numero).padStart(4, '0')}`;
 
     await client.query('INSERT INTO comprobantes (pago_id, numero) VALUES ($1, $2)', [pagoId, numero]);
-    
     await client.query('COMMIT');
+    client.release();
+    
     return await findByPagoId(pagoId);
   } catch (error) {
-    await client.query('ROLLBACK');
-    throw error;
-  } finally {
+    try { await client.query('ROLLBACK'); } catch {}
     client.release();
+    throw error;
   }
 }
 
