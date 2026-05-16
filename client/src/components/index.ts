@@ -4,3 +4,4 @@ export { default as PacienteSearch } from './PacienteSearch';
 export { default as SignaturePad } from './SignaturePad';
 export { default as ComprobanteViewer } from './ComprobanteViewer';
 export { ErrorBoundary } from './ErrorBoundary';
+export { Toast, ToastContainer } from './Toast';

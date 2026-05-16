@@ -4,6 +4,7 @@ import { Search, UserPlus, Pencil, Trash2 } from 'lucide-react';
 import { pacienteService } from '../services';
 import { Layout, Modal } from '../components';
 import type { Paciente } from '../types';
+import { useToast } from '../hooks/useToast';
 
 export default function PacientesPage() {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -11,6 +12,7 @@ export default function PacientesPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingPaciente, setEditingPaciente] = useState<Paciente | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const { toast } = useToast();
 
   const form = useForm({
     defaultValues: { nombre: '', dni: '', telefono: '', email: '', direccion: '' },
@@ -72,7 +74,7 @@ export default function PacientesPage() {
       loadPacientes();
     } catch (error: any) {
       console.error('Error guardando paciente:', error);
-      alert('Error al guardar el paciente: ' + (error?.response?.data?.error || error.message));
+      toast.error('Error al guardar el paciente: ' + (error?.response?.data?.error || error.message));
     }
   };
 

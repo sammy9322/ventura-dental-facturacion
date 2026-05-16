@@ -5,6 +5,7 @@ import { tratamientoService, tratamientoMacroService } from '../services';
 import { Layout, Modal, PacienteSearch } from '../components';
 import type { Tratamiento, Paciente, TratamientoMacro } from '../types';
 import { TIPOS_TRATAMIENTO as TIPOS_EXT } from '../types';
+import { useToast } from '../hooks/useToast';
 
 // Eliminamos la lista estática TIPOS_TRATAMIENTO
 
@@ -93,7 +94,7 @@ export default function TratamientosPage() {
   };
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    if (!selectedPaciente) { alert('Seleccione un paciente'); return; }
+    if (!selectedPaciente) { toast.warning('Seleccione un paciente'); return; }
     try {
       const macroSeleccionado = macroTratamientos.find(m => m.nombre === data.tipo);
       

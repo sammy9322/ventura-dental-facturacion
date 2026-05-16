@@ -14,9 +14,11 @@ import {
 } from 'lucide-react';
 import { Layout } from '../components';
 import { cierreCajaService } from '../services';
+import { useToast } from '../hooks/useToast';
 
 export default function CierreCajaPage() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
   
   // Estados para montos reales (lo que cuenta la secretaria)
@@ -44,10 +46,10 @@ export default function CierreCajaPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cierrePreview'] });
       queryClient.invalidateQueries({ queryKey: ['cierreHistory'] });
-      alert('Cierre de caja guardado con éxito');
+      toast.success('Cierre de caja guardado con éxito');
     },
     onError: (error: any) => {
-      alert('Error al guardar el cierre: ' + (error.response?.data?.error || error.message));
+      toast.error('Error al guardar el cierre: ' + (error.response?.data?.error || error.message));
     }
   });
 

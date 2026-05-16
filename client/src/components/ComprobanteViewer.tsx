@@ -2,6 +2,7 @@ import { Printer, Download } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
+import { useToast } from '../hooks/useToast';
 
 interface Props {
   comprobante: Comprobante;
@@ -196,7 +197,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       doc.save(`Comprobante_Ventura_${comprobante.numero}.pdf`);
     } catch (err) {
       console.error('Error al generar PDF:', err);
-      alert('Error al generar el PDF. Por favor use el botón de imprimir.');
+      toast.error('Error al generar el PDF. Por favor use el botón de imprimir.');
     }
   };
 

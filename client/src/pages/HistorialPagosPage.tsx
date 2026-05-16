@@ -5,6 +5,7 @@ import { pagoService } from '../services';
 import { Layout, ComprobanteViewer } from '../components';
 import type { Pago, MetodoPago, Comprobante } from '../types';
 import api from '../services/api';
+import { useToast } from '../hooks/useToast';
 
 export default function HistorialPagosPage() {
   const [pagos, setPagos] = useState<Pago[]>([]);
@@ -21,11 +22,22 @@ export default function HistorialPagosPage() {
   const handleReimprimir = async (pagoId: number) => {
     setImprimiendoId(pagoId);
     try {
-      const comprobanteData = await api.get<Comprobante>(`/comprobantes/${pagoId}`);
+      let comprobanteData;
+      const maxRetries = 2;
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          comprobanteData = await api.get<Comprobante>(`/comprobantes/${pagoId}`);
+          break;
+        } catch (err) {
+          if (attempt === maxRetries) throw err;
+          await new Promise(r => setTimeout(r, 500));
+        }
+      }
       setComprobanteMostrado(comprobanteData.data);
     } catch (error) {
       console.error('Error al obtener comprobante:', error);
-      alert('Error al obtener el comprobante');
+      // TODO: toast.error('Error al obtener el comprobante')
+      toast.error('Error al obtener el comprobante');
     } finally {
       setImprimiendoId(null);
     }

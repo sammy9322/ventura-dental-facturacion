@@ -5,6 +5,7 @@ import { Layout, SignaturePad, ComprobanteViewer } from '../components';
 import { METODOS_PAGO } from '../types';
 import type { Pago, MetodoPago, Comprobante } from '../types';
 import api from '../services/api';
+import { useToast } from '../hooks/useToast';
 
 export default function CobrosPage() {
   const qc = useQueryClient();
@@ -59,7 +60,8 @@ const handleFinalizar = async () => {
       
     } catch (err: any) {
       console.error('Error al finalizar pago:', err);
-      alert(err.response?.data?.error || 'Error al finalizar pago');
+      // TODO: toast.error(err.response?.data?.error || 'Error al finalizar pago')
+      toast.error(err.response?.data?.error || 'Error al finalizar pago');
     } finally {
       setFinalizing(false);
     }

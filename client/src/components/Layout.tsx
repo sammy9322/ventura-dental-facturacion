@@ -1,4 +1,5 @@
 import React from 'react';
+import ToastContainer from './Toast';
 
 interface Props { children: React.ReactNode }
 
@@ -7,5 +8,10 @@ interface Props { children: React.ReactNode }
  * Este componente solo retorna sus hijos para evitar duplicidad de Sidebar.
  */
 export default function Layout({ children }: Props) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <ToastContainer />
+    </>
+  );
 }

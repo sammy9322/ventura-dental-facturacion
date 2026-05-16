@@ -26,44 +26,61 @@ router.get('/numero/:numero', async (req: AuthRequest, res: Response) => {
     });
   } catch (error) {
     console.error('Get comprobante by numero error:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: 'Error en el servidor', detail: (error as Error).message });
   }
 });
 
 router.get('/:pagoId', async (req: AuthRequest, res: Response) => {
   try {
     const pagoId = parseInt(req.params.pagoId);
-    const comprobante = await comprobanteModel.ensureComprobanteExists(pagoId);
-    
-    if (!comprobante) {
-      return res.status(404).json({ error: 'Comprobante no encontrado' });
+
+    if (isNaN(pagoId)) {
+      return res.status(400).json({ error: 'ID de pago inválido' });
     }
-    
-    res.json({
-      ...comprobante,
-      negocio: {
-        nombre: config.business.name,
-        ruc: config.business.ruc,
-        direccion: config.business.address,
-        telefono: config.business.phone,
-      },
-    });
+
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const comprobante = await comprobanteModel.ensureComprobanteExists(pagoId);
+
+        if (!comprobante) {
+          return res.status(404).json({ error: 'Comprobante no encontrado' });
+        }
+
+        return res.json({
+          ...comprobante,
+          negocio: {
+            nombre: config.business.name,
+            ruc: config.business.ruc,
+            direccion: config.business.address,
+            telefono: config.business.phone,
+          },
+        });
+      } catch (innerError) {
+        console.warn(`Attempt ${attempt} failed for pagoId ${pagoId}:`, innerError);
+        if (attempt < maxAttempts) {
+          await new Promise((resolve) => setTimeout(resolve, 500 * attempt));
+        } else {
+          throw innerError;
+        }
+      }
+    }
   } catch (error) {
     console.error('Get comprobante error:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: 'Error en el servidor', detail: (error as Error).message });
   }
 });
 
 router.get('/', async (req: AuthRequest, res: Response) => {
   try {
-    const limit = parseInt(req.query.limit as string) || 50;
+    const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const offset = parseInt(req.query.offset as string) || 0;
-    
+
     const comprobantes = await comprobanteModel.getAll(limit, offset);
     res.json(comprobantes);
   } catch (error) {
     console.error('Get comprobantes error:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
+    res.status(500).json({ error: 'Error en el servidor', detail: (error as Error).message });
   }
 });
 

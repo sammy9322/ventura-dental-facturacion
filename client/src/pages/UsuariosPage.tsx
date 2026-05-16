@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { authService } from '../services';
 import { Layout, Modal } from '../components';
 import type { Usuario } from '../types';
+import { useToast } from '../hooks/useToast';
 
 export default function UsuariosPage() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
   const [showModal, setShowModal] = useState(false);
   const [editingUsuario, setEditingUsuario] = useState<Usuario | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -78,7 +80,7 @@ export default function UsuariosPage() {
       loadUsuarios();
     } catch (error) {
       console.error('Error guardando usuario:', error);
-      alert('Error al guardar el usuario');
+      toast.error('Error al guardar el usuario');
     }
   };
 
@@ -122,7 +124,7 @@ export default function UsuariosPage() {
       });
       setShowPasswordModal(false);
       setPasswordData({ newPassword: '', confirmPassword: '' });
-      alert('Contraseña actualizada correctamente');
+      toast.success('Contraseña actualizada correctamente');
     } catch (error) {
       console.error('Error cambiando contraseña:', error);
       setPasswordError('Error al cambiar la contraseña');
