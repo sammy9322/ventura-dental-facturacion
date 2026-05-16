@@ -95,6 +95,7 @@ export async function getUltimoNumero() {
 
 export async function ensureComprobanteExists(pagoId: number) {
   const client = await getClient();
+  let released = false;
   try {
     await client.query('BEGIN');
     
@@ -106,6 +107,7 @@ export async function ensureComprobanteExists(pagoId: number) {
     
     if (existing.rows.length > 0) {
       await client.query('COMMIT');
+      released = true;
       client.release();
       return await findByPagoId(pagoId);
     }
@@ -116,6 +118,7 @@ export async function ensureComprobanteExists(pagoId: number) {
     );
     if (pagoResult.rows.length === 0) {
       await client.query('ROLLBACK');
+      released = true;
       client.release();
       return null;
     }
@@ -135,12 +138,15 @@ export async function ensureComprobanteExists(pagoId: number) {
 
     await client.query('INSERT INTO comprobantes (pago_id, numero) VALUES ($1, $2)', [pagoId, numero]);
     await client.query('COMMIT');
+    released = true;
     client.release();
     
     return await findByPagoId(pagoId);
   } catch (error) {
-    try { await client.query('ROLLBACK'); } catch {}
-    client.release();
+    if (!released) {
+      try { await client.query('ROLLBACK'); } catch {}
+      client.release();
+    }
     throw error;
   }
 }
