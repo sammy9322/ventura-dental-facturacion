@@ -109,7 +109,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
               onClick={handleDownload}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', 
+                padding: '0.5rem 1rem', background: '###6###6B46C1', color: 'white', 
                 border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
                 pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
