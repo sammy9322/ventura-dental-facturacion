@@ -36,9 +36,9 @@ export async function findByPagoId(pagoId: number) {
   const detallesResult = await query(
     `SELECT dp.*, tm.nombre as macro_nombre
      FROM detalle_pago dp
-     LEFT JOIN tratamiento_macro tm ON dp.tratamiento_macro_id = tm.id
-     WHERE dp.pago_id = $1
-     ORDER BY dp.es_cuota_principal DESC, dp.id ASC`,
+      LEFT JOIN tratamientos_macro tm ON dp.tratamiento_macro_id = tm.id
+      WHERE dp.pago_id = $1
+      ORDER BY dp.es_cuota_principal DESC, dp.id ASC`,
     [pagoId]
   );
   
@@ -76,7 +76,7 @@ export async function findByNumero(numero: string) {
   const detallesResult = await query(
     `SELECT dp.*, tm.nombre as macro_nombre
      FROM detalle_pago dp
-     LEFT JOIN tratamiento_macro tm ON dp.tratamiento_macro_id = tm.id
+     LEFT JOIN tratamientos_macro tm ON dp.tratamiento_macro_id = tm.id
      WHERE dp.pago_id = $1
      ORDER BY dp.es_cuota_principal DESC, dp.id ASC`,
     [comprobante.pago_id]
