@@ -28,7 +28,7 @@ export default function CobrosPage() {
   };
 
   const formatDate = (d: string) =>
-    new Date(d).toLocaleString('es-PE', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    new Date(d).toLocaleString('es-CR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 
 const handleFinalizar = async () => {
     if (!selected) return;
@@ -72,7 +72,7 @@ const handleFinalizar = async () => {
       `en Ventura Dental ha sido registrado. ¡Gracias por su confianza!`
     );
     const tel = pago.paciente_telefono?.replace(/\D/g, '') ?? '';
-    return `https://wa.me/51${tel}?text=${msg}`;
+    return `https://wa.me/506${tel}?text=${msg}`;
   };
 
   return (

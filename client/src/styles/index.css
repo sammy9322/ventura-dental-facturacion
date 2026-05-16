@@ -10,15 +10,15 @@
   --brand-purple:           #613192;
   --brand-purple-light:    #8B5FC7;
   --brand-purple-glow:     rgba(97,49,146,0.20);
-  --brand-turquoise:       #53b8c9;
-  --brand-turquoise-light: #7dd3e2;
+  --brand-turquoise:       #00BCD4;
+  --brand-turquoise-light: #4DD0E1;
   --brand-white:           #FFFFFF;
 
   /* Aliases for compatibility */
   --primary:       #613192;
   --primary-dark:  #4A2874;
   --primary-light: #8B5FC7;
-  --accent:       #53b8c9;
+  --accent:       #00BCD4;
   --warning:      #f59e0b;
   --danger:       #ef4444;
 
