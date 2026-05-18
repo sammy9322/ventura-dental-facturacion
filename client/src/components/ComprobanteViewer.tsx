@@ -66,10 +66,11 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       setDescargando(true);
       
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 3, // Calidad retina ultra-alta (300 DPI)
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
+        imageTimeout: 0,
       });
       
       const imgData = canvas.toDataURL('image/png');
@@ -268,14 +269,14 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           )}
 
           {/* Total */}
-          <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
+          <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #bfdbfe' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 700, fontSize: '1rem' }}>TOTAL PAGADO</span>
-              <span style={{ fontWeight: 800, fontSize: '1.5rem', color: '#1e40af' }}>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem', color: '#1e293b' }}>TOTAL PAGADO</span>
+              <span style={{ fontWeight: 900, fontSize: '1.6rem', color: '#1e40af' }}>
                 {formatCurrency(comprobante.monto, comprobante.moneda)}
               </span>
             </div>
-            <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#64748b' }}>
+            <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#1e293b', fontWeight: 600 }}>
               Método de pago: {getMetodoLabel(comprobante.metodo_pago)}
             </div>
           </div>
@@ -283,13 +284,15 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Firma del paciente */}
           {comprobante.firma_dataurl && (
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <div style={{ borderTop: '1px solid #94a3b8', paddingTop: '1rem', margin: '0 2rem' }}>
-                <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
-                <img 
-                  src={comprobante.firma_dataurl} 
-                  alt="Firma del paciente" 
-                  style={{ maxWidth: '200px', maxHeight: '80px' }}
-                />
+              <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
+                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                  <img 
+                    src={comprobante.firma_dataurl} 
+                    alt="Firma del paciente" 
+                    style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', backgroundColor: '#ffffff' }}
+                  />
+                </div>
               </div>
             </div>
           )}
