@@ -61,8 +61,8 @@ const handleFinalizar = async () => {
       
     } catch (err: any) {
       console.error('Error al finalizar pago:', err);
-      // TODO: toast.error(err.response?.data?.error || 'Error al finalizar pago')
-      toast.error(err.response?.data?.error || 'Error al finalizar pago');
+      // Mostrar mensaje de error al usuario con detalle si existe
+      toast.error(err?.response?.data?.error || 'Error al finalizar pago');
     } finally {
       setFinalizing(false);
     }

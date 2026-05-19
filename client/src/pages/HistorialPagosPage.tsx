@@ -37,7 +37,7 @@ export default function HistorialPagosPage() {
       setComprobanteMostrado(comprobanteData.data);
     } catch (error) {
       console.error('Error al obtener comprobante:', error);
-      // TODO: toast.error('Error al obtener el comprobante')
+      // Mostrar mensaje de error al usuario
       toast.error('Error al obtener el comprobante');
     } finally {
       setImprimiendoId(null);

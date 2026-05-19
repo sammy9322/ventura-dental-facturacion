@@ -268,6 +268,7 @@ body {
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--brand-purple);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -277,6 +278,7 @@ body {
 
 .card:hover {
   border-color: var(--border-strong);
+  border-left-color: var(--brand-purple-light);
 }
 
 /* Bento utility cards */
@@ -501,15 +503,15 @@ body {
 }
 
 .table th {
-  background: transparent;
+  background: var(--surface-hover);
   padding: 1rem 1.25rem;
   text-align: left;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  color: var(--brand-purple);
+  border-bottom: 2px solid var(--brand-purple);
 }
 
 .table td {
@@ -859,6 +861,7 @@ body {
 .login-card {
   background: var(--surface);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--brand-purple);
   border-radius: var(--radius-lg);
   padding: 3rem 2.5rem;
   width: 100%;
@@ -866,14 +869,19 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
-.login-logo { text-align: center; margin-bottom: 2rem; }
+.login-logo { 
+  text-align: center; 
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(97, 49, 146, 0.1);
+}
 .login-logo-img {
   width: 100%;
   max-width: 260px;
   height: auto;
 }
 .login-logo p {
-  color: var(--text-secondary);
+  color: var(--brand-purple);
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -944,7 +952,8 @@ body {
 @media (max-width: 768px) {
   :root { --sidebar-w: 68px; }
   .sidebar-logo { padding: 1.25rem 0; justify-content: center; }
-  .sidebar-logo h2, .sidebar-logo .neon-text { display: none; }
+  /* Deprecated neon rule removed - legacy neon text hidden previously */
+  /* Removed .neon-text hiding to keep markup clean. */
   .nav-text { display: none !important; }
   .nav-item { justify-content: center; padding: 0.875rem 0; margin: 0.2rem 0.5rem; }
   .nav-icon { font-size: 1.35rem; }
