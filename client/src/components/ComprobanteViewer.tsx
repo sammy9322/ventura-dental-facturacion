@@ -302,7 +302,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
               <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
                 <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                  <img src={firmaProcesada || comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
+                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
                 </div>
               </div>
             </div>
