@@ -1,44 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Printer, Download } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
 import { useToast } from '../hooks/useToast';
-
-function InvertedSignatureCanvas({ dataUrl }: { dataUrl: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    if (!dataUrl || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const img = new Image();
-    img.onload = () => {
-      // Ajustar dimensiones lógicas para no pixelear
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      try {
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imgData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          data[i] = 255 - data[i];     // R
-          data[i+1] = 255 - data[i+1]; // G
-          data[i+2] = 255 - data[i+2]; // B
-        }
-        ctx.putImageData(imgData, 0, 0);
-      } catch (e) {
-        console.warn('CORS tainted canvas, renderizando original', e);
-      }
-    };
-    img.src = dataUrl;
-  }, [dataUrl]);
-
-  return <canvas ref={canvasRef} style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', margin: '0 auto' }} />;
-}
 
 interface Props {
   comprobante: Comprobante;
@@ -323,8 +289,8 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
               <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
-                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                  <InvertedSignatureCanvas dataUrl={comprobante.firma_dataurl} />
+                <div style={{ background: '#0f172a', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
                 </div>
               </div>
             </div>
