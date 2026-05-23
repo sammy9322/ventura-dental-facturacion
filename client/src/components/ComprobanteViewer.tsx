@@ -66,61 +66,12 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       
       setDescargando(true);
       
-      // Procesamiento a prueba de balas para forzar tinta negra
-      const imgEl = element.querySelector('img[alt="Firma del paciente"]') as HTMLImageElement;
-      let originalSrc = '';
-      if (imgEl && imgEl.src) {
-        originalSrc = imgEl.src;
-        const processImage = (): Promise<string> => {
-          return new Promise((resolve) => {
-            const tmpImg = new Image();
-            // No usar crossOrigin para permitir la carga de Base64 locales o imagenes same-origin
-            tmpImg.onload = () => {
-              const canvas = document.createElement('canvas');
-              canvas.width = tmpImg.width || 240;
-              canvas.height = tmpImg.height || 90;
-              const ctx = canvas.getContext('2d');
-              if (!ctx) return resolve(originalSrc);
-              
-              // Dibuja la firma (con tinta blanca y fondo transparente)
-              ctx.drawImage(tmpImg, 0, 0);
-              
-              // Colorea TODOS los pixeles no transparentes de negro intenso
-              ctx.globalCompositeOperation = 'source-in';
-              ctx.fillStyle = '#000000';
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              
-              try {
-                resolve(canvas.toDataURL('image/png'));
-              } catch (err) {
-                console.warn('Error toDataURL (Tainted Canvas?)', err);
-                resolve(originalSrc);
-              }
-            };
-            tmpImg.onerror = () => resolve(originalSrc);
-            tmpImg.src = originalSrc;
-          });
-        };
-        
-        const blackSignatureData = await processImage();
-        // Se inyecta temporalmente al DOM antes de que pase el generador PDF
-        imgEl.src = blackSignatureData;
-        imgEl.style.filter = 'none';
-      }
-
       const canvasPdf = await html2canvas(element, {
         scale: 3, 
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
-        imageTimeout: 0,
       });
-      
-      // Revertir DOM al estado original
-      if (imgEl && originalSrc) {
-        imgEl.src = originalSrc;
-        imgEl.style.filter = 'invert(1) contrast(1.2)';
-      }
       
       const imgData = canvasPdf.toDataURL('image/png');
       const imgWidth = canvasPdf.width;
@@ -209,11 +160,11 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--brand-purple)', paddingBottom: '1rem' }}>
             <img src={LogoOficial} alt="Ventura Dental" style={{ height: '60px', marginBottom: '0.5rem' }} />
-            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
-              {comprobante.negocio?.direccion || 'Dirección por definir'}
+            <p style={{ margin: 0, color: '#1e40af', fontSize: '0.9rem', fontStyle: 'italic', fontWeight: 600, letterSpacing: '0.02em' }}>
+              "Tu sueño hecho sonrisa"
             </p>
-            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
-              Tel: {comprobante.negocio?.telefono || 'Sin teléfono'}
+            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem', marginTop: '0.35rem' }}>
+              Tel: 84863000
             </p>
           </div>
 
@@ -333,10 +284,19 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Firma del paciente */}
           {comprobante.firma_dataurl && (
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
-                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
+              <div style={{ 
+                background: 'linear-gradient(to bottom, #1e293b, #0f172a)', 
+                borderRadius: '8px', 
+                padding: '1.25rem', 
+                display: 'inline-block',
+                border: '1px solid #334155',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontWeight: 700 }}>
+                  Firma Digital del Paciente
+                </p>
+                <div style={{ background: '#1e293b', borderRadius: '4px', padding: '0.5rem', border: '1px dashed #475569' }}>
+                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
                 </div>
               </div>
             </div>
