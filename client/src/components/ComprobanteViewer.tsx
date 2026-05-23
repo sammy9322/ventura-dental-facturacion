@@ -88,9 +88,61 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
     e.preventDefault();
     e.stopPropagation();
     try {
-      window.print();
+      const printContent = document.getElementById('comprobante-content');
+      if (!printContent) {
+        alert('No se encontró el contenido para imprimir');
+        return;
+      }
+      
+      const printWindow = window.open('', '_blank', 'width=800,height=800');
+      if (!printWindow) {
+        alert('Por favor permite las ventanas emergentes para imprimir el comprobante');
+        return;
+      }
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Comprobante de Pago #${comprobante.numero}</title>
+            <style>
+              body { 
+                font-family: Arial, sans-serif; 
+                padding: 20px; 
+                max-width: 600px; 
+                margin: 0 auto; 
+                background: white !important; 
+                color: #1e293b !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+              }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+              @media print { 
+                body { padding: 0; background: white !important; color: #1e293b !important; }
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+              }
+            </style>
+          </head>
+          <body>
+            <div style="background: white; color: #1e293b; padding: 1.5rem;">
+              ${printContent.innerHTML}
+            </div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      
+      // Dar un pequeño margen de tiempo para que las imágenes carguen en la nueva ventana
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+      }, 500);
     } catch (err) {
       console.error('Error al imprimir:', err);
+      alert('Error al abrir la ventana de impresión');
     }
   };
 
@@ -344,26 +396,6 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
         </div>
       </div>
 
-      <style>{`
-        @media print {
-          body { background: white !important; color: #1e293b !important; }
-          body * { visibility: hidden; }
-          #comprobante-content, #comprobante-content * { visibility: visible; }
-          #comprobante-content { 
-            position: absolute; 
-            left: 0; 
-            top: 0; 
-            width: 100% !important; 
-            max-width: 100% !important;
-            border: none !important; 
-            box-shadow: none !important;
-            background: white !important;
-            color: #1e293b !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
