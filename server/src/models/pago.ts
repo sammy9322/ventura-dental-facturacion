@@ -228,6 +228,7 @@ export async function getAll(filters?: {
   fechaHasta?: string;
   pacienteId?: number;
   estado?: string;
+  doctorId?: number;
 }) {
   let sql = `
     SELECT p.*,
@@ -252,6 +253,7 @@ export async function getAll(filters?: {
   if (filters?.fechaHasta) { sql += ` AND DATE(p.created_at) <= $${idx++}`; params.push(filters.fechaHasta); }
   if (filters?.pacienteId) { sql += ` AND p.paciente_id = $${idx++}`; params.push(filters.pacienteId); }
   if (filters?.estado) { sql += ` AND p.estado = $${idx++}`; params.push(filters.estado); }
+  if (filters?.doctorId) { sql += ` AND p.doctor_id = $${idx++}`; params.push(filters.doctorId); }
 
   sql += ` ORDER BY p.created_at DESC`;
   const result = await query(sql, params);

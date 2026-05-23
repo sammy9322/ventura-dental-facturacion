@@ -10,6 +10,8 @@ import { initDatabase } from './scripts/initDb.js';
 import { seedDatabase } from './scripts/seedDb.js';
 import { migrateRoles } from './scripts/migrateRoles.js';
 import { migrateCierreCaja } from './scripts/migrateCierreCaja.js';
+import { migrateAuditoria } from './scripts/migrateAuditoria.js';
+import { migrateDoctorTratamiento } from './scripts/migrateDoctorTratamiento.js';
 
 import authRoutes from './routes/auth.js';
 import pacientesRoutes from './routes/pacientes.js';
@@ -67,6 +69,7 @@ async function startServer() {
     await migrateRoles();   // Primero: migrar constraint de roles
     await migrateCierreCaja(); // Segundo: migrar cierre de caja
     await migrateAuditoria();  // Tercero: migrar auditoría
+    await migrateDoctorTratamiento(); // Cuarto: migrar doctor_id en tratamientos
     await initDatabase();
     await seedDatabase();
 

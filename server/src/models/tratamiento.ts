@@ -11,6 +11,7 @@ export interface Tratamiento {
   fecha_inicio: Date;
   fecha_fin: Date | null;
   estado: 'activo' | 'completado' | 'cancelado';
+  doctor_id: number | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -25,6 +26,7 @@ export async function getAll(filters?: {
   pacienteId?: number;
   tipo?: string;
   estado?: string;
+  doctorId?: number;
 }) {
   let sql = `
     SELECT t.*, p.nombre as paciente_nombre, p.dni as paciente_dni, m.nombre as macro_nombre
@@ -48,6 +50,10 @@ export async function getAll(filters?: {
     sql += ` AND t.estado = $${idx++}`;
     params.push(filters.estado);
   }
+  if (filters?.doctorId) {
+    sql += ` AND t.doctor_id = $${idx++}`;
+    params.push(filters.doctorId);
+  }
 
   sql += ' ORDER BY t.created_at DESC';
 
@@ -67,20 +73,27 @@ export async function findById(id: number) {
   return result.rows[0] as TratamientoWithPaciente | undefined;
 }
 
-export async function findByPacienteId(pacienteId: number) {
-  const result = await query(
-    `SELECT t.*, m.nombre as macro_nombre
-     FROM tratamientos t
-     LEFT JOIN tratamientos_macro m ON t.macro_tratamiento_id = m.id
-     WHERE t.paciente_id = $1 ORDER BY t.created_at DESC`,
-    [pacienteId]
-  );
+export async function findByPacienteId(pacienteId: number, doctorId?: number) {
+  let sql = `
+    SELECT t.*, m.nombre as macro_nombre
+    FROM tratamientos t
+    LEFT JOIN tratamientos_macro m ON t.macro_tratamiento_id = m.id
+    WHERE t.paciente_id = $1
+  `;
+  const params: unknown[] = [pacienteId];
+  if (doctorId) {
+    sql += ` AND t.doctor_id = $2`;
+    params.push(doctorId);
+  }
+  sql += ` ORDER BY t.created_at DESC`;
+  const result = await query(sql, params);
   return result.rows;
 }
 
 export async function create(data: {
   paciente_id: number;
   macro_tratamiento_id?: number;
+  doctor_id?: number;
   tipo: string;
   descripcion?: string;
   monto_total: number;
@@ -88,12 +101,13 @@ export async function create(data: {
   fecha_fin?: string | null;
 }) {
   const result = await query(
-    `INSERT INTO tratamientos (paciente_id, macro_tratamiento_id, tipo, descripcion, monto_total, fecha_inicio, fecha_fin)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `INSERT INTO tratamientos (paciente_id, macro_tratamiento_id, doctor_id, tipo, descripcion, monto_total, fecha_inicio, fecha_fin)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
      RETURNING *`,
     [
       data.paciente_id,
       data.macro_tratamiento_id || null,
+      data.doctor_id || null,
       data.tipo,
       data.descripcion || null,
       data.monto_total,

@@ -9,6 +9,7 @@ const router = Router();
 const createTratamientoSchema = z.object({
   paciente_id: z.number().int().positive('Seleccione un paciente'),
   macro_tratamiento_id: z.number().int().positive().optional(),
+  doctor_id: z.number().int().positive().optional().nullable(),
   tipo: z.string().min(1, 'El tipo es requerido'),
   descripcion: z.string().optional(),
   monto_total: z.number().positive('El monto debe ser mayor a 0'),
@@ -33,6 +34,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       pacienteId: req.query.pacienteId ? parseInt(req.query.pacienteId as string) : undefined,
       tipo: req.query.tipo as string | undefined,
       estado: req.query.estado as string | undefined,
+      doctorId: req.user?.rol === 'doctor' ? req.user.id : undefined,
     };
     
     const tratamientos = await tratamientoModel.getAll(filters);
@@ -46,7 +48,8 @@ router.get('/', async (req: AuthRequest, res: Response) => {
 router.get('/paciente/:pacienteId', async (req: AuthRequest, res: Response) => {
   try {
     const pacienteId = parseInt(req.params.pacienteId);
-    const tratamientos = await tratamientoModel.findByPacienteId(pacienteId);
+    const doctorId = req.user?.rol === 'doctor' ? req.user.id : undefined;
+    const tratamientos = await tratamientoModel.findByPacienteId(pacienteId, doctorId);
     res.json(tratamientos);
   } catch (error) {
     console.error('Get tratamientos by paciente error:', error);
@@ -85,7 +88,14 @@ router.get('/:id/saldo', async (req: AuthRequest, res: Response) => {
 router.post('/', async (req: AuthRequest, res: Response) => {
   try {
     const data = createTratamientoSchema.parse(req.body);
-    const tratamiento = await tratamientoModel.create(data);
+    
+    // Si es doctor, forzar su ID. Si es otro rol, usar el enviado.
+    const doctorId = req.user?.rol === 'doctor' ? req.user.id : (data.doctor_id || undefined);
+    
+    const tratamiento = await tratamientoModel.create({
+      ...data,
+      doctor_id: doctorId
+    });
 
     // Registrar en auditoría
     await auditoriaService.registrar({

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Activity, PlusCircle, Pencil, XCircle, Filter, CheckCircle, AlertCircle } from 'lucide-react';
-import { tratamientoService, tratamientoMacroService } from '../services';
+import { tratamientoService, tratamientoMacroService, authService } from '../services';
 import { Layout, Modal, PacienteSearch } from '../components';
-import type { Tratamiento, Paciente, TratamientoMacro } from '../types';
+import type { Tratamiento, Paciente, TratamientoMacro, Usuario } from '../types';
 import { TIPOS_TRATAMIENTO as TIPOS_EXT } from '../types';
 import { useToast } from '../hooks/useToast';
 
@@ -16,8 +16,10 @@ export default function TratamientosPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingTratamiento, setEditingTratamiento] = useState<Tratamiento | null>(null);
   const [macroTratamientos, setMacroTratamientos] = useState<TratamientoMacro[]>([]);
+  const [doctores, setDoctores] = useState<Usuario[]>([]);
   const [selectedPaciente, setSelectedPaciente] = useState<Paciente | null>(null);
   const [filters, setFilters] = useState({ tipo: '', estado: '' });
+  const currentUser = authService.getUser();
   
   // Feedback & Confirmación
   const [successMsg, setSuccessMsg] = useState('');
@@ -39,7 +41,19 @@ export default function TratamientosPage() {
   useEffect(() => { 
     loadTratamientos(); 
     loadMacros();
+    if (currentUser?.rol === 'admin' || currentUser?.rol === 'secretaria') {
+      loadDoctores();
+    }
   }, [filters]);
+
+  const loadDoctores = async () => {
+    try {
+      const data = await authService.getUsuarios();
+      setDoctores(data.filter(u => u.rol === 'doctor' && u.activo));
+    } catch (err) {
+      console.error('Error cargando doctores:', err);
+    }
+  };
 
   const loadMacros = async () => {
     try {
@@ -88,7 +102,8 @@ export default function TratamientosPage() {
         descripcion: '', 
         monto_total: 0, 
         fecha_inicio: new Date().toISOString().split('T')[0], 
-        fecha_fin: '' 
+        fecha_fin: '',
+        doctor_id: ''
       });
     }
     setShowModal(true);
@@ -111,6 +126,7 @@ export default function TratamientosPage() {
       } else {
         await tratamientoService.create({
           paciente_id: selectedPaciente.id,
+          doctor_id: data.doctor_id ? Number(data.doctor_id) : undefined,
           tipo: data.tipo as string,
           macro_tratamiento_id: macroSeleccionado?.id,
           descripcion: data.descripcion as string,
@@ -313,6 +329,18 @@ export default function TratamientosPage() {
             <div className="form-group">
               <label className="form-label">Paciente *</label>
               <PacienteSearch onSelect={(p) => setSelectedPaciente(p)} selectedPaciente={selectedPaciente} />
+            </div>
+          )}
+
+          {!editingTratamiento && (currentUser?.rol === 'admin' || currentUser?.rol === 'secretaria') && (
+            <div className="form-group">
+              <label className="form-label">Doctor Asignado</label>
+              <select className="form-select" {...form.register('doctor_id')}>
+                <option value="">Seleccione un doctor (Opcional)</option>
+                {doctores.map(d => (
+                  <option key={d.id} value={d.id}>{d.nombre_completo}</option>
+                ))}
+              </select>
             </div>
           )}
 

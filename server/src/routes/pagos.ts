@@ -36,6 +36,7 @@ router.get('/', authenticateToken, requireDoctorOrSecretaria, asyncHandler(async
     fechaHasta: req.query.fechaHasta as string | undefined,
     pacienteId: req.query.pacienteId ? parseInt(req.query.pacienteId as string) : undefined,
     estado: req.query.estado as string | undefined,
+    doctorId: req.user?.rol === 'doctor' ? req.user.id : undefined,
   };
   const pagos = await pagoModel.getAll(filters);
   res.json(pagos);
