@@ -35,6 +35,7 @@ export default function TratamientosPage() {
       monto_total: 0,
       fecha_inicio: new Date().toISOString().split('T')[0],
       fecha_fin: '',
+      doctor_id: '',
     },
   });
 
@@ -93,6 +94,7 @@ export default function TratamientosPage() {
         monto_total: tratamiento.monto_total,
         fecha_inicio: tratamiento.fecha_inicio.split('T')[0],
         fecha_fin: tratamiento.fecha_fin ? tratamiento.fecha_fin.split('T')[0] : '',
+        doctor_id: tratamiento.doctor_id ? String(tratamiento.doctor_id) : '',
       });
     } else {
       setEditingTratamiento(null);

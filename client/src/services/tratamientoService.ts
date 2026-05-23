@@ -39,6 +39,7 @@ export const tratamientoService = {
     monto_total: number;
     fecha_inicio: string;
     fecha_fin?: string;
+    doctor_id?: number;
   }): Promise<Tratamiento> {
     const response = await api.post<Tratamiento>('/tratamientos', data);
     return response.data;

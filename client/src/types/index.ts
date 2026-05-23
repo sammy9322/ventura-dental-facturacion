@@ -102,6 +102,7 @@ export interface Tratamiento {
   fecha_inicio: string;
   fecha_fin: string | null;
   estado: 'activo' | 'completado' | 'cancelado';
+  doctor_id?: number | null;
   created_at: string;
   updated_at: string;
   paciente_nombre?: string;
