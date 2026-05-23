@@ -4,46 +4,7 @@ import html2canvas from 'html2canvas';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
 import { useToast } from '../hooks/useToast';
-import { useState, useEffect } from 'react';
-
-// Hook para invertir asíncronamente el base64 sin bloquear el render original
-function useInvertedBase64(base64Original: string | undefined): string | undefined {
-  const [inverted, setInverted] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    if (!base64Original || !base64Original.startsWith('data:image')) {
-      setInverted(base64Original);
-      return;
-    }
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        setInverted(base64Original);
-        return;
-      }
-      ctx.drawImage(img, 0, 0);
-      try {
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imgData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          data[i] = 255 - data[i]; // Invertir R
-          data[i + 1] = 255 - data[i + 1]; // Invertir G
-          data[i + 2] = 255 - data[i + 2]; // Invertir B
-        }
-        ctx.putImageData(imgData, 0, 0);
-        setInverted(canvas.toDataURL('image/png'));
-      } catch (e) {
-        setInverted(base64Original);
-      }
-    };
-    img.onerror = () => setInverted(base64Original);
-    img.src = base64Original;
-  }, [base64Original]);
-  return inverted;
-}
+import { useState } from 'react';
 
 interface Props {
   comprobante: Comprobante;
@@ -53,7 +14,6 @@ interface Props {
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
   const { toast } = useToast();
   const [descargando, setDescargando] = useState(false);
-  const firmaProcesada = useInvertedBase64(comprobante.firma_dataurl);
 
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
@@ -106,13 +66,26 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       
       setDescargando(true);
       
-      // html2canvas nativo para forzar la captura con fondo blanco
       const canvas = await html2canvas(element, {
         scale: 3, 
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
         imageTimeout: 0,
+        onclone: (clonedDoc) => {
+          // Solución mágica a prueba de fallos:
+          // html2canvas no soporta el filtro 'invert(1)'.
+          // En la copia (clon) que va al PDF, le ponemos fondo oscuro al recuadro de la firma 
+          // para que la tinta blanca sea 100% visible, sin afectar la pantalla real del usuario.
+          const imgList = clonedDoc.querySelectorAll('img[alt="Firma del paciente"]');
+          imgList.forEach((imgEl) => {
+            const htmlImg = imgEl as HTMLElement;
+            htmlImg.style.filter = 'none'; // Quitar el filtro que de por sí no soporta html2canvas
+            if (htmlImg.parentElement) {
+              htmlImg.parentElement.style.background = '#0f172a'; // Oscurecer solo en el PDF
+            }
+          });
+        }
       });
       
       const imgData = canvas.toDataURL('image/png');
