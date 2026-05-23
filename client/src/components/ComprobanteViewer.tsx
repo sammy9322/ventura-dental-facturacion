@@ -198,9 +198,13 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <p style={{ margin: 0, color: '#1e40af', fontSize: '0.95rem', fontWeight: 600, fontStyle: 'italic', marginBottom: '0.25rem' }}>
               "Tu sueño hecho sonrisa"
             </p>
-            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
-              {comprobante.negocio?.direccion || 'Dirección por definir'}
-            </p>
+            {comprobante.negocio?.direccion && 
+             comprobante.negocio.direccion !== 'Por definir' && 
+             comprobante.negocio.direccion !== 'Dirección por definir' && (
+              <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
+                {comprobante.negocio.direccion}
+              </p>
+            )}
             <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
               Tel: {comprobante.negocio?.telefono || '84863000'}
             </p>
