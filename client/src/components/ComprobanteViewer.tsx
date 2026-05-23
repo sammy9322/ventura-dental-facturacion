@@ -196,10 +196,10 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           <div style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid #1e40af', paddingBottom: '1rem' }}>
             <img src={LogoOficial} alt="Ventura Dental" style={{ height: '60px', marginBottom: '0.5rem' }} />
             <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
-              {comprobante.negocio?.direccion || 'Dirección por definir'}
+              {comprobante.negocio?.direccion || 'Tu sueño hecho sonrisa'}
             </p>
             <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
-              Tel: {comprobante.negocio?.telefono || 'Sin teléfono'}
+              Tel: {comprobante.negocio?.telefono || '84863000'}
             </p>
           </div>
 
