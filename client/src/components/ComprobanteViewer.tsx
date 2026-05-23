@@ -1,10 +1,6 @@
-import { useState } from 'react';
 import { Printer, Download } from 'lucide-react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
-import { useToast } from '../hooks/useToast';
 
 interface Props {
   comprobante: Comprobante;
@@ -12,8 +8,6 @@ interface Props {
 }
 
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
-  const { toast } = useToast();
-  const [descargando, setDescargando] = useState(false);
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
     return `${simbolo} ${monto.toLocaleString('es-CR', { minimumFractionDigits: 2 })}`;
@@ -50,50 +44,10 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
     }
   };
 
-  const handleDownload = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (descargando) return;
-    
-    try {
-      const element = document.getElementById('comprobante-content');
-      if (!element) {
-        toast.error('No se pudo encontrar el comprobante');
-        return;
-      }
-      
-      setDescargando(true);
-      
-      const canvas = await html2canvas(element, {
-        scale: 3, // Calidad retina ultra-alta (300 DPI)
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        logging: false,
-        imageTimeout: 0,
-      });
-      
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const pdfWidth = (imgWidth * 25.4) / 96;  // px to mm
-      const pdfHeight = (imgHeight * 25.4) / 96;
-      
-      const doc = new jsPDF({
-        orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
-        unit: 'mm',
-        format: [pdfWidth, pdfHeight],
-      });
-      
-      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save(`Comprobante_Ventura_${comprobante.numero}.pdf`);
-      toast.success('Comprobante descargado correctamente.');
-    } catch (err) {
-      console.error('Error al generar PDF:', err);
-      toast.error('Error al generar el PDF. Por favor use el botón de imprimir.');
-    } finally {
-      setDescargando(false);
-    }
+  const handleDownload = (e: React.MouseEvent) => {
+    // Generar PDF usando el motor nativo del navegador (Guardar como PDF)
+    // Esto garantiza que la descarga es 100% identica a lo que se imprime, con CSS y formato de hoja perfecto.
+    handlePrint(e);
   };
 
   const handleClose = (e?: React.MouseEvent) => {
@@ -117,17 +71,15 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <button 
               type="button"
               onClick={handleDownload}
-              disabled={descargando}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.5rem 1rem', background: 'var(--brand-purple)', color: 'white', 
                 border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
-                pointerEvents: 'auto', position: 'relative', zIndex: 10001,
-                opacity: descargando ? 0.7 : 1
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
-              title="Descargar"
+              title="Descargar como PDF"
             >
-              <Download size={18} /> {descargando ? 'Descargando...' : 'Descargar'}
+              <Download size={18} /> Descargar PDF
             </button>
             <button 
               type="button"
@@ -286,8 +238,8 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
               <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
-                <div style={{ background: '#0f172a', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
+                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
                 </div>
               </div>
             </div>
