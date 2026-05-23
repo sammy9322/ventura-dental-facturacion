@@ -66,11 +66,52 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       
       setDescargando(true);
       
+      // Invertir la imagen en un Canvas en memoria, usando la imagen que YA esta montada en el DOM
+      const originalImg = element.querySelector('img[alt="Firma del paciente"]') as HTMLImageElement;
+      let canvasInvertido: HTMLCanvasElement | null = null;
+      
+      if (originalImg && comprobante.firma_dataurl) {
+        canvasInvertido = document.createElement('canvas');
+        canvasInvertido.width = originalImg.width || 240;
+        canvasInvertido.height = originalImg.height || 90;
+        // Aplicar los mismos estilos CSS que tenía el img para que no rompa el layout
+        canvasInvertido.style.maxWidth = '240px';
+        canvasInvertido.style.maxHeight = '90px';
+        canvasInvertido.style.display = 'block';
+        
+        const ctx = canvasInvertido.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(originalImg, 0, 0, canvasInvertido.width, canvasInvertido.height);
+          try {
+            const imgData = ctx.getImageData(0, 0, canvasInvertido.width, canvasInvertido.height);
+            // Invertimos los píxeles directamente (El base64 tiene un fondo oscuro y trazo claro)
+            for(let i=0; i<imgData.data.length; i+=4) {
+              imgData.data[i] = 255 - imgData.data[i];
+              imgData.data[i+1] = 255 - imgData.data[i+1];
+              imgData.data[i+2] = 255 - imgData.data[i+2];
+            }
+            ctx.putImageData(imgData, 0, 0);
+          } catch(err) {
+            console.warn('Seguridad DOMException en canvas', err);
+          }
+        }
+      }
+
       const canvasPdf = await html2canvas(element, {
         scale: 3, 
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
+        onclone: (doc) => {
+           if (canvasInvertido) {
+             const imgClonada = doc.querySelector('img[alt="Firma del paciente"]');
+             if (imgClonada && imgClonada.parentElement) {
+                // Insertamos el CANVAS procesado y eliminamos la imagen, evitando que html2canvas capture el fondo negro original
+                imgClonada.parentElement.insertBefore(canvasInvertido, imgClonada);
+                imgClonada.remove();
+             }
+           }
+        }
       });
       
       const imgData = canvasPdf.toDataURL('image/png');
@@ -284,19 +325,10 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Firma del paciente */}
           {comprobante.firma_dataurl && (
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <div style={{ 
-                background: 'linear-gradient(to bottom, #1e293b, #0f172a)', 
-                borderRadius: '8px', 
-                padding: '1.25rem', 
-                display: 'inline-block',
-                border: '1px solid #334155',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-              }}>
-                <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontWeight: 700 }}>
-                  Firma Digital del Paciente
-                </p>
-                <div style={{ background: '#1e293b', borderRadius: '4px', padding: '0.5rem', border: '1px dashed #475569' }}>
-                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
+              <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
+                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px' }}>
+                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
                 </div>
               </div>
             </div>
