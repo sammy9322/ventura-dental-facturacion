@@ -1,7 +1,7 @@
 import { Router, Response } from 'express';
 import { z } from 'zod';
 import * as pagoModel from '../models/pago.js';
-import { authenticateToken, requireDoctor, requireSecretaria, requireAdmin, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireDoctor, requireSecretaria, requireDoctorOrSecretaria, requireAdmin, AuthRequest } from '../middleware/auth.js';
 import { sendComprobanteEmail } from '../services/email.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { auditoriaService } from '../services/auditoria.js';
@@ -29,8 +29,8 @@ const finalizarSchema = z.object({
   enviar_email: z.boolean().optional(),
 });
 
-// GET /pagos → historial (secretaria/admin)
-router.get('/', authenticateToken, requireSecretaria, asyncHandler(async (req: AuthRequest, res: Response) => {
+// GET /pagos → historial (secretaria/admin/doctor)
+router.get('/', authenticateToken, requireDoctorOrSecretaria, asyncHandler(async (req: AuthRequest, res: Response) => {
   const filters = {
     fechaDesde: req.query.fechaDesde as string | undefined,
     fechaHasta: req.query.fechaHasta as string | undefined,
