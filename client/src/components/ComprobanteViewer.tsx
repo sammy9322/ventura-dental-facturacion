@@ -290,7 +290,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
                   <img 
                     src={comprobante.firma_dataurl} 
                     alt="Firma del paciente" 
-                    style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', backgroundColor: '#ffffff' }}
+                    style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }}
                   />
                 </div>
               </div>
@@ -308,18 +308,34 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       <style>{`
         @media print {
           body * { visibility: hidden; }
-          #comprobante-content, #comprobante-content * { visibility: visible; }
+          .modal-overlay, .modal-content, #comprobante-content, #comprobante-content * { 
+            visibility: visible; 
+          }
+          .modal-overlay {
+            background: white !important;
+            align-items: flex-start !important;
+            padding: 0 !important;
+          }
+          .modal-content {
+            margin: 0 !important;
+            padding: 0 !important;
+            max-width: 100% !important;
+            max-height: none !important;
+            overflow: visible !important;
+            box-shadow: none !important;
+          }
           #comprobante-content { 
             position: absolute; 
             left: 0; 
             top: 0; 
             width: 100%; 
             border: none !important;
-            box-shadow: none !important;
             background: white !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
+          /* Ocultar elementos de UI */
+          button { display: none !important; }
         }
       `}</style>
     </div>
