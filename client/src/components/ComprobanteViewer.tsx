@@ -14,6 +14,38 @@ interface Props {
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
   const { toast } = useToast();
   const [descargando, setDescargando] = useState(false);
+  const [firmaProcesada, setFirmaProcesada] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!comprobante.firma_dataurl) return;
+    const invertImage = async (dataUrl: string) => {
+      return new Promise<string>((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return resolve(dataUrl);
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+          for (let i = 0; i < data.length; i += 4) {
+            // Invert colors to make white ink dark
+            data[i] = 255 - data[i];
+            data[i + 1] = 255 - data[i + 1];
+            data[i + 2] = 255 - data[i + 2];
+            // alpha is data[i+3], leave it intact
+          }
+          ctx.putImageData(imageData, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
+    };
+    invertImage(comprobante.firma_dataurl).then(setFirmaProcesada);
+  }, [comprobante.firma_dataurl]);
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
     return `${simbolo} ${monto.toLocaleString('es-CR', { minimumFractionDigits: 2 })}`;
@@ -288,9 +320,9 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
                 <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
                   <img 
-                    src={comprobante.firma_dataurl} 
+                    src={firmaProcesada || comprobante.firma_dataurl} 
                     alt="Firma del paciente" 
-                    style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }}
+                    style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }}
                   />
                 </div>
               </div>
