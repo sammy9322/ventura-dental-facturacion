@@ -306,29 +306,41 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       </div>
 
       <style>{`
+        @page {
+          size: letter;
+          margin: 15mm;
+        }
         @media print {
+          body {
+            background: white !important;
+          }
           body * { visibility: hidden; }
           .modal-overlay, .modal-content, #comprobante-content, #comprobante-content * { 
             visibility: visible; 
           }
           .modal-overlay {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100vw !important;
             background: white !important;
             align-items: flex-start !important;
             padding: 0 !important;
           }
           .modal-content {
-            margin: 0 !important;
+            margin: 0 auto !important;
             padding: 0 !important;
-            max-width: 100% !important;
+            width: 100% !important;
+            max-width: none !important;
             max-height: none !important;
             overflow: visible !important;
             box-shadow: none !important;
           }
           #comprobante-content { 
-            position: absolute; 
+            position: relative !important;
             left: 0; 
             top: 0; 
-            width: 100%; 
+            width: 100% !important; 
             border: none !important;
             background: white !important;
             -webkit-print-color-adjust: exact !important;
