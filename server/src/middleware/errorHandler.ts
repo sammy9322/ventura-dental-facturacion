@@ -18,17 +18,22 @@ export async function errorHandler(err: Error, req: any, res: Response, next: Ne
   }
 
   // Registrar error inesperado en la base de datos
-  const errorId = await logError({
-    usuario_id: req.user?.id,
-    modulo: req.path,
-    error_mensaje: err.message,
-    stack_trace: err.stack,
-    metadata: {
-      method: req.method,
-      query: req.query,
-      body: req.method !== 'GET' ? req.body : undefined
-    }
-  });
+  let errorId;
+  try {
+    errorId = await logError({
+      usuario_id: req.user?.id,
+      modulo: req.path,
+      error_mensaje: err.message,
+      stack_trace: err.stack,
+      metadata: {
+        method: req.method,
+        query: req.query,
+        body: req.method !== 'GET' ? req.body : undefined
+      }
+    });
+  } catch (logErr) {
+    console.error('Fallo al registrar error en DB:', logErr);
+  }
 
   res.status(500).json({ 
     error: 'Error interno del servidor',

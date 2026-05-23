@@ -343,6 +343,7 @@ export async function anular(id: number) {
     const pago = pagoResult.rows[0] as { id: number; estado: string; tratamiento_id: number | null };
 
     if (pago.estado !== 'anulado' && pago.tratamiento_id) {
+      await client.query('SELECT id FROM tratamientos WHERE id = $1 FOR UPDATE', [pago.tratamiento_id]);
       const cuotaResult = await client.query(
         `SELECT COALESCE(SUM(monto), 0) AS total
          FROM detalle_pago

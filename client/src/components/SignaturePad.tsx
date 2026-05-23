@@ -23,7 +23,7 @@ export default function SignaturePad({ onSave, initialValue }: Props) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    if (initialValue) {
+    if (initialValue && initialValue.startsWith('data:image')) {
       const img = new Image();
       img.onload = () => {
         ctx.drawImage(img, 0, 0);

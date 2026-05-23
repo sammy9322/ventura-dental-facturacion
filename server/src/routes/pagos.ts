@@ -1,7 +1,7 @@
 import { Router, Response } from 'express';
 import { z } from 'zod';
 import * as pagoModel from '../models/pago.js';
-import { authenticateToken, requireDoctor, requireSecretaria, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireDoctor, requireSecretaria, requireAdmin, AuthRequest } from '../middleware/auth.js';
 import { sendComprobanteEmail } from '../services/email.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { auditoriaService } from '../services/auditoria.js';
@@ -61,7 +61,7 @@ router.get('/stats', authenticateToken, asyncHandler(async (req: AuthRequest, re
 }));
 
 // GET /pagos/stats/advanced → KPIs IE (admin)
-router.get('/stats/advanced', authenticateToken, asyncHandler(async (req: AuthRequest, res: Response) => {
+router.get('/stats/advanced', authenticateToken, requireAdmin, asyncHandler(async (req: AuthRequest, res: Response) => {
   const stats = await pagoModel.getAdvancedStats();
   res.json(stats);
 }));
@@ -143,15 +143,14 @@ router.put('/:id/finalizar', authenticateToken, requireSecretaria, asyncHandler(
 }));
 
 // PUT /pagos/:id/anular
-router.put('/:id/anular', authenticateToken, asyncHandler(async (req: AuthRequest, res: Response) => {
-  if (req.user?.rol !== 'admin') return res.status(403).json({ error: 'Solo administradores pueden anular pagos' });
+router.put('/:id/anular', authenticateToken, requireAdmin, asyncHandler(async (req: AuthRequest, res: Response) => {
   const id = parseInt(req.params.id);
   const pago = await pagoModel.anular(id);
   if (!pago) return res.status(404).json({ error: 'Pago no encontrado' });
 
   // Registrar en auditoría
   await auditoriaService.registrar({
-    usuario_id: req.user.id,
+    usuario_id: req.user!.id,
     accion: 'ANULAR_PAGO',
     entidad: 'pagos',
     entidad_id: id,
