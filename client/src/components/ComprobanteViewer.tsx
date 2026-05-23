@@ -346,9 +346,24 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
 
       <style>{`
         @media print {
+          body { background: white !important; color: #1e293b !important; }
           body * { visibility: hidden; }
           #comprobante-content, #comprobante-content * { visibility: visible; }
-          #comprobante-content { position: absolute; left: 0; top: 0; width: 100%; }
+          #comprobante-content { 
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            width: 100% !important; 
+            max-width: 100% !important;
+            border: none !important; 
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: white !important;
+            color: #1e293b !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
         }
       `}</style>
     </div>
