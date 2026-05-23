@@ -357,8 +357,6 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             max-width: 100% !important;
             border: none !important; 
             box-shadow: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
             background: white !important;
             color: #1e293b !important;
             -webkit-print-color-adjust: exact !important;
