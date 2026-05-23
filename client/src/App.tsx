@@ -109,7 +109,7 @@ export default function App() {
                 </RoleRoute>
               } />
               <Route path="/pagos" element={
-                <RoleRoute roles={['secretaria', 'admin']}>
+                <RoleRoute roles={['secretaria', 'admin', 'doctor']}>
                   <HistorialPagosPage />
                 </RoleRoute>
               } />
