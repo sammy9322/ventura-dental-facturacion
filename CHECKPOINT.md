@@ -1,114 +1,29 @@
-# Checkpoint - Ventura Dental Facturación
+# Checkpoint - 23 de Mayo de 2026
 
-**Fecha:** 4 de mayo de 2026
-**Estado:** En desarrollo activo
+¡Excelente sesión de trabajo! Hemos estabilizado varios aspectos críticos del sistema relacionados a la facturación, los perfiles de usuario y la experiencia de impresión. A continuación, el detalle técnico y funcional de todo lo que dejamos listo y desplegado en producción hoy.
 
----
+## 1. Módulo de Pagos para Doctores
+*   **Problema original:** El menú lateral escondía la opción "Registro e Historial de pagos" para los usuarios con rol `doctor`, forzándolos a un cierre de sesión no deseado por denegación de permisos al intentar acceder manualmente.
+*   **Solución implementada:** Se actualizó el menú lateral y la lógica de enrutamiento (`Sidebar.tsx`, `App.tsx`, y `pagos.ts`) para exponer el módulo de pagos de forma segura al rol `doctor`. Ahora tienen acceso nativo.
 
-## 📋 Resumen del Proyecto
+## 2. Corrección de Impresión de Comprobantes
+*   **Problema original:** El comprobante de pago presentaba errores de formato, no cargaba la firma, cortaba los textos en la impresión y el diseño salía distorsionado (pantalla en negro).
+*   **Solución implementada:** Se reescribió la lógica en `ComprobanteViewer.tsx`:
+    *   **Impresión Nativa Segura:** Se limpiaron las reglas CSS de impresión (`@media print`) para asegurar un fondo blanco puro y texto negro, ignorando el "dark mode" del sistema.
+    *   **Exportación a PDF:** Se agregó una función de descarga a PDF usando `html2canvas` y `jsPDF`, garantizando que la captura mantenga las proporciones exactas y visualice la firma en alta resolución.
 
-Aplicación de facturación para clínica dental (Ventura Dental) en Costa Rica.
+## 3. Aislamiento de Datos por Doctor
+*   **Problema original:** Cualquier doctor podía ver la lista completa de tratamientos y el dinero recibido por otros doctores en la clínica.
+*   **Solución implementada:**
+    *   **Base de datos:** Se creó y ejecutó un script de migración para inyectar una nueva relación `doctor_id` en la tabla de `tratamientos`.
+    *   **Backend (Modelos y Rutas):** Se ajustaron los controladores de `pagos` y `tratamientos`. Ahora el sistema detecta si la petición proviene de un `doctor` y **filtra automáticamente** en SQL para que la base de datos devuelva *única y exclusivamente* los registros creados o asignados a él.
+    *   **Frontend (Admin/Secretaria):** Se actualizó el formulario de Creación de Tratamientos (`TratamientosPage.tsx`). Si el usuario es administrador o secretaria, verá un nuevo menú desplegable "Doctor Asignado" para vincular el tratamiento a un doctor específico.
+    *   **Compatibilidad:** Se corrigieron todas las validaciones de TypeScript para prevenir fallos en la compilación de Vercel.
 
-### Stack Tecnológico
-- **Frontend:** React + TypeScript + Vite → Desplegado en Vercel
-- **Backend:** Node.js + Express + PostgreSQL → Desplegado en Render
-- **Repositorio:** https://github.com/sammy9322/ventura-dental-facturacion
+## Estado del Entorno
+> [!NOTE]
+> Todo el código fue probado exitosamente, sincronizado a la carpeta local de OneDrive (`C:\Users\gaboa\OneDrive\Desarrollo de Apps\Facturación Clínica\ventura-dental-facturacion`) y subido a GitHub (rama `main`), por lo que ya está en producción vía Vercel y Render.
 
----
-
-## ✅ Funcionalidades Implementadas
-
-### 1. Cambios de Nomenclatura
-| Antes | Después |
-|-------|---------|
-| Estructura Clínica | Procesos Clínicos |
-| Historial | Registro e Historial de pagos |
-| DNI | Cédula (maxLength: 20) |
-| Yape/Plin | Sinpe Móvil |
-
-### 2. Módulos del Sistema
-- **Cobros:** Registro de pagos con múltiples métodos (efectivo, tarjeta, transferencia, Sinpe Móvil)
-- **Historial de Pagos:** Vista de todos los pagos con opción de re-imprimir comprobantes
-- **Pacientes:** CRUD de pacientes con búsqueda
-- **Tratamientos:** Catálogo de tratamientos
-- **Procesos Clínicos:** Estructura de tratamientos
-- **Usuarios:** Gestión de usuarios (admin)
-
-### 3. Comprobante de Pago (Feature Reciente)
-Comprobante detallado que incluye:
-- Logo y datos de la clínica
-- Número de comprobante y fecha
-- Datos del paciente (nombre, cédula, teléfono)
-- Doctor que atendió
-- Cajero que cobró
-- Concepto del pago
-- **Tabla de detalles:** Muestra cada concepto pagado (con emoji区分: 🦷 = cuota principal, ➕ = adicional)
-- **Saldo del tratamiento:** Monto total, abonado, pendiente
-- Total pagado y método de pago
-- Firma del paciente (si existe)
-- Botones **Imprimir** y **Descargar** (arreglados recently)
-
-### 4. Bug Fixes Realizados
-- Dropdown de búsqueda de pacientes (visibility issue)
-- Form submit en edición de pacientes
-- TypeScript errors en backend (auth middleware, validación de campos nullable)
-- Botones de imprimir/descargar en ComprobanteViewer (click events no respondían)
-
----
-
-## 📁 Archivos Modificados Recientemente
-
-### Frontend (client/)
-| Archivo | Cambio |
-|---------|--------|
-| `src/components/ComprobanteViewer.tsx` | Arreglado click de botones (agregado preventDefault, stopPropagation, zIndex, pointerEvents) |
-| `package.json` | Agregada dependencia `react-hook-form` |
-| `src/components/Sidebar.tsx` | Nombres de módulos actualizados |
-| `src/pages/PacientesPage.tsx` | DNI → Cédula, fix de form submit |
-| `src/pages/HistorialPagosPage.tsx` | Agregada funcionalidad de re-impresión |
-| `src/pages/RegistrarPagoPage.tsx` | Fix de búsqueda de pacientes |
-
-### Backend (server/)
-| Archivo | Cambio |
-|---------|--------|
-| `src/models/comprobante.ts` | Agregados campos: detalles, tratamiento_monto_total, tratamiento_monto_pagado, macro_nombre |
-| `src/routes/pagos.ts` | Fix auth middleware issues |
-| `src/routes/pacientes.ts` | Fix validación de campos nullable |
-
----
-
-## 🚀 Estado de Despliegue
-
-| Ambiente | Estado | Notas |
-|----------|--------|-------|
-| GitHub | ✅ Actualizado | Commit: `be0e498` |
-| Vercel (Frontend) | ⏳ Pending deploy | Requires manual deploy after push |
-| Render (Backend) | ⏳ Pending deploy | Requires manual deploy after push |
-
----
-
-## ⚠️ Pendiente por Verificar
-
-1. **Botones de Comprobante:** Verificar que imprimir/descargar funcionan en producción
-2. **Flujo completo:** Testear registro de pago → generación de comprobante → impresión
-3. **Detalles del pago:** Confirmar que la tabla muestra correctamente los conceptospagados
-
----
-
-## 🔧 Para Continuar el Desarrollo
-
-1. Hacer deploy a Vercel y Render
-2. Verificar botones de imprimir/descargar
-3. Si hay errores, revisar:
-   - `client/src/components/ComprobanteViewer.tsx` líneas 37-87 (handlers de click)
-   - Consola del navegador para errores JavaScript
-4. Testear el flujo completo de pagos
-
----
-
-## 📞 Referencias
-
-- **Repo:** https://github.com/sammy9322/ventura-dental-facturacion
-- **Frontend URL:** (configurar en Vercel)
-- **Backend URL:** (configurar en Render)
-- **Local Path:** `C:\Users\gaboa\OneDrive\Desarrollo de Apps\Facturación Clínica\ventura-dental-facturacion`
+### Pendientes / Próximos Pasos (Para Mañana)
+*   **Limpieza de Datos de Prueba:** En cuanto inicie la fase productiva con pacientes reales en la clínica, se debe hacer una depuración (TRUNCATE) de los tratamientos y pagos antiguos que quedaron huérfanos sin `doctor_id`.
+*   [Espacio para nuevas funciones o requerimientos que desees abordar...]
