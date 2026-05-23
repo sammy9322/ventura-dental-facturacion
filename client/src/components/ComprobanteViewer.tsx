@@ -1,10 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Printer, Download } from 'lucide-react';
-import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
-import { useToast } from '../hooks/useToast';
-import { useState } from 'react';
 
 interface Props {
   comprobante: Comprobante;
@@ -12,8 +11,52 @@ interface Props {
 }
 
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
-  const { toast } = useToast();
-  const [descargando, setDescargando] = useState(false);
+  const [firmaProcesada, setFirmaProcesada] = useState<string>('');
+
+  useEffect(() => {
+    if (!comprobante.firma_dataurl) return;
+
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          setFirmaProcesada(comprobante.firma_dataurl);
+          return;
+        }
+
+        // Dibujar firma original
+        ctx.drawImage(img, 0, 0);
+
+        // Obtener datos de píxeles para cambiar trazos claros a tinta oscura (negro)
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const alpha = data[i + 3];
+          if (alpha > 0) {
+            // Cambiar trazo claro (#f1f5f9) a negro puro manteniendo transparencia
+            data[i] = 0;     // R
+            data[i + 1] = 0; // G
+            data[i + 2] = 0; // B
+          }
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        setFirmaProcesada(canvas.toDataURL('image/png'));
+      } catch (err) {
+        console.error('Error al procesar color de la firma:', err);
+        setFirmaProcesada(comprobante.firma_dataurl);
+      }
+    };
+    img.onerror = () => {
+      setFirmaProcesada(comprobante.firma_dataurl);
+    };
+    img.src = comprobante.firma_dataurl;
+  }, [comprobante.firma_dataurl]);
 
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
@@ -54,86 +97,39 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
   const handleDownload = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (descargando) return;
-    
     try {
-      const element = document.getElementById('comprobante-content');
-      if (!element) {
-        toast.error('No se pudo encontrar el comprobante');
+      const printContent = document.getElementById('comprobante-content');
+      if (!printContent) {
+        alert('No se encontró el contenido para descargar');
         return;
       }
-      
-      setDescargando(true);
-      
-      // Invertir la imagen en un Canvas en memoria, usando la imagen que YA esta montada en el DOM
-      const originalImg = element.querySelector('img[alt="Firma del paciente"]') as HTMLImageElement;
-      let canvasInvertido: HTMLCanvasElement | null = null;
-      
-      if (originalImg && comprobante.firma_dataurl) {
-        canvasInvertido = document.createElement('canvas');
-        canvasInvertido.width = originalImg.width || 240;
-        canvasInvertido.height = originalImg.height || 90;
-        // Aplicar los mismos estilos CSS que tenía el img para que no rompa el layout
-        canvasInvertido.style.maxWidth = '240px';
-        canvasInvertido.style.maxHeight = '90px';
-        canvasInvertido.style.display = 'block';
-        
-        const ctx = canvasInvertido.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(originalImg, 0, 0, canvasInvertido.width, canvasInvertido.height);
-          try {
-            const imgData = ctx.getImageData(0, 0, canvasInvertido.width, canvasInvertido.height);
-            // Invertimos los píxeles directamente (El base64 tiene un fondo oscuro y trazo claro)
-            for(let i=0; i<imgData.data.length; i+=4) {
-              imgData.data[i] = 255 - imgData.data[i];
-              imgData.data[i+1] = 255 - imgData.data[i+1];
-              imgData.data[i+2] = 255 - imgData.data[i+2];
-            }
-            ctx.putImageData(imgData, 0, 0);
-          } catch(err) {
-            console.warn('Seguridad DOMException en canvas', err);
-          }
-        }
-      }
 
-      const canvasPdf = await html2canvas(element, {
-        scale: 3, 
+      // Generar captura con html2canvas asegurando fondo blanco
+      const canvas = await html2canvas(printContent, {
+        scale: 2, // Calidad retina
         useCORS: true,
         backgroundColor: '#ffffff',
-        logging: false,
-        onclone: (doc) => {
-           if (canvasInvertido) {
-             const imgClonada = doc.querySelector('img[alt="Firma del paciente"]');
-             if (imgClonada && imgClonada.parentElement) {
-                // Insertamos el CANVAS procesado y eliminamos la imagen, evitando que html2canvas capture el fondo negro original
-                imgClonada.parentElement.insertBefore(canvasInvertido, imgClonada);
-                imgClonada.remove();
-             }
-           }
-        }
+        logging: false
       });
+
+      const imgData = canvas.toDataURL('image/png');
       
-      const imgData = canvasPdf.toDataURL('image/png');
-      const imgWidth = canvasPdf.width;
-      const imgHeight = canvasPdf.height;
-      const pdfWidth = (imgWidth * 25.4) / 96;  
-      const pdfHeight = (imgHeight * 25.4) / 96;
-      
-      const doc = new jsPDF({
-        orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+      // Crear documento PDF tamaño A4
+      const pdf = new jsPDF({
+        orientation: 'portrait',
         unit: 'mm',
-        format: [pdfWidth, pdfHeight],
+        format: 'a4',
       });
-      
-      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      doc.save(`Comprobante_Ventura_${comprobante.numero}.pdf`);
-      toast.success('Comprobante descargado correctamente.');
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pdfWidth - 20; // 10mm márgenes a los lados
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 10, 15, imgWidth, imgHeight);
+      pdf.save(`Comprobante_${comprobante.numero}.pdf`);
     } catch (err) {
-      console.error('Error al generar PDF:', err);
-      toast.error('Error al generar el PDF. Por favor use el botón de imprimir.');
-    } finally {
-      setDescargando(false);
+      console.error('Error al descargar PDF:', err);
+      alert('Error al generar el PDF del comprobante');
     }
   };
 
@@ -158,24 +154,22 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <button 
               type="button"
               onClick={handleDownload}
-              disabled={descargando}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.5rem 1rem', background: 'var(--brand-purple)', color: 'white', 
+                padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', 
                 border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
-                pointerEvents: 'auto', position: 'relative', zIndex: 10001,
-                opacity: descargando ? 0.7 : 1
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
-              title="Descargar como PDF"
+              title="Descargar"
             >
-              <Download size={18} /> {descargando ? 'Descargando...' : 'Descargar PDF'}
+              <Download size={18} /> Descargar
             </button>
             <button 
               type="button"
               onClick={handlePrint}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.5rem 1rem', background: 'var(--brand-turquoise)', color: 'white', 
+                padding: '0.5rem 1rem', background: '#10b981', color: 'white', 
                 border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
                 pointerEvents: 'auto', position: 'relative', zIndex: 10001
               }}
@@ -199,13 +193,13 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
 
         <div id="comprobante-content" style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--brand-purple)', paddingBottom: '1rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid #1e40af', paddingBottom: '1rem' }}>
             <img src={LogoOficial} alt="Ventura Dental" style={{ height: '60px', marginBottom: '0.5rem' }} />
-            <p style={{ margin: 0, color: '#1e40af', fontSize: '0.9rem', fontStyle: 'italic', fontWeight: 600, letterSpacing: '0.02em' }}>
-              "Tu sueño hecho sonrisa"
+            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
+              {comprobante.negocio?.direccion || 'Dirección por definir'}
             </p>
-            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem', marginTop: '0.35rem' }}>
-              Tel: 84863000
+            <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>
+              Tel: {comprobante.negocio?.telefono || 'Sin teléfono'}
             </p>
           </div>
 
@@ -214,7 +208,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>Comprobante N°</p>
-                <p style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: 'var(--brand-purple)' }}>#{comprobante.numero}</p>
+                <p style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#1e40af' }}>#{comprobante.numero}</p>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase' }}>Fecha</p>
@@ -310,14 +304,14 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           )}
 
           {/* Total */}
-          <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #bfdbfe' }}>
+          <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 800, fontSize: '1.05rem', color: '#1e293b' }}>TOTAL PAGADO</span>
-              <span style={{ fontWeight: 900, fontSize: '1.6rem', color: '#1e40af' }}>
+              <span style={{ fontWeight: 700, fontSize: '1rem' }}>TOTAL PAGADO</span>
+              <span style={{ fontWeight: 800, fontSize: '1.5rem', color: '#1e40af' }}>
                 {formatCurrency(comprobante.monto, comprobante.moneda)}
               </span>
             </div>
-            <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#1e293b', fontWeight: 600 }}>
+            <div style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#64748b' }}>
               Método de pago: {getMetodoLabel(comprobante.metodo_pago)}
             </div>
           </div>
@@ -325,11 +319,13 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Firma del paciente */}
           {comprobante.firma_dataurl && (
             <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
-                <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px' }}>
-                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
-                </div>
+              <div style={{ borderTop: '1px solid #94a3b8', paddingTop: '1rem', margin: '0 2rem' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
+                <img 
+                  src={firmaProcesada || comprobante.firma_dataurl} 
+                  alt="Firma del paciente" 
+                  style={{ maxWidth: '200px', maxHeight: '80px' }}
+                />
               </div>
             </div>
           )}
@@ -343,48 +339,10 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       </div>
 
       <style>{`
-        @page {
-          size: letter;
-          margin: 15mm;
-        }
         @media print {
-          body {
-            background: white !important;
-          }
           body * { visibility: hidden; }
-          .modal-overlay, .modal-content, #comprobante-content, #comprobante-content * { 
-            visibility: visible; 
-          }
-          .modal-overlay {
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 100vw !important;
-            background: white !important;
-            align-items: flex-start !important;
-            padding: 0 !important;
-          }
-          .modal-content {
-            margin: 0 auto !important;
-            padding: 0 !important;
-            width: 100% !important;
-            max-width: none !important;
-            max-height: none !important;
-            overflow: visible !important;
-            box-shadow: none !important;
-          }
-          #comprobante-content { 
-            position: relative !important;
-            left: 0; 
-            top: 0; 
-            width: 100% !important; 
-            border: none !important;
-            background: white !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          /* Ocultar elementos de UI */
-          button { display: none !important; }
+          #comprobante-content, #comprobante-content * { visibility: visible; }
+          #comprobante-content { position: absolute; left: 0; top: 0; width: 100%; }
         }
       `}</style>
     </div>
