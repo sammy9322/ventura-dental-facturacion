@@ -66,31 +66,50 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       
       setDescargando(true);
       
-      const canvas = await html2canvas(element, {
+      // Invertir imagen temporalmente en el DOM sin afectar a React
+      const imgEl = element.querySelector('img[alt="Firma del paciente"]') as HTMLImageElement;
+      let originalSrc = '';
+      if (imgEl && imgEl.src.startsWith('data:image')) {
+        originalSrc = imgEl.src;
+        const canvas = document.createElement('canvas');
+        canvas.width = imgEl.naturalWidth || 240;
+        canvas.height = imgEl.naturalHeight || 90;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+          try {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < imgData.data.length; i += 4) {
+              imgData.data[i] = 255 - imgData.data[i];
+              imgData.data[i+1] = 255 - imgData.data[i+1];
+              imgData.data[i+2] = 255 - imgData.data[i+2];
+            }
+            ctx.putImageData(imgData, 0, 0);
+            imgEl.src = canvas.toDataURL('image/png');
+            imgEl.style.filter = 'none';
+          } catch (err) {
+            console.warn('Error invirtiendo píxeles', err);
+          }
+        }
+      }
+
+      const canvasPdf = await html2canvas(element, {
         scale: 3, 
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
         imageTimeout: 0,
-        onclone: (clonedDoc) => {
-          // Solución mágica a prueba de fallos:
-          // html2canvas no soporta el filtro 'invert(1)'.
-          // En la copia (clon) que va al PDF, le ponemos fondo oscuro al recuadro de la firma 
-          // para que la tinta blanca sea 100% visible, sin afectar la pantalla real del usuario.
-          const imgList = clonedDoc.querySelectorAll('img[alt="Firma del paciente"]');
-          imgList.forEach((imgEl) => {
-            const htmlImg = imgEl as HTMLElement;
-            htmlImg.style.filter = 'none'; // Quitar el filtro que de por sí no soporta html2canvas
-            if (htmlImg.parentElement) {
-              htmlImg.parentElement.style.background = '#0f172a'; // Oscurecer solo en el PDF
-            }
-          });
-        }
       });
       
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
+      // Revertir DOM al estado original
+      if (imgEl && originalSrc) {
+        imgEl.src = originalSrc;
+        imgEl.style.filter = 'invert(1) contrast(1.2)';
+      }
+      
+      const imgData = canvasPdf.toDataURL('image/png');
+      const imgWidth = canvasPdf.width;
+      const imgHeight = canvasPdf.height;
       const pdfWidth = (imgWidth * 25.4) / 96;  
       const pdfHeight = (imgHeight * 25.4) / 96;
       
