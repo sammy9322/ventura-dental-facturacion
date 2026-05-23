@@ -114,18 +114,17 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
 
       const imgData = canvas.toDataURL('image/png');
       
-      // Crear documento PDF tamaño A4
+      // Adaptar el tamaño de la página del PDF al contenido para que nunca se corte
+      const pdfWidth = 210; // Ancho estándar A4 en mm
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Altura proporcional exacta
+
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4',
+        format: [pdfWidth, pdfHeight],
       });
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const imgWidth = pdfWidth - 20; // 10mm márgenes a los lados
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, 'PNG', 10, 15, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save(`Comprobante_${comprobante.numero}.pdf`);
     } catch (err) {
       console.error('Error al descargar PDF:', err);
