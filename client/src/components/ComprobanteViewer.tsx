@@ -1,6 +1,49 @@
 import { Printer, Download } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import LogoOficial from '../assets/logo_oficial.png';
 import type { Comprobante } from '../types';
+import { useToast } from '../hooks/useToast';
+import { useState, useEffect } from 'react';
+
+// Hook para invertir asíncronamente el base64 sin bloquear el render original
+function useInvertedBase64(base64Original: string | undefined): string | undefined {
+  const [inverted, setInverted] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!base64Original || !base64Original.startsWith('data:image')) {
+      setInverted(base64Original);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        setInverted(base64Original);
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      try {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i]; // Invertir R
+          data[i + 1] = 255 - data[i + 1]; // Invertir G
+          data[i + 2] = 255 - data[i + 2]; // Invertir B
+        }
+        ctx.putImageData(imgData, 0, 0);
+        setInverted(canvas.toDataURL('image/png'));
+      } catch (e) {
+        setInverted(base64Original);
+      }
+    };
+    img.onerror = () => setInverted(base64Original);
+    img.src = base64Original;
+  }, [base64Original]);
+  return inverted;
+}
 
 interface Props {
   comprobante: Comprobante;
@@ -8,6 +51,10 @@ interface Props {
 }
 
 export default function ComprobanteViewer({ comprobante, onClose }: Props) {
+  const { toast } = useToast();
+  const [descargando, setDescargando] = useState(false);
+  const firmaProcesada = useInvertedBase64(comprobante.firma_dataurl);
+
   const formatCurrency = (monto: number, moneda: string) => {
     const simbolo = moneda === 'CRC' ? '₡' : '$';
     return `${simbolo} ${monto.toLocaleString('es-CR', { minimumFractionDigits: 2 })}`;
@@ -44,10 +91,51 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
     }
   };
 
-  const handleDownload = (e: React.MouseEvent) => {
-    // Generar PDF usando el motor nativo del navegador (Guardar como PDF)
-    // Esto garantiza que la descarga es 100% identica a lo que se imprime, con CSS y formato de hoja perfecto.
-    handlePrint(e);
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (descargando) return;
+    
+    try {
+      const element = document.getElementById('comprobante-content');
+      if (!element) {
+        toast.error('No se pudo encontrar el comprobante');
+        return;
+      }
+      
+      setDescargando(true);
+      
+      // html2canvas nativo para forzar la captura con fondo blanco
+      const canvas = await html2canvas(element, {
+        scale: 3, 
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        imageTimeout: 0,
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const pdfWidth = (imgWidth * 25.4) / 96;  
+      const pdfHeight = (imgHeight * 25.4) / 96;
+      
+      const doc = new jsPDF({
+        orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight],
+      });
+      
+      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      doc.save(`Comprobante_Ventura_${comprobante.numero}.pdf`);
+      toast.success('Comprobante descargado correctamente.');
+    } catch (err) {
+      console.error('Error al generar PDF:', err);
+      toast.error('Error al generar el PDF. Por favor use el botón de imprimir.');
+    } finally {
+      setDescargando(false);
+    }
   };
 
   const handleClose = (e?: React.MouseEvent) => {
@@ -71,15 +159,17 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
             <button 
               type="button"
               onClick={handleDownload}
+              disabled={descargando}
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.5rem 1rem', background: 'var(--brand-purple)', color: 'white', 
                 border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 600,
-                pointerEvents: 'auto', position: 'relative', zIndex: 10001
+                pointerEvents: 'auto', position: 'relative', zIndex: 10001,
+                opacity: descargando ? 0.7 : 1
               }}
               title="Descargar como PDF"
             >
-              <Download size={18} /> Descargar PDF
+              <Download size={18} /> {descargando ? 'Descargando...' : 'Descargar PDF'}
             </button>
             <button 
               type="button"
@@ -239,7 +329,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
               <div style={{ borderTop: '2px solid #1e293b', paddingTop: '1rem', margin: '0 2rem' }}>
                 <p style={{ margin: 0, fontSize: '0.8rem', color: '#1e293b', fontWeight: 700, letterSpacing: '0.05em', marginBottom: '0.5rem' }}>FIRMA DEL PACIENTE</p>
                 <div style={{ background: '#ffffff', display: 'inline-block', padding: '0.5rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                  <img src={comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block', filter: 'invert(1) contrast(1.2)' }} />
+                  <img src={firmaProcesada || comprobante.firma_dataurl} alt="Firma del paciente" style={{ maxWidth: '240px', maxHeight: '90px', display: 'block' }} />
                 </div>
               </div>
             </div>
