@@ -66,31 +66,46 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
       
       setDescargando(true);
       
-      // Invertir imagen temporalmente en el DOM sin afectar a React
+      // Procesamiento a prueba de balas para forzar tinta negra
       const imgEl = element.querySelector('img[alt="Firma del paciente"]') as HTMLImageElement;
       let originalSrc = '';
-      if (imgEl && imgEl.src.startsWith('data:image')) {
+      if (imgEl && imgEl.src) {
         originalSrc = imgEl.src;
-        const canvas = document.createElement('canvas');
-        canvas.width = imgEl.naturalWidth || 240;
-        canvas.height = imgEl.naturalHeight || 90;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
-          try {
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < imgData.data.length; i += 4) {
-              imgData.data[i] = 255 - imgData.data[i];
-              imgData.data[i+1] = 255 - imgData.data[i+1];
-              imgData.data[i+2] = 255 - imgData.data[i+2];
-            }
-            ctx.putImageData(imgData, 0, 0);
-            imgEl.src = canvas.toDataURL('image/png');
-            imgEl.style.filter = 'none';
-          } catch (err) {
-            console.warn('Error invirtiendo píxeles', err);
-          }
-        }
+        const processImage = (): Promise<string> => {
+          return new Promise((resolve) => {
+            const tmpImg = new Image();
+            tmpImg.crossOrigin = 'anonymous'; // Prevenir canvas contaminado si es URL externa
+            tmpImg.onload = () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = tmpImg.width || 240;
+              canvas.height = tmpImg.height || 90;
+              const ctx = canvas.getContext('2d');
+              if (!ctx) return resolve(originalSrc);
+              
+              // Dibuja la firma (con tinta blanca y fondo transparente)
+              ctx.drawImage(tmpImg, 0, 0);
+              
+              // Colorea TODOS los pixeles no transparentes de negro intenso
+              ctx.globalCompositeOperation = 'source-in';
+              ctx.fillStyle = '#000000';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              
+              try {
+                resolve(canvas.toDataURL('image/png'));
+              } catch (err) {
+                console.warn('Error toDataURL (Tainted Canvas?)', err);
+                resolve(originalSrc);
+              }
+            };
+            tmpImg.onerror = () => resolve(originalSrc);
+            tmpImg.src = originalSrc;
+          });
+        };
+        
+        const blackSignatureData = await processImage();
+        // Se inyecta temporalmente al DOM antes de que pase el generador PDF
+        imgEl.src = blackSignatureData;
+        imgEl.style.filter = 'none';
       }
 
       const canvasPdf = await html2canvas(element, {
