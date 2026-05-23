@@ -74,7 +74,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
         const processImage = (): Promise<string> => {
           return new Promise((resolve) => {
             const tmpImg = new Image();
-            tmpImg.crossOrigin = 'anonymous'; // Prevenir canvas contaminado si es URL externa
+            // No usar crossOrigin para permitir la carga de Base64 locales o imagenes same-origin
             tmpImg.onload = () => {
               const canvas = document.createElement('canvas');
               canvas.width = tmpImg.width || 240;
