@@ -190,7 +190,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           </div>
         </div>
 
-        <div id="comprobante-content" style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+        <div id="comprobante-content" style={{ background: 'white', color: '#1e293b', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '1.5rem', borderBottom: '2px solid #1e40af', paddingBottom: '1rem' }}>
             <img src={LogoOficial} alt="Ventura Dental" style={{ height: '60px', marginBottom: '0.5rem' }} />
