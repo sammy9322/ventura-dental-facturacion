@@ -189,7 +189,15 @@ export default function PacientesPage() {
         <form id="paciente-form" onSubmit={form.handleSubmit(handleSubmit as any)}>
           <div className="form-group">
             <label className="form-label">Nombre Completo *</label>
-            <input type="text" className="form-input" {...form.register('nombre')} required placeholder="Nombre completo del paciente" />
+            <input 
+              type="text" 
+              className="form-input" 
+              {...form.register('nombre')} 
+              required 
+              placeholder="NOMBRE COMPLETO DEL PACIENTE" 
+              style={{ textTransform: 'uppercase' }}
+              onInput={(e) => { e.currentTarget.value = e.currentTarget.value.toUpperCase(); }}
+            />
           </div>
           <div className="form-row">
             <div className="form-group">

@@ -7,7 +7,7 @@ import { auditoriaService } from '../services/auditoria.js';
 const router = Router();
 
 const createPacienteSchema = z.object({
-  nombre: z.string().min(1, 'Nombre requerido').max(150),
+  nombre: z.string().min(1, 'Nombre requerido').max(150).toUpperCase(),
   dni: z.string().max(20).nullable(),
   telefono: z.string().max(20).nullable(),
   email: z.string().email().nullable(),
@@ -15,7 +15,7 @@ const createPacienteSchema = z.object({
 });
 
 const updatePacienteSchema = z.object({
-  nombre: z.string().min(1).max(150).optional(),
+  nombre: z.string().min(1).max(150).toUpperCase().optional(),
   dni: z.string().max(20).nullable().optional(),
   telefono: z.string().max(20).nullable().optional(),
   email: z.string().email().nullable().optional(),
