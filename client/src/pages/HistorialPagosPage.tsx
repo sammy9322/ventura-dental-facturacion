@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PlusCircle, Eye, Calendar, Filter, X, Printer } from 'lucide-react';
+import { PlusCircle, Eye, Calendar, Filter, X, Printer, Search } from 'lucide-react';
 import { pagoService } from '../services';
 import { Layout, ComprobanteViewer } from '../components';
 import type { Pago, MetodoPago, Comprobante } from '../types';
@@ -16,6 +16,7 @@ export default function HistorialPagosPage() {
     fechaHasta: '',
     estado: '',
   });
+  const [searchPaciente, setSearchPaciente] = useState('');
   const [selectedPago, setSelectedPago] = useState<Pago | null>(null);
   const [comprobanteMostrado, setComprobanteMostrado] = useState<Comprobante | null>(null);
   const [imprimiendoId, setImprimiendoId] = useState<number | null>(null);
@@ -62,9 +63,12 @@ export default function HistorialPagosPage() {
 
   const clearFilters = () => {
     setFilters({ fechaDesde: '', fechaHasta: '', estado: '' });
+    setSearchPaciente('');
   };
 
-  const hasActiveFilters = filters.fechaDesde || filters.fechaHasta || filters.estado;
+  const hasActiveFilters = filters.fechaDesde || filters.fechaHasta || filters.estado || searchPaciente !== '';
+
+  const pagosMostrados = pagos.filter(p => !searchPaciente ? true : (p.paciente_nombre || '').toLowerCase().includes(searchPaciente.toLowerCase()));
 
   const formatCurrency = (value: number | string, moneda: string = 'CRC') => {
     const symbol = moneda === 'USD' ? '$' : '₡';
@@ -108,7 +112,7 @@ export default function HistorialPagosPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h1 className="page-title">Registro e Historial de pagos</h1>
-            <p className="page-subtitle">{pagos.length} pago{pagos.length !== 1 ? 's' : ''} encontrado{pagos.length !== 1 ? 's' : ''}</p>
+            <p className="page-subtitle">{pagosMostrados.length} pago{pagosMostrados.length !== 1 ? 's' : ''} encontrado{pagosMostrados.length !== 1 ? 's' : ''}</p>
           </div>
           <Link to="/pagos/registrar" className="btn btn-primary">
             <PlusCircle size={18} /> Registrar Pago
@@ -118,6 +122,21 @@ export default function HistorialPagosPage() {
 
       {/* Filtros modernos */}
       <div className="filtros-bar">
+        <div className="filtro-item">
+          <label className="filtro-label">
+            <Search size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+            Paciente
+          </label>
+          <input
+            type="text"
+            className="filtro-date"
+            placeholder="Buscar nombre..."
+            value={searchPaciente}
+            onChange={(e) => setSearchPaciente(e.target.value)}
+            style={{ minWidth: '180px' }}
+          />
+        </div>
+
         <div className="filtro-item">
           <label className="filtro-label">
             <Calendar size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
@@ -172,7 +191,7 @@ export default function HistorialPagosPage() {
         <div className="loading">
           <div className="spinner"></div>
         </div>
-      ) : pagos.length === 0 ? (
+      ) : pagosMostrados.length === 0 ? (
         <div className="empty-state">
           <h3>No hay pagos registrados</h3>
           <p>Comience registrando un nuevo pago</p>
@@ -197,7 +216,7 @@ export default function HistorialPagosPage() {
                 </tr>
               </thead>
               <tbody>
-                {pagos.map((pago) => {
+                {pagosMostrados.map((pago) => {
                   const est = estadoConfig[pago.estado] || estadoConfig.pendiente_cobro;
                   return (
                     <tr key={pago.id}>
