@@ -35,9 +35,21 @@ export default function TratamientosPage() {
       monto_total: 0,
       fecha_inicio: new Date().toISOString().split('T')[0],
       fecha_fin: '',
+      duracion_meses: '',
       doctor_id: '',
     },
   });
+
+  const fechaInicioVal = form.watch('fecha_inicio');
+  const duracionVal = form.watch('duracion_meses');
+
+  useEffect(() => {
+    if (fechaInicioVal && duracionVal && Number(duracionVal) > 0) {
+      const [year, month, day] = fechaInicioVal.split('-').map(Number);
+      const nuevaFecha = new Date(year, month - 1 + Number(duracionVal), day);
+      form.setValue('fecha_fin', nuevaFecha.toISOString().split('T')[0]);
+    }
+  }, [fechaInicioVal, duracionVal, form]);
 
   useEffect(() => { 
     loadTratamientos(); 
@@ -94,6 +106,7 @@ export default function TratamientosPage() {
         monto_total: tratamiento.monto_total,
         fecha_inicio: tratamiento.fecha_inicio.split('T')[0],
         fecha_fin: tratamiento.fecha_fin ? tratamiento.fecha_fin.split('T')[0] : '',
+        duracion_meses: '',
         doctor_id: tratamiento.doctor_id ? String(tratamiento.doctor_id) : '',
       });
     } else {
@@ -105,6 +118,7 @@ export default function TratamientosPage() {
         monto_total: 0, 
         fecha_inicio: new Date().toISOString().split('T')[0], 
         fecha_fin: '',
+        duracion_meses: '',
         doctor_id: ''
       });
     }
@@ -371,6 +385,10 @@ export default function TratamientosPage() {
             <div className="form-group">
               <label className="form-label">Fecha de Inicio *</label>
               <input type="date" className="form-input" {...form.register('fecha_inicio')} required />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Duración (Meses)</label>
+              <input type="number" min="1" step="1" className="form-input" placeholder="Opcional" {...form.register('duracion_meses')} />
             </div>
             <div className="form-group">
               <label className="form-label">Fecha de Fin</label>
