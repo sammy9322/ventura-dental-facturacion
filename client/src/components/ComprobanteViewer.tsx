@@ -303,7 +303,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Concepto */}
           {comprobante.concepto && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Concepto</h3>
+              <h3 style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Concepto de lo abonado</h3>
               <p style={{ margin: 0, fontSize: '0.875rem', color: '#334155' }}>{comprobante.concepto}</p>
             </div>
           )}
@@ -317,7 +317,7 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                 <thead>
                   <tr style={{ background: '#f1f5f9' }}>
-                    <th style={{ padding: '8px', textAlign: 'left', fontSize: '0.75rem', color: '#64748b' }}>Descripción</th>
+                    <th style={{ padding: '8px', textAlign: 'left', fontSize: '0.75rem', color: '#64748b' }}></th>
                     <th style={{ padding: '8px', textAlign: 'right', fontSize: '0.75rem', color: '#64748b' }}>Monto</th>
                   </tr>
                 </thead>
@@ -342,10 +342,6 @@ export default function ComprobanteViewer({ comprobante, onClose }: Props) {
           {/* Saldo del Tratamiento */}
           {comprobante.tratamiento_monto_total && (
             <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ color: '#64748b' }}>Monto total del tratamiento:</span>
-                <span style={{ fontWeight: 600 }}>{formatCurrency(comprobante.tratamiento_monto_total, comprobante.moneda)}</span>
-              </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ color: '#64748b' }}>Total abonado:</span>
                 <span style={{ fontWeight: 600, color: '#059669' }}>{formatCurrency(comprobante.tratamiento_monto_pagado || 0, comprobante.moneda)}</span>
