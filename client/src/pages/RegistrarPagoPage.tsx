@@ -17,7 +17,7 @@ export default function RegistrarPagoPage() {
   const [macroTratamientos, setMacroTratamientos] = useState<TratamientoMacro[]>([]);
   const [microTratamientos, setMicroTratamientos] = useState<TratamientoMicro[]>([]);
   const [concepto, setConcepto] = useState('');
-  const [observaciones, setObservaciones] = useState('');
+
   const [moneda, setMoneda] = useState<TipoMoneda>('CRC');
   const [detalles, setDetalles] = useState<DetallePagoItem[]>([
     { descripcion: '', monto: 0, es_cuota_principal: false }
@@ -102,7 +102,6 @@ export default function RegistrarPagoPage() {
         paciente_id: paciente.id,
         tratamiento_id: tratamientoPrincipal?.id || undefined,
         concepto: concepto || detalles.map(d => d.descripcion).join(', '),
-        observaciones,
         moneda,
         detalles,
       });
@@ -138,7 +137,6 @@ export default function RegistrarPagoPage() {
               setTratamientoPrincipal(null);
               setDetalles([{ descripcion: '', monto: 0, es_cuota_principal: false }]);
               setConcepto('');
-              setObservaciones('');
             }}
           >
             Registrar otro pago
@@ -423,17 +421,6 @@ export default function RegistrarPagoPage() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Observaciones Generales</label>
-              <textarea
-                className="form-input"
-                placeholder="Observaciones adicionales del pago..."
-                value={observaciones}
-                onChange={e => setObservaciones(e.target.value)}
-                rows={2}
-              />
             </div>
 
             <div style={{ borderTop: '2px solid var(--border)', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
