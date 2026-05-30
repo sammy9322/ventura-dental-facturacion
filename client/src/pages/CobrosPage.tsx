@@ -78,9 +78,10 @@ const handleFinalizar = async () => {
     return `https://wa.me/506${tel}?text=${msg}`;
   };
 
+  const baseMonto = Number(selected?.monto || 0);
   const aplicaImpuesto = metodo === 'sinpe' || metodo === 'transferencia';
-  const montoImpuesto = aplicaImpuesto ? (selected?.monto ?? 0) * 0.04 : 0;
-  const montoTotal = (selected?.monto ?? 0) + montoImpuesto;
+  const montoImpuesto = aplicaImpuesto ? baseMonto * 0.04 : 0;
+  const montoTotal = baseMonto + montoImpuesto;
 
   return (
     <Layout>
