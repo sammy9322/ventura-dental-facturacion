@@ -78,6 +78,10 @@ const handleFinalizar = async () => {
     return `https://wa.me/506${tel}?text=${msg}`;
   };
 
+  const aplicaImpuesto = metodo === 'sinpe' || metodo === 'transferencia';
+  const montoImpuesto = aplicaImpuesto ? (selected?.monto ?? 0) * 0.04 : 0;
+  const montoTotal = (selected?.monto ?? 0) + montoImpuesto;
+
   return (
     <Layout>
       <div className="page-header">
@@ -194,8 +198,14 @@ const handleFinalizar = async () => {
                   <span style={{ fontWeight: 600 }}>{formatMoney(d.monto, selected.moneda)}</span>
                 </div>
               ))}
+              {aplicaImpuesto && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderTop: '1px solid var(--border)', marginTop: '4px' }}>
+                  <span style={{ color: 'var(--accent)' }}>Comisión Bancaria (4%)</span>
+                  <span style={{ fontWeight: 600 }}>{formatMoney(montoImpuesto, selected.moneda)}</span>
+                </div>
+              )}
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--border)', marginTop: '6px', paddingTop: '6px', fontWeight: 800, fontSize: '1rem', color: 'white' }}>
-                <span>TOTAL</span><span style={{ color: 'var(--brand-turquoise)' }}>{formatMoney(selected.monto, selected.moneda)}</span>
+                <span>TOTAL</span><span style={{ color: 'var(--brand-turquoise)' }}>{formatMoney(montoTotal, selected.moneda)}</span>
               </div>
             </div>
 

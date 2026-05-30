@@ -176,19 +176,36 @@ export async function finalizar(id: number, data: {
   try {
     await client.query('BEGIN');
 
+    // Lock y obtener monto original
+    const pagoLock = await client.query(`
+      SELECT monto FROM pagos WHERE id = $1 AND estado = 'pendiente_cobro' FOR UPDATE
+    `, [id]);
+
+    if (pagoLock.rows.length === 0) {
+      throw new Error('Pago no encontrado o ya procesado');
+    }
+
+    const montoOriginal = Number(pagoLock.rows[0].monto);
+    const impuesto = (data.metodo_pago === 'sinpe' || data.metodo_pago === 'transferencia') ? montoOriginal * 0.04 : 0;
+    const nuevoMonto = montoOriginal + impuesto;
+
     const pagoResult = await client.query(`
       UPDATE pagos
       SET estado = 'completado',
           secretaria_id = $1,
           metodo_pago = $2,
           firma_dataurl = $3,
+          monto = $4,
           finalizado_at = CURRENT_TIMESTAMP
-      WHERE id = $4 AND estado = 'pendiente_cobro'
+      WHERE id = $5 AND estado = 'pendiente_cobro'
       RETURNING *
-    `, [data.secretaria_id, data.metodo_pago, data.firma_dataurl || null, id]);
+    `, [data.secretaria_id, data.metodo_pago, data.firma_dataurl || null, nuevoMonto, id]);
 
-    if (pagoResult.rows.length === 0) {
-      throw new Error('Pago no encontrado o ya procesado');
+    if (impuesto > 0) {
+      await client.query(`
+        INSERT INTO detalle_pago (pago_id, descripcion, monto, es_cuota_principal)
+        VALUES ($1, 'Comisión Bancaria (4%)', $2, false)
+      `, [id, impuesto]);
     }
 
     // Generar comprobante (upsert atomico por anio)
