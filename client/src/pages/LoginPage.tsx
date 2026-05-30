@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services';
 import LogoOficial from '../assets/logo_oficial.png';
 
@@ -77,6 +77,12 @@ export default function LoginPage() {
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
+
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <Link to="/forgot-password" style={{ color: 'var(--brand-turquoise)', fontSize: '0.875rem', textDecoration: 'none' }}>
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
 
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
           <p>Usuarios de prueba:</p>

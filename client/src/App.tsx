@@ -17,6 +17,8 @@ const CobranzaPage = lazy(() => import('./pages/CobranzaPage'));
 const MacroTratamientosPage = lazy(() => import('./pages/MacroTratamientosPage'));
 const RegistrarPagoPage = lazy(() => import('./pages/RegistrarPagoPage'));
 const CobrosPage = lazy(() => import('./pages/CobrosPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const CierreCajaPage = lazy(() => import('./pages/CierreCajaPage'));
 
@@ -62,6 +64,8 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             <Route element={
               <ProtectedRoute>

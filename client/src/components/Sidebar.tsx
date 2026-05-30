@@ -4,12 +4,18 @@ import { useTheme } from '../ThemeContext';
 import { authService } from '../services';
 import api from '../services/api';
 import LogoOficial from '../assets/logo_oficial.png';
+import { Modal } from '../components';
+import { useToast } from '../hooks/useToast';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { toast } = useToast();
   const [notifCount, setNotifCount] = useState(0);
+  const [showChangePwd, setShowChangePwd] = useState(false);
+  const [pwdData, setPwdData] = useState({ newPassword: '', confirmPassword: '' });
+  const [pwdError, setPwdError] = useState('');
 
   const user = authService.getUser();
 
@@ -28,7 +34,27 @@ export const Sidebar: React.FC = () => {
     const interval = setInterval(fetchNotif, 15000);
     return () => clearInterval(interval);
   }, [fetchNotif]);
-  
+
+  const handleChangePassword = async () => {
+    setPwdError('');
+    if (pwdData.newPassword.length < 6) {
+      setPwdError('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    if (pwdData.newPassword !== pwdData.confirmPassword) {
+      setPwdError('Las contraseñas no coinciden');
+      return;
+    }
+    try {
+      await api.put(`/auth/usuarios/${user?.id}/password`, { newPassword: pwdData.newPassword });
+      toast.success('Contraseña actualizada correctamente');
+      setShowChangePwd(false);
+      setPwdData({ newPassword: '', confirmPassword: '' });
+    } catch (err: any) {
+      setPwdError(err.response?.data?.error || 'Error al cambiar la contraseña');
+    }
+  };
+
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '📊', roles: ['admin'] },
     { name: 'Cobros', path: '/cobros/pendientes', icon: '💰', roles: ['secretaria', 'admin'] },
@@ -46,7 +72,8 @@ export const Sidebar: React.FC = () => {
   );
 
   return (
-    <aside className="sidebar panel-cristal">
+    <>
+      <aside className="sidebar panel-cristal">
       <div className="sidebar-header">
         <img src={LogoOficial} alt="Ventura Dental" className="sidebar-logo-img" />
       </div>
@@ -86,6 +113,11 @@ export const Sidebar: React.FC = () => {
           </div>
         </div>
 
+        <div className="nav-item" onClick={() => setShowChangePwd(true)}>
+          <span className="nav-icon">🔑</span>
+          <span className="nav-text">Cambiar mi Contraseña</span>
+        </div>
+
         <div className="nav-item logout" onClick={() => {
           authService.logout();
           navigate('/login');
@@ -95,6 +127,44 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
     </aside>
+      <Modal
+        isOpen={showChangePwd}
+        onClose={() => { setShowChangePwd(false); setPwdError(''); setPwdData({ newPassword: '', confirmPassword: '' }); }}
+        title="Cambiar mi Contraseña"
+        footer={
+          <>
+            <button className="btn btn-outline" onClick={() => { setShowChangePwd(false); setPwdError(''); setPwdData({ newPassword: '', confirmPassword: '' }); }}>
+              Cancelar
+            </button>
+            <button className="btn btn-primary" onClick={handleChangePassword}>
+              Actualizar
+            </button>
+          </>
+        }
+      >
+        {pwdError && <div className="alert alert-error">{pwdError}</div>}
+        <div className="form-group">
+          <label className="form-label">Nueva Contraseña</label>
+          <input
+            type="password"
+            className="form-input"
+            value={pwdData.newPassword}
+            onChange={(e) => setPwdData({ ...pwdData, newPassword: e.target.value })}
+            placeholder="Mínimo 6 caracteres"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Confirmar Contraseña</label>
+          <input
+            type="password"
+            className="form-input"
+            value={pwdData.confirmPassword}
+            onChange={(e) => setPwdData({ ...pwdData, confirmPassword: e.target.value })}
+            placeholder="Repite la contraseña"
+          />
+        </div>
+      </Modal>
+    </>
   );
 };
 

@@ -123,3 +123,21 @@ export async function sendComprobanteEmail(pago: any): Promise<void> {
 
   console.log(`✓ Email enviado a ${pago.paciente_email}`);
 }
+
+export async function sendPasswordResetEmail(email: string, token: string, nombre: string) {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) return;
+  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
+  const html = `<div style="font-family:sans-serif;padding:20px;">
+      <h2>Recuperación de Contraseña</h2>
+      <p>Hola ${nombre},</p>
+      <p>Has solicitado restablecer tu contraseña en Ventura Dental. Haz clic en el botón de abajo para cambiarla. Este enlace expirará en 1 hora.</p>
+      <a href="${resetUrl}" style="background:#3b82f6;color:white;padding:10px 20px;text-decoration:none;border-radius:6px;display:inline-block;margin:10px 0;">Restablecer Contraseña</a>
+      <p>Si no fuiste tú, ignora este correo.</p>
+    </div>`;
+  await transporter.sendMail({
+    from: `"Ventura Dental" <${process.env.GMAIL_USER}>`,
+    to: email,
+    subject: 'Recuperación de Contraseña',
+    html,
+  });
+}

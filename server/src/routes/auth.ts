@@ -1,7 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import * as usuarioModel from '../models/usuario.js';
+import crypto from 'crypto';
 import { generateToken, authenticateToken, requireAdmin, AuthRequest } from '../middleware/auth.js';
+import { query } from '../config/database.js';
+import { sendPasswordResetEmail } from '../services/email.js';
 
 const router = Router();
 
@@ -149,6 +152,62 @@ router.get('/secretarias', authenticateToken, async (_req: Request, res: Respons
     res.json(secretarias);
   } catch (error) {
     console.error('Get secretarias error:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+// POST /auth/forgot-password
+router.post('/forgot-password', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email requerido' });
+
+    const userResult = await query(
+      'SELECT id, nombre_completo FROM usuarios WHERE email = $1',
+      [email]
+    );
+
+    if (userResult.rows.length > 0) {
+      const user = userResult.rows[0];
+      const token = crypto.randomBytes(32).toString('hex');
+      await query(
+        "INSERT INTO password_resets (usuario_id, token, expires_at) VALUES ($1, $2, NOW() + INTERVAL '1 hour')",
+        [user.id, token]
+      );
+      await sendPasswordResetEmail(email, token, user.nombre_completo);
+    }
+
+    res.json({ message: 'Si el correo existe, enviaremos un enlace para restablecer tu contraseña.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+// POST /auth/reset-password
+router.post('/reset-password', async (req: Request, res: Response) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token) return res.status(400).json({ error: 'Token requerido' });
+    if (!newPassword || newPassword.length < 6) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+
+    const tokenResult = await query(
+      'SELECT usuario_id FROM password_resets WHERE token = $1 AND expires_at > NOW()',
+      [token]
+    );
+
+    if (tokenResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+
+    const { usuario_id } = tokenResult.rows[0];
+    const passwordHash = await usuarioModel.hashPassword(newPassword);
+    await query('UPDATE usuarios SET password_hash = $1 WHERE id = $2', [passwordHash, usuario_id]);
+    await query('DELETE FROM password_resets WHERE token = $1', [token]);
+
+    res.json({ message: 'Contraseña actualizada correctamente' });
+  } catch (error) {
+    console.error('Reset password error:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
 });
