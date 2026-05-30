@@ -84,12 +84,6 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-          <p>Usuarios de prueba:</p>
-          <p>admin / admin123</p>
-          <p>doctor1 / doctor123</p>
-          <p>secretaria1 / sec123</p>
-        </div>
       </div>
     </div>
   );
