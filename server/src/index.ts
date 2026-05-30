@@ -22,8 +22,6 @@ import tratamientosMacroRoutes from './routes/tratamientosMacro.js';
 import notificacionesRoutes from './routes/notificaciones.js';
 import cierreCajaRoutes from './routes/cierreCaja.js';
 import auditoriaRoutes from './routes/auditoria.js';
-import { migrateAuditoria } from './scripts/migrateAuditoria.js';
-
 dotenv.config();
 
 const app = express();

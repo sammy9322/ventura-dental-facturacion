@@ -144,8 +144,23 @@ router.put('/:id/finalizar', authenticateToken, requireSecretaria, asyncHandler(
 }));
 
 // PUT /pagos/:id/anular
-router.put('/:id/anular', authenticateToken, requireAdmin, asyncHandler(async (req: AuthRequest, res: Response) => {
+router.put('/:id/anular', authenticateToken, asyncHandler(async (req: AuthRequest, res: Response) => {
   const id = parseInt(req.params.id);
+
+  // Obtener pago existente
+  const pagoExistente = await pagoModel.getById(id);
+  if (!pagoExistente) return res.status(404).json({ error: 'Pago no encontrado' });
+
+  // Validar: solo admin puede anular fuera de pendiente_cobro
+  if (req.user?.rol !== 'admin' && pagoExistente.estado !== 'pendiente_cobro') {
+    return res.status(403).json({ error: 'Solo se pueden anular pagos pendientes de cobro' });
+  }
+
+  // Validar: doctor solo puede anular sus propios cobros
+  if (req.user?.rol === 'doctor' && pagoExistente.doctor_id !== req.user!.id) {
+    return res.status(403).json({ error: 'No puedes anular cobros de otros doctores' });
+  }
+
   const pago = await pagoModel.anular(id);
   if (!pago) return res.status(404).json({ error: 'Pago no encontrado' });
 

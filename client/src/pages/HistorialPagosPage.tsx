@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { PlusCircle, Eye, Calendar, Filter, X, Printer, Search } from 'lucide-react';
+import { PlusCircle, Eye, Calendar, Filter, X, Printer, Search, XCircle } from 'lucide-react';
 import { pagoService } from '../services';
 import { Layout, ComprobanteViewer } from '../components';
 import type { Pago, MetodoPago, Comprobante } from '../types';
@@ -42,6 +42,17 @@ export default function HistorialPagosPage() {
       toast.error('Error al obtener el comprobante');
     } finally {
       setImprimiendoId(null);
+    }
+  };
+
+  const handleAnular = async (pagoId: number) => {
+    if (!window.confirm('¿Estás seguro de anular esta intención de cobro? El saldo regresará al tratamiento del paciente.')) return;
+    try {
+      await api.put(`/pagos/${pagoId}/anular`);
+      loadPagos();
+      toast.success('Pago anulado correctamente');
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || 'Error al anular el pago');
     }
   };
 
@@ -275,6 +286,16 @@ export default function HistorialPagosPage() {
                             title="Reimprimir comprobante"
                           >
                             <Printer size={14} />
+                          </button>
+                        )}
+                        {pago.estado === 'pendiente_cobro' && (
+                          <button
+                            className="btn btn-outline btn-sm"
+                            style={{ marginRight: '0.5rem', borderColor: '#ef4444', color: '#ef4444' }}
+                            onClick={() => handleAnular(pago.id)}
+                            title="Anular intención de pago"
+                          >
+                            <XCircle size={14} /> Anular
                           </button>
                         )}
                         <button
