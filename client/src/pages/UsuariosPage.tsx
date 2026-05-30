@@ -209,32 +209,41 @@ export default function UsuariosPage() {
                     </span>
                   </td>
                   <td>
-                    <div className="table-actions">
+                    <div className="table-actions" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                       <button
                         className="btn btn-outline btn-sm"
+                        style={{ padding: '0.4rem 0.6rem', fontSize: '1rem' }}
                         onClick={() => handleOpenModal(usuario)}
+                        title="Editar perfil"
                       >
-                        Editar
-                      </button>
-                      <button className="btn btn-outline btn-sm" style={{ borderColor: 'var(--danger-color)', color: 'var(--danger-color)' }} onClick={() => handleDelete(usuario)} title="Eliminar definitivamente">
-                        Eliminar
+                        ✏️
                       </button>
                       <button
                         className="btn btn-outline btn-sm"
+                        style={{ borderColor: 'var(--danger-color)', color: 'var(--danger-color)', padding: '0.4rem 0.6rem', fontSize: '1rem' }}
+                        onClick={() => handleDelete(usuario)}
+                        title="Eliminar definitivamente"
+                      >
+                        🗑️
+                      </button>
+                      <button
+                        className="btn btn-outline btn-sm"
+                        style={{ padding: '0.4rem 0.6rem', fontSize: '1rem' }}
                         onClick={() => {
                           setEditingUsuario(usuario);
                           setShowPasswordModal(true);
                         }}
+                        title="Cambiar contraseña"
                       >
-                        Contraseña
+                        🔑
                       </button>
                       <button
-                        className={`btn btn-sm ${
-                          usuario.activo ? 'btn-danger' : 'btn-success'
-                        }`}
+                        className={`btn btn-sm ${usuario.activo ? 'btn-danger' : 'btn-success'}`}
+                        style={{ padding: '0.4rem 0.6rem', fontSize: '1rem' }}
                         onClick={() => handleToggleActivo(usuario)}
+                        title={usuario.activo ? 'Desactivar usuario' : 'Reactivar usuario'}
                       >
-                        {usuario.activo ? 'Desactivar' : 'Activar'}
+                        {usuario.activo ? '🛑' : '✅'}
                       </button>
                     </div>
                   </td>
