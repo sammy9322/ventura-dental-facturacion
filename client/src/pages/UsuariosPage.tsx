@@ -104,6 +104,24 @@ export default function UsuariosPage() {
     }
   };
 
+  const handleDelete = async (usuario: Usuario) => {
+    if (!window.confirm(`¿Seguro que deseas eliminar definitivamente a ${usuario.nombre_completo}? Esta acción no se puede deshacer.`)) return;
+    try {
+      const res = await fetch(`/api/auth/usuarios/${usuario.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Error al eliminar usuario');
+      }
+      toast.success('Usuario eliminado');
+      loadUsuarios();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   const handleChangePassword = async () => {
     setPasswordError('');
 
@@ -198,6 +216,9 @@ export default function UsuariosPage() {
                       >
                         Editar
                       </button>
+                      <button className="btn btn-outline btn-sm" style={{ borderColor: 'var(--danger-color)', color: 'var(--danger-color)' }} onClick={() => handleDelete(usuario)} title="Eliminar definitivamente">
+                        Eliminar
+                      </button>
                       <button
                         className="btn btn-outline btn-sm"
                         onClick={() => {
@@ -247,7 +268,6 @@ export default function UsuariosPage() {
               className="form-input"
               {...form.register('username')}
               required
-              disabled={!!editingUsuario}
             />
           </div>
           <div className="form-group">

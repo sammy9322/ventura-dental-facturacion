@@ -60,7 +60,7 @@ export async function create(
   return result.rows[0];
 }
 
-export async function update(id: number, data: { nombre_completo?: string; email?: string; rol?: string; activo?: boolean }) {
+export async function update(id: number, data: { username?: string; nombre_completo?: string; email?: string; rol?: string; activo?: boolean }) {
   const fields: string[] = [];
   const values: unknown[] = [];
   let idx = 1;
@@ -68,6 +68,10 @@ export async function update(id: number, data: { nombre_completo?: string; email
   if (data.nombre_completo) {
     fields.push(`nombre_completo = $${idx++}`);
     values.push(data.nombre_completo);
+  }
+  if (data.username) {
+    fields.push(`username = $${idx++}`);
+    values.push(data.username);
   }
   if (data.email !== undefined) {
     fields.push(`email = $${idx++}`);
@@ -92,6 +96,10 @@ export async function update(id: number, data: { nombre_completo?: string; email
     values
   );
   return result.rows[0];
+}
+
+export async function remove(id: number) {
+  await query('DELETE FROM usuarios WHERE id = $1', [id]);
 }
 
 export async function changePassword(id: number, newPassword: string) {

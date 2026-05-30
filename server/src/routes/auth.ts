@@ -23,6 +23,7 @@ const createUserSchema = z.object({
 
 const updateUserSchema = z.object({
   nombre_completo: z.string().min(1).max(100).optional(),
+  username: z.string().min(3).max(50).optional(),
   email: z.string().email('Email inválido').optional().or(z.literal('')),
   rol: z.enum(['admin', 'doctor', 'secretaria']).optional(),
   activo: z.boolean().optional(),
@@ -120,8 +121,26 @@ router.put('/usuarios/:id', authenticateToken, requireAdmin, async (req: Request
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors });
     }
+    const dbError = error as { code?: string };
+    if (dbError.code === '23505') {
+      return res.status(400).json({ error: 'El nombre de usuario ya existe' });
+    }
     console.error('Update usuario error:', error);
     res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+// DELETE /usuarios/:id
+router.delete('/usuarios/:id', authenticateToken, requireAdmin, async (req: Request, res: Response) => {
+  try {
+    await usuarioModel.remove(parseInt(req.params.id));
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (error) {
+    const dbError = error as { code?: string };
+    if (dbError.code === '23503') {
+      return res.status(400).json({ error: 'No se puede eliminar porque tiene historial clínico o pagos asociados. Por favor, desactívelo en su lugar.' });
+    }
+    res.status(500).json({ error: 'Error al eliminar usuario' });
   }
 });
 
