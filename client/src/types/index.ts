@@ -11,6 +11,7 @@ export interface Usuario {
   id: number;
   username: string;
   nombre_completo: string;
+  email?: string;
   rol: Rol;
   activo: boolean;
   created_at: string;

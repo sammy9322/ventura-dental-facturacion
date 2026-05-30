@@ -6,6 +6,7 @@ export interface Usuario {
   username: string;
   password_hash: string;
   nombre_completo: string;
+  email?: string;
   rol: 'admin' | 'doctor' | 'secretaria';
   activo: boolean;
   created_at: Date;
@@ -22,7 +23,7 @@ export async function findByUsername(username: string) {
 
 export async function findById(id: number) {
   const result = await query(
-    'SELECT id, username, nombre_completo, rol, activo, created_at FROM usuarios WHERE id = $1',
+    'SELECT id, username, nombre_completo, email, rol, activo, created_at FROM usuarios WHERE id = $1',
     [id]
   );
   return result.rows[0] as Omit<Usuario, 'password_hash'> | undefined;
@@ -38,7 +39,7 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function getAll() {
   const result = await query(
-    'SELECT id, username, nombre_completo, rol, activo, created_at FROM usuarios ORDER BY created_at DESC'
+    'SELECT id, username, nombre_completo, email, rol, activo, created_at FROM usuarios ORDER BY created_at DESC'
   );
   return result.rows;
 }
@@ -47,17 +48,19 @@ export async function create(
   username: string,
   password: string,
   nombreCompleto: string,
-  rol: 'admin' | 'doctor' | 'secretaria'
+  rol: 'admin' | 'doctor' | 'secretaria',
+  email?: string
 ) {
   const passwordHash = await hashPassword(password);
+  const emailValue = (email && email.trim()) ? email : null;
   const result = await query(
-    'INSERT INTO usuarios (username, password_hash, nombre_completo, rol) VALUES ($1, $2, $3, $4) RETURNING id, username, nombre_completo, rol',
-    [username, passwordHash, nombreCompleto, rol]
+    'INSERT INTO usuarios (username, password_hash, nombre_completo, email, rol) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, nombre_completo, email, rol',
+    [username, passwordHash, nombreCompleto, emailValue, rol]
   );
   return result.rows[0];
 }
 
-export async function update(id: number, data: { nombre_completo?: string; rol?: string; activo?: boolean }) {
+export async function update(id: number, data: { nombre_completo?: string; email?: string; rol?: string; activo?: boolean }) {
   const fields: string[] = [];
   const values: unknown[] = [];
   let idx = 1;
@@ -65,6 +68,10 @@ export async function update(id: number, data: { nombre_completo?: string; rol?:
   if (data.nombre_completo) {
     fields.push(`nombre_completo = $${idx++}`);
     values.push(data.nombre_completo);
+  }
+  if (data.email !== undefined) {
+    fields.push(`email = $${idx++}`);
+    values.push((data.email && data.email.trim()) ? data.email : null);
   }
   if (data.rol) {
     fields.push(`rol = $${idx++}`);
@@ -81,7 +88,7 @@ export async function update(id: number, data: { nombre_completo?: string; rol?:
   values.push(id);
 
   const result = await query(
-    `UPDATE usuarios SET ${fields.join(', ')} WHERE id = $${idx} RETURNING id, username, nombre_completo, rol, activo`,
+    `UPDATE usuarios SET ${fields.join(', ')} WHERE id = $${idx} RETURNING id, username, nombre_completo, email, rol, activo`,
     values
   );
   return result.rows[0];

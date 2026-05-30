@@ -37,7 +37,7 @@ export const authService = {
     return response.data;
   },
 
-  async createUsuario(data: { username: string; password: string; nombre_completo: string; rol: 'admin' | 'doctor' | 'secretaria' }): Promise<Usuario> {
+  async createUsuario(data: { username: string; password: string; nombre_completo: string; email?: string; rol: 'admin' | 'doctor' | 'secretaria' }): Promise<Usuario> {
     const response = await api.post<Usuario>('/auth/usuarios', data);
     return response.data;
   },

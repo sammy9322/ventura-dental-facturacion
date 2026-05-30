@@ -14,11 +14,13 @@ const createUserSchema = z.object({
   username: z.string().min(3).max(50),
   password: z.string().min(6),
   nombre_completo: z.string().min(1).max(100),
+  email: z.string().email('Email inválido').optional().or(z.literal('')),
   rol: z.enum(['admin', 'doctor', 'secretaria']),
 });
 
 const updateUserSchema = z.object({
   nombre_completo: z.string().min(1).max(100).optional(),
+  email: z.string().email('Email inválido').optional().or(z.literal('')),
   rol: z.enum(['admin', 'doctor', 'secretaria']).optional(),
   activo: z.boolean().optional(),
 });
@@ -87,7 +89,7 @@ router.get('/usuarios', authenticateToken, requireAdmin, async (req: Request, re
 router.post('/usuarios', authenticateToken, requireAdmin, async (req: Request, res: Response) => {
   try {
     const data = createUserSchema.parse(req.body);
-    const user = await usuarioModel.create(data.username, data.password, data.nombre_completo, data.rol);
+    const user = await usuarioModel.create(data.username, data.password, data.nombre_completo, data.rol, data.email);
     res.status(201).json(user);
   } catch (error) {
     if (error instanceof z.ZodError) {

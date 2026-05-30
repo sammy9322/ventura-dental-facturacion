@@ -215,11 +215,28 @@ export async function initDatabase() {
         ALTER TABLE pagos DROP CONSTRAINT IF EXISTS pagos_estado_check;
         ALTER TABLE pagos ADD CONSTRAINT pagos_estado_check
           CHECK (estado IN ('pendiente_cobro','completado','anulado'));
+
+        -- Agregar columna email a usuarios
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='usuarios' AND column_name='email') THEN
+          ALTER TABLE usuarios ADD COLUMN email VARCHAR(255) UNIQUE;
+        END IF;
       EXCEPTION WHEN OTHERS THEN
         RAISE NOTICE 'Error en migración (ignorado): %', SQLERRM;
       END$$;
     `);
     console.log('✓ Migraciones de esquema completadas');
+
+    // ── Tabla password_resets ──────────────────────────────────────
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS password_resets (
+        id SERIAL PRIMARY KEY,
+        usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
+        token VARCHAR(255) NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    console.log('✓ Tabla password_resets lista');
 
     // ── Tabla detalle_pago (ítems adicionales por pago) ────────────
     await client.query(`
@@ -342,3 +359,6 @@ export async function initDatabase() {
     client.release();
   }
 }
+
+// Auto-ejecutar si se llama directamente: npm run db:init
+initDatabase().catch(console.error);

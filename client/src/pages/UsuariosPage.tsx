@@ -19,6 +19,7 @@ export default function UsuariosPage() {
     defaultValues: {
       username: '',
       nombre_completo: '',
+      email: '',
       rol: 'doctor' as 'admin' | 'doctor' | 'secretaria',
     },
   });
@@ -44,6 +45,7 @@ export default function UsuariosPage() {
       form.reset({
         username: usuario.username,
         nombre_completo: usuario.nombre_completo,
+        email: usuario.email || '',
         rol: usuario.rol,
       });
     } else {
@@ -51,6 +53,7 @@ export default function UsuariosPage() {
       form.reset({
         username: '',
         nombre_completo: '',
+        email: '',
         rol: 'doctor',
       });
     }
@@ -72,6 +75,7 @@ export default function UsuariosPage() {
         await authService.createUsuario({
           username: data.username as string,
           nombre_completo: data.nombre_completo as string,
+          email: (data.email as string) || undefined,
           rol: (data.rol as string) as 'admin' | 'doctor' | 'secretaria',
           password: 'password123',
         });
@@ -156,6 +160,7 @@ export default function UsuariosPage() {
               <tr>
                 <th>Usuario</th>
                 <th>Nombre Completo</th>
+                <th>Correo Electrónico</th>
                 <th>Rol</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -163,10 +168,13 @@ export default function UsuariosPage() {
             </thead>
             <tbody>
               {usuarios.map((usuario) => (
-                <tr key={usuario.id}>
-                  <td style={{ fontFamily: 'monospace' }}>{usuario.username}</td>
-                  <td>{usuario.nombre_completo}</td>
-                  <td>
+                  <tr key={usuario.id}>
+                    <td style={{ fontFamily: 'monospace' }}>{usuario.username}</td>
+                    <td>{usuario.nombre_completo}</td>
+                    <td style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                      {usuario.email || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Sin correo</span>}
+                    </td>
+                    <td>
                     <span
                       className={`badge ${
                         usuario.rol === 'admin' ? 'badge-info' : 'badge-success'
@@ -249,6 +257,15 @@ export default function UsuariosPage() {
               className="form-input"
               {...form.register('nombre_completo')}
               required
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Correo Electrónico</label>
+            <input
+              type="email"
+              className="form-input"
+              placeholder="usuario@correo.com"
+              {...form.register('email')}
             />
           </div>
           <div className="form-group">
