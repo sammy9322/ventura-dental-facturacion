@@ -277,33 +277,37 @@ export default function HistorialPagosPage() {
                         </span>
                       </td>
                       <td style={{ textAlign: 'right' }}>
-                        {pago.estado === 'completado' && (
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', flexWrap: 'wrap', alignItems: 'center' }}>
+                          {pago.estado === 'completado' && (
+                            <button
+                              className="btn btn-outline btn-sm"
+                              style={{ borderColor: '#3b82f6', color: '#3b82f6', padding: '0.4rem 0.6rem' }}
+                              onClick={() => handleReimprimir(pago.id)}
+                              disabled={imprimiendoId === pago.id}
+                              title="Reimprimir comprobante"
+                            >
+                              <Printer size={16} />
+                            </button>
+                          )}
+                          {pago.estado === 'pendiente_cobro' && (
+                            <button
+                              className="btn btn-outline btn-sm"
+                              style={{ borderColor: '#ef4444', color: '#ef4444', padding: '0.4rem 0.6rem' }}
+                              onClick={() => handleAnular(pago.id)}
+                              title="Anular intención de pago"
+                            >
+                              <XCircle size={16} />
+                            </button>
+                          )}
                           <button
                             className="btn btn-outline btn-sm"
-                            style={{ marginRight: '0.5rem', borderColor: '#3b82f6', color: '#3b82f6' }}
-                            onClick={() => handleReimprimir(pago.id)}
-                            disabled={imprimiendoId === pago.id}
-                            title="Reimprimir comprobante"
+                            style={{ padding: '0.4rem 0.6rem' }}
+                            onClick={() => setSelectedPago(pago)}
+                            title="Ver detalles"
                           >
-                            <Printer size={14} />
+                            <Eye size={16} />
                           </button>
-                        )}
-                        {pago.estado === 'pendiente_cobro' && (
-                          <button
-                            className="btn btn-outline btn-sm"
-                            style={{ marginRight: '0.5rem', borderColor: '#ef4444', color: '#ef4444' }}
-                            onClick={() => handleAnular(pago.id)}
-                            title="Anular intención de pago"
-                          >
-                            <XCircle size={14} /> Anular
-                          </button>
-                        )}
-                        <button
-                          className="btn btn-outline btn-sm"
-                          onClick={() => setSelectedPago(pago)}
-                        >
-                          <Eye size={14} /> Ver
-                        </button>
+                        </div>
                       </td>
                     </tr>
                   );
