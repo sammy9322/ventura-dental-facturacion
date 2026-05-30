@@ -4,6 +4,7 @@ import { authService } from './services';
 import type { Rol } from './types';
 import './styles/index.css';
 import { ThemeProvider } from './ThemeContext';
+import { ConfirmProvider } from './contexts/ConfirmContext';
 import MainLayout from './components/MainLayout';
 
 // ── Lazy-loaded pages (code-splitting) ──────────────────────────────────────
@@ -60,6 +61,7 @@ function HomeRedirect() {
 export default function App() {
   return (
     <ThemeProvider>
+      <ConfirmProvider>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -137,6 +139,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      </ConfirmProvider>
     </ThemeProvider>
   );
 }

@@ -4,11 +4,13 @@ import { authService } from '../services';
 import { Layout, Modal } from '../components';
 import type { Usuario } from '../types';
 import { useToast } from '../hooks/useToast';
+import { useConfirm } from '../contexts/ConfirmContext';
 
 export default function UsuariosPage() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { confirm } = useConfirm();
   const [showModal, setShowModal] = useState(false);
   const [editingUsuario, setEditingUsuario] = useState<Usuario | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -105,7 +107,7 @@ export default function UsuariosPage() {
   };
 
   const handleDelete = async (usuario: Usuario) => {
-    if (!window.confirm(`¿Seguro que deseas eliminar definitivamente a ${usuario.nombre_completo}? Esta acción no se puede deshacer.`)) return;
+    if (!(await confirm({ title: 'Eliminar Usuario', message: `¿Seguro que deseas eliminar definitivamente a ${usuario.nombre_completo}? Esta acción no se puede deshacer.`, confirmText: 'Sí, eliminar', isDanger: true }))) return;
     try {
       const res = await fetch(`/api/auth/usuarios/${usuario.id}`, {
         method: 'DELETE',

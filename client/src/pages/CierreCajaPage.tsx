@@ -15,10 +15,12 @@ import {
 import { Layout } from '../components';
 import { cierreCajaService } from '../services';
 import { useToast } from '../hooks/useToast';
+import { useConfirm } from '../contexts/ConfirmContext';
 
 export default function CierreCajaPage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { confirm } = useConfirm();
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
   
   // Estados para montos reales (lo que cuenta la secretaria)
@@ -87,8 +89,8 @@ export default function CierreCajaPage() {
   const totalReal = realEfectivo + realTarjeta + realTransferencia + realOtros;
   const diferencia = totalReal - totalEsperado;
 
-  const handleSave = () => {
-    if (confirm('¿Está seguro de finalizar el cierre de caja para esta fecha?')) {
+  const handleSave = async () => {
+    if (await confirm({ title: 'Finalizar Cierre', message: '¿Está seguro de finalizar el cierre de caja para esta fecha?', confirmText: 'Sí, finalizar', isDanger: true })) {
       saveMutation.mutate({
         fecha,
         esperado_efectivo: espEfectivo,

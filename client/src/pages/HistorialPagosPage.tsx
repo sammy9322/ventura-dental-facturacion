@@ -6,11 +6,13 @@ import { Layout, ComprobanteViewer } from '../components';
 import type { Pago, MetodoPago, Comprobante } from '../types';
 import api from '../services/api';
 import { useToast } from '../hooks/useToast';
+import { useConfirm } from '../contexts/ConfirmContext';
 
 export default function HistorialPagosPage() {
   const [pagos, setPagos] = useState<Pago[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { confirm } = useConfirm();
   const [filters, setFilters] = useState({
     fechaDesde: '',
     fechaHasta: '',
@@ -46,7 +48,7 @@ export default function HistorialPagosPage() {
   };
 
   const handleAnular = async (pagoId: number) => {
-    if (!window.confirm('¿Estás seguro de anular esta intención de cobro? El saldo regresará al tratamiento del paciente.')) return;
+    if (!(await confirm({ title: 'Anular Pago', message: '¿Estás seguro de anular esta intención de cobro? El saldo regresará al tratamiento del paciente.', confirmText: 'Sí, anular', isDanger: true }))) return;
     try {
       await api.put(`/pagos/${pagoId}/anular`);
       loadPagos();
