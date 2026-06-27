@@ -13,6 +13,7 @@ export const Sidebar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
   const [notifCount, setNotifCount] = useState(0);
+  const [citasHoyCount, setCitasHoyCount] = useState(0);
   const [showChangePwd, setShowChangePwd] = useState(false);
   const [pwdData, setPwdData] = useState({ newPassword: '', confirmPassword: '' });
   const [pwdError, setPwdError] = useState('');
@@ -25,8 +26,12 @@ export const Sidebar: React.FC = () => {
       try {
         const res = await api.get('/notificaciones/pendientes');
         setNotifCount(res.data.total ?? 0);
-      } catch { /* silencioso */ }
+      }       catch { /* silencioso */ }
     }
+    try {
+      const citasRes = await api.get('/citas/hoy/count');
+      setCitasHoyCount(citasRes.data.total ?? 0);
+    } catch { /* silencioso */ }
   }, [user]);
 
   useEffect(() => {
@@ -57,6 +62,7 @@ export const Sidebar: React.FC = () => {
 
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '📊', roles: ['admin'] },
+    { name: 'Calendario', path: '/calendario', icon: '📅', roles: ['admin', 'doctor', 'secretaria'] },
     { name: 'Cobros', path: '/cobros/pendientes', icon: '💰', roles: ['secretaria', 'admin'] },
     { name: 'Pacientes', path: '/pacientes', icon: '👥', roles: ['admin', 'doctor', 'secretaria'] },
     { name: 'Tratamientos', path: '/tratamientos', icon: '🦷', roles: ['admin', 'doctor'] },
@@ -90,6 +96,9 @@ export const Sidebar: React.FC = () => {
             <span className="nav-text">{item.name}</span>
             {item.path === '/cobros/pendientes' && notifCount > 0 && (
               <span className="badge-notif">{notifCount}</span>
+            )}
+            {item.path === '/calendario' && citasHoyCount > 0 && (
+              <span className="badge-notif">{citasHoyCount}</span>
             )}
           </div>
         ))}

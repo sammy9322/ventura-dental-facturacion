@@ -22,6 +22,7 @@ const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const CierreCajaPage = lazy(() => import('./pages/CierreCajaPage'));
+const CalendarioPage = lazy(() => import('./pages/CalendarioPage'));
 
 // ── Loading fallback ────────────────────────────────────────────────────────
 function PageLoader() {
@@ -131,6 +132,7 @@ export default function App() {
               } />
 
               {/* Todos los roles autenticados */}
+              <Route path="/calendario" element={<CalendarioPage />} />
               <Route path="/pacientes" element={<PacientesPage />} />
             </Route>
 
