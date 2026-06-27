@@ -6,3 +6,4 @@ export { comprobanteService } from './comprobanteService';
 export { tratamientoService } from './tratamientoService';
 export { tratamientoMacroService } from './tratamientoMacroService';
 export * as cierreCajaService from './cierreCajaService';
+export { citaService } from './citaService';
