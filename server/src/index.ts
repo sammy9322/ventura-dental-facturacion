@@ -22,6 +22,8 @@ import tratamientosMacroRoutes from './routes/tratamientosMacro.js';
 import notificacionesRoutes from './routes/notificaciones.js';
 import cierreCajaRoutes from './routes/cierreCaja.js';
 import auditoriaRoutes from './routes/auditoria.js';
+import citasRoutes from './routes/citas.js';
+import horarioClinicaRoutes from './routes/horarioClinica.js';
 dotenv.config();
 
 const app = express();
@@ -55,6 +57,8 @@ app.use('/api/tratamientos-macro', tratamientosMacroRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/cierre', cierreCajaRoutes);
 app.use('/api/auditoria', auditoriaRoutes);
+app.use('/api/citas', citasRoutes);
+app.use('/api/horario-clinica', horarioClinicaRoutes);
 
 app.use(errorHandler);
 
