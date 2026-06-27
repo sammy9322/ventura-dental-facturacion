@@ -10,3 +10,4 @@ export { default as RegistrarPagoPage } from './RegistrarPagoPage';
 export { default as AuditoriaPage } from './AuditoriaPage';
 export { default as CierreCajaPage } from './CierreCajaPage';
 export { default as CobrosPage } from './CobrosPage';
+export { default as CalendarioPage } from './CalendarioPage';
