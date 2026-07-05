@@ -45,7 +45,7 @@ export const AppointmentCard: React.FC<Props> = ({ cita, compact, onClick, onDra
   return (
     <div
       className={`appointment-card ${compact ? 'compact' : ''} ${cita.estado === 'cancelada' || cita.estado === 'no_asistio' ? 'dimmed' : ''}`}
-      style={{ borderLeftColor: bgColor, '--appointment-bg': `${bgColor}18` } as React.CSSProperties}
+      style={{ borderLeftColor: bgColor, '--appointment-bg': `${bgColor}18`, '--appointment-color': bgColor, '--appointment-color-glow': `${bgColor}33` } as React.CSSProperties}
       onClick={() => onClick?.(cita)}
       draggable={!!onDragStart}
       onDragStart={e => onDragStart?.(e, cita)}

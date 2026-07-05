@@ -407,5 +407,8 @@ export async function initDatabase() {
   }
 }
 
-// Auto-ejecutar si se llama directamente: npm run db:init
-initDatabase().catch(console.error);
+// Auto-ejecutar solo si se llama directamente: npm run db:init
+const isMainModule = process.argv[1]?.endsWith('initDb.ts') || process.argv[1]?.endsWith('initDb.js');
+if (isMainModule) {
+  initDatabase().catch(console.error);
+}
