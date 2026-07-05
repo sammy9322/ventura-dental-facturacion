@@ -1,7 +1,7 @@
 # MEMORIA DE PROYECTO (Ventura Dental)
 
-**Última actualización:** 25 de Abril 2026 — 14:00 CRC
-**Checkpoint:** `CHECKPOINT_20260425.md`
+**Última actualización:** 5 de Julio 2026 — 15:20 CRC
+**Checkpoint:** `CHECKPOINT_27-06-2026.md` / Calendario Clínico Completado
 
 ---
 
@@ -9,37 +9,29 @@
 
 | Aspecto | Estado |
 |---------|--------|
-| **Versión** | 2.0.0 |
-| **Fase** | Marca aplicada — Verificar en producción |
-| **Módulos con marca** | 8/12 |
-| **Flujo de negocio** | ✅ Revisado (Dashboard→Registrar→Cobros→Cierre) |
+| **Versión** | 2.1.0 |
+| **Fase** | Módulo de Calendario Clínico Completado y verificado |
+| **Módulos con marca** | 9/12 (Incluyendo Calendario) |
+| **Flujo de negocio** | ✅ Revisado (Dashboard→Registrar→Cobros→Cierre→Calendario) |
 
 ---
 
-## Hitos del Día (25 Abril 2026)
+## Hitos de la Sesión (5 de Julio 2026)
 
-1. **Identidad de marca completa** — Logo SVG, paleta púrpura/turquesa
-2. **Sistema de diseño minimalista** — Sin glow, sin glassmorphism
-3. **Sidebar** — Logo + nav activo púrpura + menú "Estructura Clínica"
-4. **Login** — Logo centrado
-5. **Dashboard** — stat-cards con variantes de color de marca
-6. **Macro Tratamientos** — Estructura clínica con marca
-7. **Registrar Pago** — Flujo completo de intención de pago con marca
-8. **Cobros** — Cola + firma + método de pago con marca
-9. **Cierre de Caja** — Conciliación con marca
-10. **Checkpoint detallado** — 545 líneas documentadas
+1. **Finalización del módulo Calendario Clínico** — Vistas mensual/semanal/diaria completas e integradas en Sidebar.
+2. **Drag & Drop e interacciones** — Modificación visual y lógica de estados de citas (`programada`, `confirmada`, `en_progreso`, `completada`, etc.).
+3. **Configuración de Horario Clínico** — Configuración visual de horas laborables por día de la semana.
+4. **Verificación y compilación** — Limpieza de typescript compilation tanto en backend como frontend, con producción bundle (`npm run build`) exitoso.
+5. **Cambios subidos** — Confirmados y subidos al repositorio remoto en `main`.
 
 ---
 
-## Lecciones Aprendidas (Sesión 25 Abril)
+## Lecciones Aprendidas (Sesión 5 Julio)
 
 | Problema | Solución |
 |----------|---------|
-| Cambios no se ven en Vercel | Redeploy manual o Ctrl+Shift+R |
-| Git push falla authentication | Usar GitHub PAT |
-| Build lento/timeout | Timeout 180s para builds |
-| CSS "Unexpected }" | Llave duplicada en edit |
-| Módulo no aparece en menú | Falta en array `menuItems` del Sidebar |
+| Auto-ejecución de scripts de base de datos en import | Se agregó un guard `const isMainModule` en `initDb.ts` para evitar auto-ejecuciones indeseadas al importar funciones. |
+| Fallas de variables CSS dinámicas en tarjetas de citas | Se enlazaron las variables `--appointment-color` y `--appointment-color-glow` directamente desde `AppointmentCard.tsx`. |
 
 ---
 
@@ -48,30 +40,20 @@
 | Capa | Tecnología | Puerto |
 |------|------------|--------|
 | **Frontend** | React 18 + Vite + TypeScript | 5173 |
-| **Backend** | Node + Express + TypeScript | 3000 |
-| **DB** | PostgreSQL (Neon Serverless) | — |
+| **Backend** | Node + Express + TypeScript | 3001 (Proxy configurado) |
+| **DB** | PostgreSQL (pg nativo, sin ORM) | — |
 | **Deploy Front** | Vercel | — |
 | **Deploy Back** | Render | — |
 
-**Diseño:** CSS Puro — Minimalismo + Marca Ventura
+**Diseño:** CSS Puro — Minimalismo de Marca Ventura con paleta púrpura/turquesa.
 
 ---
 
 ## Próximos Pasos
 
-1. **Verificar en producción** — Probar flujo completo en Vercel
-2. **Módulos restantes** — Pacientes, Historial, Auditoría (verificar marca)
-3. **Responsive mobile** — Testing
-4. **Notificaciones** — Sistema de badges en tiempo real
-
----
-
-## Recursos
-
-- **Checkpoint:** `CHECKPOINT_20260425.md` (documento maestro — 545 líneas)
-- **Plan rediseño:** `PLAN_VENTURA_MINIMALISMO.md`
-- **Contexto IA:** `AI_CONTEXT.md`
-- **Docs técnicas:** `docs/MANUAL.md`, `docs/API.md`
+1. **Verificación en Producción / Staging** — Desplegar cambios y validar el comportamiento de citas bajo carga real.
+2. **Alertas de Colisiones** — Opcionalmente agregar validación ante solapamiento de horarios al arrastrar citas.
+3. **Módulos restantes** — Pacientes, Historial, Auditoría (verificar marca final).
 
 ---
 
