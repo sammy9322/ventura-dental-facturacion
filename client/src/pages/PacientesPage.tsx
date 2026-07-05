@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Search, UserPlus, Pencil, Trash2 } from 'lucide-react';
 import { pacienteService } from '../services';
 import { Layout, Modal } from '../components';
 import type { Paciente } from '../types';
 import { useToast } from '../hooks/useToast';
+
+const FORM_DRAFT_KEY = 'ventura_paciente_draft';
 
 export default function PacientesPage() {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -17,6 +19,45 @@ export default function PacientesPage() {
   const form = useForm({
     defaultValues: { nombre: '', dni: '', telefono: '', email: '', direccion: '' },
   });
+
+  // ── Persistencia del formulario en sessionStorage ───────────────────
+  // Si el componente se desmonta (ej. al abrir otra pestaña y volver),
+  // recuperamos los datos y el modal abierto.
+  const restoreDraft = useCallback(() => {
+    try {
+      const saved = sessionStorage.getItem(FORM_DRAFT_KEY);
+      if (!saved) return;
+      const { formData } = JSON.parse(saved);
+      if (formData) {
+        form.reset(formData);
+        setShowModal(true);
+        setEditingPaciente(null);
+      }
+    } catch {
+      sessionStorage.removeItem(FORM_DRAFT_KEY);
+    }
+  }, [form]);
+
+  const saveDraft = useCallback((data: Record<string, any>) => {
+    sessionStorage.setItem(FORM_DRAFT_KEY, JSON.stringify({ formData: data }));
+  }, []);
+
+  const clearDraft = useCallback(() => {
+    sessionStorage.removeItem(FORM_DRAFT_KEY);
+  }, []);
+
+  // Restaurar draft al montar el componente
+  useEffect(() => {
+    restoreDraft();
+  }, [restoreDraft]);
+
+  // Auto-guardar mientras se escribe (solo para nuevo paciente)
+  const watchedData = form.watch();
+  useEffect(() => {
+    if (showModal && !editingPaciente) {
+      saveDraft(watchedData);
+    }
+  }, [showModal, watchedData, editingPaciente, saveDraft]);
 
   useEffect(() => { loadPacientes(); }, []);
 
@@ -45,9 +86,17 @@ export default function PacientesPage() {
     }
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingPaciente(null);
+    clearDraft();
+    form.reset({ nombre: '', dni: '', telefono: '', email: '', direccion: '' });
+  };
+
   const handleOpenModal = (paciente?: Paciente) => {
     if (paciente) {
       setEditingPaciente(paciente);
+      clearDraft(); // no guardar draft cuando se edita
       form.reset({
         nombre: paciente.nombre,
         dni: paciente.dni || '',
@@ -57,6 +106,18 @@ export default function PacientesPage() {
       });
     } else {
       setEditingPaciente(null);
+      // Si hay un draft guardado, restaurarlo en lugar de limpiar
+      const saved = sessionStorage.getItem(FORM_DRAFT_KEY);
+      if (saved) {
+        try {
+          const { formData } = JSON.parse(saved);
+          if (formData) {
+            form.reset(formData);
+            setShowModal(true);
+            return;
+          }
+        } catch { /* ignorar */ }
+      }
       form.reset({ nombre: '', dni: '', telefono: '', email: '', direccion: '' });
     }
     setShowModal(true);
@@ -70,7 +131,7 @@ export default function PacientesPage() {
       } else {
         await pacienteService.create(data as any);
       }
-      setShowModal(false);
+      handleCloseModal();
       loadPacientes();
     } catch (error: any) {
       console.error('Error guardando paciente:', error);
@@ -175,11 +236,11 @@ export default function PacientesPage() {
 
       <Modal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={handleCloseModal}
         title={editingPaciente ? 'Editar Paciente' : 'Nuevo Paciente'}
         footer={
           <>
-            <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>Cancelar</button>
+            <button type="button" className="btn btn-outline" onClick={handleCloseModal}>Cancelar</button>
             <button type="button" className="btn btn-primary" onClick={() => form.handleSubmit(handleSubmit as any)()}>
               {editingPaciente ? 'Guardar Cambios' : 'Crear Paciente'}
             </button>
